@@ -18,5 +18,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="HtmlValidatorArtifact_main" target="1.5" />
+      <module name="HtmlValidatorArtifact_test" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
