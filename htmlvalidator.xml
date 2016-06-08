@@ -39,10 +39,10 @@
     <include name="*.swc"/>
     <include name="*.apk"/>
     <include name="*.zip"/>
-    <include name="*.ear"/>
     <include name="*.egg"/>
     <include name="*.ane"/>
     <include name="*.jar"/>
+    <include name="*.ear"/>
   </patternset>
   <patternset id="compiler.resources">
     <exclude name="**/?*.java"/>
@@ -198,6 +198,30 @@
   
   <!-- Project Libraries -->
   
+  <path id="library.gradle:_junit:junit:4.11.classpath">
+    <pathelement location="C:/Users/Andrey/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath">
+    <pathelement location="C:/Users/Andrey/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath">
+    <pathelement location="C:/Users/Andrey/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-runtime/1.0.1/124852ea8cdd3d89827923b5e79627e8a7c314b2/kotlin-runtime-1.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath">
+    <pathelement location="C:/Users/Andrey/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.0.1/68cddd9aec83d23f789f72bfdc933db245c4a635/kotlin-stdlib-1.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.jsoup:jsoup:1.9.2.classpath">
+    <pathelement location="C:/Users/Andrey/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.9.2/5e3bda828a80c7a21dfbe2308d1755759c2fd7b4/jsoup-1.9.2.jar"/>
+  </path>
+  
+  <path id="library.jsoup-1.9.2.classpath">
+    <pathelement location="${basedir}/lib/jsoup-1.9.2.jar"/>
+  </path>
+  
   <path id="library.kotlinjavaruntime.classpath">
     <pathelement location="${basedir}/lib/kotlin-reflect.jar"/>
     <pathelement location="${basedir}/lib/kotlin-runtime.jar"/>
@@ -239,23 +263,27 @@
   <path id="htmlvalidator.module.production.classpath">
     <path refid="${module.jdk.classpath.htmlvalidator}"/>
     <path refid="library.kotlinjavaruntime.classpath"/>
+    <path refid="library.jsoup-1.9.2.classpath"/>
   </path>
   
   <path id="htmlvalidator.runtime.production.module.classpath">
     <pathelement location="${htmlvalidator.output.dir}"/>
     <path refid="library.kotlinjavaruntime.classpath"/>
+    <path refid="library.jsoup-1.9.2.classpath"/>
   </path>
   
   <path id="htmlvalidator.module.classpath">
     <path refid="${module.jdk.classpath.htmlvalidator}"/>
     <pathelement location="${htmlvalidator.output.dir}"/>
     <path refid="library.kotlinjavaruntime.classpath"/>
+    <path refid="library.jsoup-1.9.2.classpath"/>
   </path>
   
   <path id="htmlvalidator.runtime.module.classpath">
     <pathelement location="${htmlvalidator.testoutput.dir}"/>
     <pathelement location="${htmlvalidator.output.dir}"/>
     <path refid="library.kotlinjavaruntime.classpath"/>
+    <path refid="library.jsoup-1.9.2.classpath"/>
   </path>
   
   
@@ -301,13 +329,219 @@
     <delete dir="${htmlvalidator.testoutput.dir}"/>
   </target>
   
+  
+  <!-- Module HtmlValidatorArtifact -->
+  
+  <dirname property="module.htmlvalidatorartifact.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.htmlvalidatorartifact" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.htmlvalidatorartifact" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.htmlvalidatorartifact" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.htmlvalidatorartifact" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="htmlvalidatorartifact.output.dir" value="${module.htmlvalidatorartifact.basedir}/out/production/HtmlValidatorArtifact"/>
+  <property name="htmlvalidatorartifact.testoutput.dir" value="${module.htmlvalidatorartifact.basedir}/out/test/HtmlValidatorArtifact"/>
+  
+  <path id="htmlvalidatorartifact.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="htmlvalidatorartifact.module.production.classpath">
+    <path refid="${module.jdk.classpath.htmlvalidatorartifact}"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact.runtime.production.module.classpath">
+    <pathelement location="${htmlvalidatorartifact.output.dir}"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact.module.classpath">
+    <path refid="${module.jdk.classpath.htmlvalidatorartifact}"/>
+    <pathelement location="${htmlvalidatorartifact.output.dir}"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact.runtime.module.classpath">
+    <pathelement location="${htmlvalidatorartifact.testoutput.dir}"/>
+    <pathelement location="${htmlvalidatorartifact.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.htmlvalidatorartifact">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.htmlvalidatorartifact">
+    <patternset refid="excluded.from.module.htmlvalidatorartifact"/>
+  </patternset>
+  
+  
+  <target name="compile.module.htmlvalidatorartifact" depends="compile.module.htmlvalidatorartifact.production,compile.module.htmlvalidatorartifact.tests" description="Compile module HtmlValidatorArtifact"/>
+  
+  <target name="compile.module.htmlvalidatorartifact.production" depends="register.custom.compilers" description="Compile module HtmlValidatorArtifact; production classes"/>
+  
+  <target name="compile.module.htmlvalidatorartifact.tests" depends="register.custom.compilers,compile.module.htmlvalidatorartifact.production" description="compile module HtmlValidatorArtifact; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.htmlvalidatorartifact" description="cleanup module">
+    <delete dir="${htmlvalidatorartifact.output.dir}"/>
+    <delete dir="${htmlvalidatorartifact.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module HtmlValidatorArtifact_main -->
+  
+  <dirname property="module.htmlvalidatorartifact_main.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.htmlvalidatorartifact_main" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.htmlvalidatorartifact_main" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.htmlvalidatorartifact_main" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.htmlvalidatorartifact_main" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="htmlvalidatorartifact_main.output.dir" value="${module.htmlvalidatorartifact_main.basedir}/HtmlValidatorArtifact/build/classes/main"/>
+  <property name="htmlvalidatorartifact_main.testoutput.dir" value="${module.htmlvalidatorartifact_main.basedir}/HtmlValidatorArtifact/build/classes/main"/>
+  
+  <path id="htmlvalidatorartifact_main.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="htmlvalidatorartifact_main.module.production.classpath">
+    <path refid="${module.jdk.classpath.htmlvalidatorartifact_main}"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact_main.runtime.production.module.classpath">
+    <pathelement location="${htmlvalidatorartifact_main.output.dir}"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact_main.module.classpath">
+    <path refid="${module.jdk.classpath.htmlvalidatorartifact_main}"/>
+    <pathelement location="${htmlvalidatorartifact_main.output.dir}"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact_main.runtime.module.classpath">
+    <pathelement location="${htmlvalidatorartifact_main.output.dir}"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.htmlvalidatorartifact_main">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.htmlvalidatorartifact_main">
+    <patternset refid="excluded.from.module.htmlvalidatorartifact_main"/>
+  </patternset>
+  
+  
+  <target name="compile.module.htmlvalidatorartifact_main" depends="compile.module.htmlvalidatorartifact_main.production,compile.module.htmlvalidatorartifact_main.tests" description="Compile module HtmlValidatorArtifact_main"/>
+  
+  <target name="compile.module.htmlvalidatorartifact_main.production" depends="register.custom.compilers" description="Compile module HtmlValidatorArtifact_main; production classes"/>
+  
+  <target name="compile.module.htmlvalidatorartifact_main.tests" depends="register.custom.compilers,compile.module.htmlvalidatorartifact_main.production" description="compile module HtmlValidatorArtifact_main; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.htmlvalidatorartifact_main" description="cleanup module">
+    <delete dir="${htmlvalidatorartifact_main.output.dir}"/>
+    <delete dir="${htmlvalidatorartifact_main.testoutput.dir}"/>
+  </target>
+  
+  
+  <!-- Module HtmlValidatorArtifact_test -->
+  
+  <dirname property="module.htmlvalidatorartifact_test.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.htmlvalidatorartifact_test" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.htmlvalidatorartifact_test" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.htmlvalidatorartifact_test" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.htmlvalidatorartifact_test" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="htmlvalidatorartifact_test.output.dir" value="undefined"/>
+  <property name="htmlvalidatorartifact_test.testoutput.dir" value="${module.htmlvalidatorartifact_test.basedir}/HtmlValidatorArtifact/build/classes/test"/>
+  
+  <path id="htmlvalidatorartifact_test.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="htmlvalidatorartifact_test.module.production.classpath">
+    <path refid="${module.jdk.classpath.htmlvalidatorartifact_test}"/>
+    <pathelement location="${htmlvalidatorartifact_main.output.dir}"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.11.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact_test.runtime.production.module.classpath">
+    <path refid="htmlvalidatorartifact_main.runtime.production.module.classpath"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.11.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact_test.module.classpath">
+    <path refid="${module.jdk.classpath.htmlvalidatorartifact_test}"/>
+    <pathelement location="${htmlvalidatorartifact_main.output.dir}"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.11.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+  </path>
+  
+  <path id="htmlvalidatorartifact_test.runtime.module.classpath">
+    <pathelement location="${htmlvalidatorartifact_test.testoutput.dir}"/>
+    <path refid="htmlvalidatorartifact_main.runtime.module.classpath"/>
+    <path refid="library.gradle:_org.jsoup:jsoup:1.9.2.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.0.1.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.11.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-runtime:1.0.1.classpath"/>
+    <path refid="library.gradle:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.htmlvalidatorartifact_test">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.htmlvalidatorartifact_test">
+    <patternset refid="excluded.from.module.htmlvalidatorartifact_test"/>
+  </patternset>
+  
+  
+  <target name="compile.module.htmlvalidatorartifact_test" depends="compile.module.htmlvalidatorartifact_test.production,compile.module.htmlvalidatorartifact_test.tests" description="Compile module HtmlValidatorArtifact_test"/>
+  
+  <target name="compile.module.htmlvalidatorartifact_test.production" depends="register.custom.compilers,compile.module.htmlvalidatorartifact_main" description="Compile module HtmlValidatorArtifact_test; production classes"/>
+  
+  <target name="compile.module.htmlvalidatorartifact_test.tests" depends="register.custom.compilers,compile.module.htmlvalidatorartifact_test.production" description="compile module HtmlValidatorArtifact_test; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.htmlvalidatorartifact_test" description="cleanup module">
+    <delete dir="${htmlvalidatorartifact_test.output.dir}"/>
+    <delete dir="${htmlvalidatorartifact_test.testoutput.dir}"/>
+  </target>
+  
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.htmlvalidator" description="cleanup all"/>
+  <target name="clean" depends="clean.module.htmlvalidator, clean.module.htmlvalidatorartifact, clean.module.htmlvalidatorartifact_main, clean.module.htmlvalidatorartifact_test" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.module.htmlvalidator" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.htmlvalidator, compile.module.htmlvalidatorartifact, compile.module.htmlvalidatorartifact_main, compile.module.htmlvalidatorartifact_test" description="build all modules"/>
   
   <target name="all" depends="build.modules" description="build all"/>
 </project>

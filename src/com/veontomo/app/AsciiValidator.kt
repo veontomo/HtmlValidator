@@ -1,4 +1,4 @@
-package com.veontomo
+package com.veontomo.app
 
 /**
  * Created by Andrey on 07/06/2016.
