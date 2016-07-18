@@ -16,16 +16,17 @@ class AsciiValidator {
     }
 
 
-    fun analyzeFile(fileName: String) {
+    fun analyzeFile(file: File) {
         val invalid : HashMap<Int, String> = hashMapOf();
-        File(fileName).readLines().forEachIndexed { i, s ->
+        file.readLines().forEachIndexed { i, s ->
             if (!isValid(s)) {
                 invalid.put(i+1, s);
             }
         }
         if (invalid.size == 0){
-            print("File " + fileName + " does not contain non-ascii characters.")
+            print("File " + file.name + " does not contain non-ascii characters.")
         } else {
+            println("File " + file.name)
             invalid.forEach { i, s -> println("Line no. " + i + ": "+ s + " contains non-ascii characters."); }
         }
 
