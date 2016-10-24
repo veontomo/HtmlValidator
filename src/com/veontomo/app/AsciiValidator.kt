@@ -8,7 +8,7 @@ import java.util.*
  */
 class AsciiValidator {
     fun filterOutValid(text: String): List<Char> {
-        return text.toCharArray().filter { c -> (c.toInt() < 32 && c.toInt() != 9) || c.toInt() > 126 }
+        return text.toCharArray().filter { c -> (c.toInt() < 32 && c.toInt() != 10) || c.toInt() > 126 }
     }
 
     fun analyzeFile(file: File) {
@@ -16,7 +16,8 @@ class AsciiValidator {
         file.readLines().forEachIndexed { i, s ->
             val res = filterOutValid(s)
             if (!res.isEmpty()) {
-                print("line $i contains non-ascii symbols: ${res.joinToString { it -> "$it (ascii code: ${it.toInt()})" }}")
+                println("line ${i+1} \"$s\" contains non-ascii symbols: ${res.joinToString { it -> "\"$it\" (ascii code: ${it.toInt()})" }}")
+
             }
         }
     }
