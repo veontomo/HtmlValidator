@@ -38,12 +38,12 @@ class SafeCharChecker : Checker() {
      * Check the validity of given string and return a list of messages related to found non-safe chars.
      * One message might refer to multiple non-safe chars. For example, if some line of the given text contains
      * multiple non-safe chars, their might be a single message that corresponds to those non-safe characters.
-     * @param txt string whose validity is to be checked. Not modified by this method.
+     * @param html string whose validity is to be checked. Not modified by this method.
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
-    override fun check(txt: String): List<CheckMessage> {
+    override fun check(html: String): List<CheckMessage> {
         val messages = mutableListOf<CheckMessage>()
-        val lines = txt.split(LINEBREAK)
+        val lines = html.split(LINEBREAK)
         lines.forEachIndexed { i, s ->
             val res = filterOutSafe(s)
             if (!res.isEmpty()) {
