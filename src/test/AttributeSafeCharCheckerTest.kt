@@ -1,17 +1,14 @@
 package test
 
 import com.veontomo.app.AttributeSafeCharChecker
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Attribute
 import org.jsoup.nodes.Attributes
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Tag
 import org.junit.After
 import org.junit.Test
-
 import org.junit.Assert.*
 import org.junit.Before
-import org.w3c.dom.Attr
 
 /**
  * Test the checker that detects a presence of non-safe chars inside values of html tag attributes.
@@ -38,7 +35,7 @@ class AttributeSafeCharCheckerTest {
      * 2. max num of non-safe chars inside the same attribute: 0, 1, > 1
      * 3. max num of non-safe chars inside the same tag: 0, 1, > 1
      * 4. presence of non-safe chars outside the attr values: yes, no
-     *
+     * 5. location of non-safe attr: external, internal
      */
     // Cover
     // 1. # non-safe chars: 0
@@ -87,7 +84,7 @@ class AttributeSafeCharCheckerTest {
     // 3. max num of non-safe chars inside the same tag: 0
     // 4.  presence of non-safe chars outside the attr values: yes
     @Test
-    fun checkTwoNonSafeOutsideAttributeValue() {
+    fun checkOneNonSafeOutsideAttributeValue() {
         val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image description\">Hi with è-symbol</div></body></html>"
         assertTrue(checker!!.check(html).isEmpty())
     }
