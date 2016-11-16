@@ -21,22 +21,39 @@ class AttributeSafeCharChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
         val body = doc.body()
-        val elements = body.children()
+        val children = body.children()
         val messages = mutableListOf<CheckMessage>()
-        elements
-                .map { checkElementAttributes(it) }
-                .filter { it.isNotEmpty() }
-                .forEach { messages.addAll(it) }
+        for (element in children) {
+            checkDeepElementAttributes(element, messages)
+        }
         return messages
     }
 
     /**
+     * Find non-safe chars of attribute values of given element and its children.
+     * @param element this element and all its children are to be inspected. Not to be modified.
+     * @param messages list of messages. It is a kind of accumulator for storing messages related
+     * to the inspection. It is supposed to be modified by this method.
+     */
+    private fun checkDeepElementAttributes(element: Element, messages: MutableList<CheckMessage>) {
+        val elemMessages = checkShallowElementAttributes(element)
+        if (elemMessages.isNotEmpty()){
+            messages.addAll(elemMessages)
+        }
+        val children = element.children()
+        if (children.isNotEmpty()){
+            children.forEach { child -> checkDeepElementAttributes(child, messages) }
+        }
+    }
+
+    /**
      * Check given element and return messages concerning non-safe characters in the element attribute values.
+     * The method does not inspect attributes of the element's children.
      * A single message of the resulting list might refer to multiple issues found in the element attributes.
      * @param el element whose attributes are to be inspected
      * @return list of messages.
      */
-    fun checkElementAttributes(el: Element): List<CheckMessage> {
+    fun checkShallowElementAttributes(el: Element): List<CheckMessage> {
         val result = mutableListOf<CheckMessage>()
         for (attr in el.attributes()) {
             val key = attr.key
