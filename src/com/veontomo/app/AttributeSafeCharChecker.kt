@@ -2,6 +2,9 @@ package com.veontomo.app
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Entities
+import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
 
 /**
  * Find a non-safe characters inside attribute values of html tags.
@@ -19,7 +22,11 @@ class AttributeSafeCharChecker : Checker() {
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
     override fun check(html: String): List<CheckMessage> {
-        val doc = Jsoup.parse(html)
+        val stream = html.byteInputStream(Charset.forName("ASCII"))
+        val doc = Jsoup.parse(stream, "ASCII", "")
+
+        // doc.charset(Charset.forName("ASCII"))
+//        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
         val body = doc.body()
         val children = body.children()
         val messages = mutableListOf<CheckMessage>()
@@ -37,11 +44,11 @@ class AttributeSafeCharChecker : Checker() {
      */
     private fun checkDeepElementAttributes(element: Element, messages: MutableList<CheckMessage>) {
         val elemMessages = checkShallowElementAttributes(element)
-        if (elemMessages.isNotEmpty()){
+        if (elemMessages.isNotEmpty()) {
             messages.addAll(elemMessages)
         }
         val children = element.children()
-        if (children.isNotEmpty()){
+        if (children.isNotEmpty()) {
             children.forEach { child -> checkDeepElementAttributes(child, messages) }
         }
     }
@@ -58,9 +65,9 @@ class AttributeSafeCharChecker : Checker() {
         for (attr in el.attributes()) {
             val key = attr.key
             val value = attr.value
-            val isSafe = value.toCharArray().all { c -> isSafeChar(c) }
-            if (!isSafe) {
-                result.add(CheckMessage("$key attribute value $value is not safe."))
+            val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
+            if (unSafeChars.isNotEmpty()) {
+                result.add(CheckMessage("$key attribute value $value is not safe: ${unSafeChars.joinToString { it.toString() }}"))
             }
         }
         return result
