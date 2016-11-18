@@ -3,7 +3,10 @@ package com.veontomo.app
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Entities
+import org.jsoup.parser.Parser
 import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.FileInputStream
 import java.nio.charset.Charset
 
 /**
@@ -18,15 +21,12 @@ class AttributeSafeCharChecker : Checker() {
     private val safeChars = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz;:.,&#!?-+=/$%()_".toSet()
     /**
      * Check the validity of given string and return a list of messages related to found irregularities.
-     * @param html string whose validity is to be checked. Assume it is a valid html document.
+     * @param file string whose validity is to be checked. Assume it is a valid file document.
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
-    override fun check(html: String): List<CheckMessage> {
-        val stream = html.byteInputStream(Charset.forName("ASCII"))
-        val doc = Jsoup.parse(stream, "ASCII", "")
+    override fun check(file: File): List<CheckMessage> {
+        val doc = Jsoup.parse(file, "ascii", "")
 
-        // doc.charset(Charset.forName("ASCII"))
-//        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
         val body = doc.body()
         val children = body.children()
         val messages = mutableListOf<CheckMessage>()
@@ -34,6 +34,10 @@ class AttributeSafeCharChecker : Checker() {
             checkDeepElementAttributes(element, messages)
         }
         return messages
+    }
+
+    fun check(html: String): List<CheckMessage>{
+        throw RuntimeException("This is a deprecated method")
     }
 
     /**
@@ -62,9 +66,7 @@ class AttributeSafeCharChecker : Checker() {
      */
     fun checkShallowElementAttributes(el: Element): List<CheckMessage> {
         val result = mutableListOf<CheckMessage>()
-        for (attr in el.attributes()) {
-            val key = attr.key
-            val value = attr.value
+        for ((key, value) in el.attributes()) {
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
             if (unSafeChars.isNotEmpty()) {
                 result.add(CheckMessage("$key attribute value $value is not safe: ${unSafeChars.joinToString { it.toString() }}"))

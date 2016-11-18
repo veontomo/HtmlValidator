@@ -1,5 +1,8 @@
 package com.veontomo.app
 
+import java.io.File
+import java.nio.charset.Charset
+
 
 /**
  * Find non-safe characters in given string.
@@ -12,9 +15,6 @@ package com.veontomo.app
  * [32, 126].
  */
 class SafeCharChecker : Checker() {
-
-    private val LINEBREAK = System.getProperty("line.separator")
-
     /**
      * Stand apart ascii code (line feed)
      */
@@ -38,12 +38,12 @@ class SafeCharChecker : Checker() {
      * Check the validity of given string and return a list of messages related to found non-safe chars.
      * One message might refer to multiple non-safe chars. For example, if some line of the given text contains
      * multiple non-safe chars, their might be a single message that corresponds to those non-safe characters.
-     * @param html string whose validity is to be checked. Not modified by this method.
+     * @param file validity of its content is to be checked. Not modified by this method.
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
-    override fun check(html: String): List<CheckMessage> {
+    override fun check(file: File): List<CheckMessage> {
         val messages = mutableListOf<CheckMessage>()
-        val lines = html.split(LINEBREAK)
+        val lines = file.readLines(Charset.forName("ASCII"))
         lines.forEachIndexed { i, s ->
             val res = filterOutSafe(s)
             if (!res.isEmpty()) {
@@ -53,6 +53,9 @@ class SafeCharChecker : Checker() {
         return messages
     }
 
+    fun check(html: String): List<CheckMessage>{
+        throw RuntimeException("This is a deprecated method")
+    }
     /**
      * Find all non-ascii characters of given string.
      * @param text
