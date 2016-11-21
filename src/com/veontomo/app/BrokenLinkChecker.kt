@@ -28,10 +28,12 @@ class BrokenLinkChecker : Checker() {
         val u = URL(url)
         val huc: HttpURLConnection = u.openConnection() as HttpURLConnection
         huc.requestMethod = "GET"
+        huc.instanceFollowRedirects = true
         huc.connect()
         val code = huc.getResponseCode()
 //        if (code != HttpURLConnection.HTTP_OK) {
-        return CheckMessage("$url has returned $code ${huc.contentLength}")
+        return CheckMessage("$url has returned $code ${huc.contentLength} response message  ${huc.responseMessage}")
+
 //        }
 //        return null
     }
