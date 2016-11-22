@@ -15,12 +15,13 @@ import java.nio.charset.Charset
 
 /**
  * Create report for every link found in the html document.
+ * The report refers to a validity of a link: the number of intermediate url used to retrieve
+ * the requested one (redirects), the number of bytes received.
  */
 class LinkChecker : Checker() {
 
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
-
         doc.charset(Charset.forName("ASCII"))
         doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
         val body = doc.body()
@@ -44,30 +45,30 @@ class LinkChecker : Checker() {
         } catch (e: Exception) {
             msgBuilder.append("Error while connecting to $url: ${e.message}")
         }
-        val history = strategy.history
+        val history = strategy.log
         if (history.isNotEmpty()) {
             msgBuilder.append(" after ${history.size} redirects:  ${history.joinToString(", ", "", "", 5, "...", null)}")
         }
         return CheckMessage(msgBuilder.toString())
     }
 
-}
+
+    /**
+     * Immutable class for tracking the log of redirects that occur during retrieval of an uri.
+     * The immutability is achived by using an immutable type (String) and defencive copy.
+     */
+    private class RedirectLogger() : DefaultRedirectStrategy() {
+        private val redirectSequence = mutableListOf<URI>()
+
+        val log: List<String>
+            get() = redirectSequence.map(URI::toString)
+
+        override fun getRedirect(request: HttpRequest?, response: HttpResponse?, context: HttpContext?): HttpUriRequest {
+            val redirect: HttpUriRequest = super.getRedirect(request, response, context)
+            redirectSequence.add(redirect.uri)
+            return redirect
+        }
 
 
-/**
- * Immutable class for tracking the redirects that occurs during retrieval of an uri.
- */
-private class RedirectLogger() : DefaultRedirectStrategy() {
-    private val redirectSequence = mutableListOf<URI>()
-
-    val history: List<String>
-        get() = redirectSequence.map(URI::toString)
-
-    override fun getRedirect(request: HttpRequest?, response: HttpResponse?, context: HttpContext?): HttpUriRequest {
-        val redirect: HttpUriRequest = super.getRedirect(request, response, context)
-        redirectSequence.add(redirect.uri)
-        return redirect
     }
-
-
 }
