@@ -2,10 +2,12 @@ package com.veontomo.app
 
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
+import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.impl.client.BasicResponseHandler
 import org.apache.http.impl.client.DefaultRedirectStrategy
+import org.apache.http.client.config.CookieSpecs
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.protocol.HttpContext
 import org.jsoup.Jsoup
@@ -36,18 +38,21 @@ class LinkChecker : Checker() {
      */
     private fun analyze(url: String): CheckMessage {
         val strategy = RedirectLogger()
-        val client = HttpClients.custom().setRedirectStrategy(strategy).build()
+        val client = HttpClients.custom()
+                .setRedirectStrategy(strategy)
+                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
+                .build()
         val msgBuilder = StringBuilder()
         try {
             val response = client.execute(HttpGet(url), BasicResponseHandler())
             msgBuilder.append("$url returned ${response.length} bytes")
 
         } catch (e: Exception) {
-            msgBuilder.append("Error while connecting to $url: ${e.message}")
+            msgBuilder.append("Error while connecting to url \"$url\": ${e.message}")
         }
         val history = strategy.log
         if (history.isNotEmpty()) {
-            msgBuilder.append(" after ${history.size} redirects:  ${history.joinToString(", ", "", "", 5, "...", null)}")
+            msgBuilder.append(" after ${history.size} redirects:\n ${history.joinToString(",\n ", "", "", 5, "...", null)}")
         }
         return CheckMessage(msgBuilder.toString())
     }
@@ -55,7 +60,7 @@ class LinkChecker : Checker() {
 
     /**
      * Immutable class for tracking the log of redirects that occur during retrieval of an uri.
-     * The immutability is achived by using an immutable type (String) and defencive copy.
+     * The immutability is achieved by using an immutable type (String) and defencive copy.
      */
     private class RedirectLogger() : DefaultRedirectStrategy() {
         private val redirectSequence = mutableListOf<URI>()
