@@ -36,14 +36,26 @@ class AttributeSafeCharCheckerTest {
      * 3. max num of non-safe chars inside the same tag: 0, 1, > 1
      * 4. presence of non-safe chars outside the attr values: yes, no
      * 5. location of non-safe attr wrt to the body: external, internal
+     * 6. escaped html entities: present, absent
      */
     // Cover
     // 1. # non-safe chars: 0
-    // 4.  presence of non-safe chars outside the attr values: no
+    // 4. presence of non-safe chars outside the attr values: no
+    // 6. escaped html entities: absent
     @Test
     fun checkAllSafe() {
         val html = "<!DOCTYPE HTML> <html> <body> <div style=\"background-color: #ffffff; line-height: normal; text-align: center; font-size: 13px; width: 500px;\">hi</div></body></html>"
         assertTrue(checker!!.check(html).isEmpty())
+    }
+
+    // Cover
+    // 1. # non-safe chars: 0
+    // 6. escaped html entities: present
+    @Test
+    fun checkSafeEscaped() {
+        val html = "<!DOCTYPE HTML> <html> <body> <div title=\"these dots &hellip; are escaped\">...</body></html>"
+        val messages =  checker!!.check(html)
+        assertTrue("message list must be empty, instead got \"${messages.joinToString { it.message }}\"", messages.isEmpty())
     }
 
 
@@ -51,6 +63,7 @@ class AttributeSafeCharCheckerTest {
     // 1. # non-safe chars: 1 (asterisk)
     // 4.  presence of non-safe chars outside the attr values: no
     // 5. location: external
+    // 6. escaped html entities: absent
     @Test
     fun checkAOneNonSafe() {
         val html = "<!DOCTYPE HTML> <html> <body> <div style=\"background-color: #ffffff; line-height: normal; text-align: 'center'; font-size: 13px; width: 500px;\">hi</div></body></html>"
@@ -62,6 +75,7 @@ class AttributeSafeCharCheckerTest {
     // 2. max num of non-safe chars inside the same attr: 2
     // 3. max num of non-safe chars inside the same tag: 2
     // 4.  presence of non-safe chars outside the attr values: no
+    // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeSameAttr() {
         val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image<br>description\">hi</body></html>"
@@ -74,6 +88,7 @@ class AttributeSafeCharCheckerTest {
     // 3. max num of non-safe chars inside the same tag: 2
     // 4.  presence of non-safe chars outside the attr values: no
     // 5. location: external
+    // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeSameTagDifferentAttrsExternal() {
         val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\">just an image</body></html>"
@@ -86,6 +101,7 @@ class AttributeSafeCharCheckerTest {
     // 3. max num of non-safe chars inside the same tag: 2
     // 4.  presence of non-safe chars outside the attr values: no
     // 5. location: internal
+    // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeSameTagDifferentAttrsInternal() {
         val html = "<!DOCTYPE HTML> <html> <body><div><span> <img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\">hi</span></div></body></html>"
@@ -98,6 +114,7 @@ class AttributeSafeCharCheckerTest {
     // 3. max num of non-safe chars inside the same tag: 1
     // 4.  presence of non-safe chars outside the attr values: no
     // 5. location: internal
+    // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeDifferentTagDifferentAttrsInternal() {
         val html = "<!DOCTYPE HTML> <html> <body> <span><img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\">hi</span>" +
@@ -110,6 +127,7 @@ class AttributeSafeCharCheckerTest {
     // 2. max num of non-safe chars inside the same attr: 0
     // 3. max num of non-safe chars inside the same tag: 0
     // 4.  presence of non-safe chars outside the attr values: yes
+    // 6. escaped html entities: absent
     @Test
     fun checkOneNonSafeOutsideAttributeValue() {
         val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image description\">Hi with è-symbol</div></body></html>"
@@ -165,11 +183,12 @@ class AttributeSafeCharCheckerTest {
         val elem = Element(Tag.valueOf("img"), "", attrs)
         assertTrue(checker!!.checkShallowElementAttributes(elem).isNotEmpty())
     }
+
     // Cover
     // 1. # attributes: > 1
     // 2. # non-safe attr: > 1
     @Test
-    fun checkElementAttrsNoAttributes(){
+    fun checkElementAttrsNoAttributes() {
         val attrs = Attributes()
         attrs.put(Attribute("style", "color:red;\r\n"))
         attrs.put(Attribute("class", "wide<br />"))

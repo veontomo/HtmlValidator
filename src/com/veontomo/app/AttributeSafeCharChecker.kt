@@ -2,6 +2,7 @@ package com.veontomo.app
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser
 import java.nio.charset.Charset
 
 /**
@@ -20,10 +21,11 @@ class AttributeSafeCharChecker : Checker() {
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
     override fun check(html: String): List<CheckMessage> {
-        val stream = html.byteInputStream(Charset.forName("ASCII"))
-        val doc = Jsoup.parse(stream, "ASCII", "")
+//        val stream = html.byteInputStream(Charset.forName("ASCII"))
+//        val doc = Jsoup.parse(stream, "ASCII", "")
+        val doc = Jsoup.parse(html, "ASCII", Parser.xmlParser())
 
-        // doc.charset(Charset.forName("ASCII"))
+//         doc.charset(Charset.forName("ASCII"))
 //        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
         val body = doc.body()
         val children = body.children()
