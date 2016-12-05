@@ -2,8 +2,12 @@ package com.veontomo.app
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Entities
 import org.jsoup.parser.Parser
+import org.w3c.dom.Document
 import java.nio.charset.Charset
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Find a non-safe characters inside attribute values of html tags.
@@ -21,18 +25,22 @@ class AttributeSafeCharChecker : Checker() {
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
     override fun check(html: String): List<CheckMessage> {
+        val dbFactory = DocumentBuilderFactory.newInstance()
+        val dBuilder = dbFactory.newDocumentBuilder()
+        val doc = dBuilder.parse(html)
+        System.out.println("Root element :" + doc.getDocumentElement().getNodeName())
 //        val stream = html.byteInputStream(Charset.forName("ASCII"))
 //        val doc = Jsoup.parse(stream, "ASCII", "")
-        val doc = Jsoup.parse(html, "ASCII", Parser.xmlParser())
+//        val doc = Jsoup.parse(html, "ASCII", Parser.xmlParser())
 
-//         doc.charset(Charset.forName("ASCII"))
+//        doc.charset(Charset.forName("ASCII"))
 //        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
-        val body = doc.body()
-        val children = body.children()
+//        val body = doc.body()
+//        val children = body.children()
         val messages = mutableListOf<CheckMessage>()
-        for (element in children) {
-            checkDeepElementAttributes(element, messages)
-        }
+//        for (element in children) {
+//            checkDeepElementAttributes(element, messages)
+//        }
         return messages
     }
 
