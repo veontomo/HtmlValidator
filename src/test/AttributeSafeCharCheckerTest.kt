@@ -46,7 +46,8 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkAllSafe() {
-        val html = "<!DOCTYPE HTML> <html> <body> <div style=\"background-color: #ffffff; line-height: normal; text-align: center; font-size: 13px; width: 500px;\">hi</div></body></html>"
+        val html = "<!DOCTYPE HTML>" +
+                "<html> <body> <div style=\"background-color: #ffffff; line-height: normal; text-align: center; font-size: 13px; width: 500px;\">hi</div></body></html>"
         assertTrue(checker!!.check(html).isEmpty())
     }
 
@@ -55,7 +56,8 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: present
     @Test
     fun checkSafeEscaped() {
-        val html = "<!DOCTYPE HTML> <html> <body> <div title=\"these dots &hellip; are escaped\">...</body></html>"
+        val html = "<!DOCTYPE HTML>"+
+                "<html> <body> <div title=\"these dots 	&#8230; are escaped\">...</div></body></html>"
         val messages = checker!!.check(html)
         assertTrue("message list must be empty, instead got \"${messages.joinToString { it.message }}\"", messages.isEmpty())
     }
