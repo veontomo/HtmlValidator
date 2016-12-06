@@ -33,12 +33,9 @@ class AttributeSafeCharCheckerTest {
     /**
      * Test the method that finds non-safe chars inside attribute values
      * Partition the input as follows:
-     * 1. # non-safe chars: 0, 1, > 1
-     * 2. max num of non-safe chars inside the same attribute: 0, 1, > 1
-     * 3. max num of non-safe chars inside the same tag: 0, 1, > 1
-     * 4. presence of non-safe chars outside the attr values: yes, no
-     * 5. location of non-safe attr wrt to the body: external, internal
-     * 6. escaped html entities: present, absent
+     * 1. valid xml: true, false
+     * 2. level of depth of html entities: 1, 2, > 2
+     * 3. number of html entities: 0, 1, > 1
      */
     // Cover
     // 1. # non-safe chars: 0
@@ -57,9 +54,9 @@ class AttributeSafeCharCheckerTest {
     @Test
     fun checkSafeEscaped() {
         val html = "<!DOCTYPE HTML>"+
-                "<html> <body> <div title=\"these dots 	&#8230; are escaped\">...</div></body></html>"
+                "<html> <body> <div title=\"these dots &hellip; are escaped\">...</div></body></html>"
         val messages = checker!!.check(html)
-        assertTrue("message list must be empty, instead got \"${messages.joinToString { it.message }}\"", messages.isEmpty())
+        assertTrue("Escaped html entities must produce no messages, instead got \"${messages.joinToString { it.message }}\"", messages.isEmpty())
     }
 
 

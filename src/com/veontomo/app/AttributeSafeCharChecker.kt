@@ -7,15 +7,21 @@ import org.jsoup.parser.Parser
 import org.w3c.dom.Document
 import org.w3c.dom.Node
 import org.xml.sax.InputSource
+import org.xml.sax.SAXParseException
 import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
- * Find a non-safe characters inside attribute values of html tags.
+ * Find a non-safe characters inside attribute values of an html document.
+ *
+ * Assume that the document contains only characters whose ascii codes are:
+ *
+ * 9 (\t), 10 (\n), 13 (\r), 32, ..., 126.
  *
  * Only these characters are considered safe for an html tag attribute value:
+ *
  * 0-9, a-z, A-Z, ;, :, ., comma, space, &, #, !, ?, -, +, =, /, $, %, (, ), _
  *
  */
@@ -35,11 +41,14 @@ class AttributeSafeCharChecker : Checker() {
             val doc = dBuilder.parse(InputSource(ByteArrayInputStream(html.toByteArray(Charset.forName("utf-8")))))
             val children = doc.childNodes
             val size = children.length
-            for (i in 0..size-1) {
+            for (i in 0..size - 1) {
                 checkDeepElementAttributes(children.item(i), messages)
             }
+        } catch (e: SAXParseException) {
+            System.out.print("Warning: ${e.message}")
         } catch (e: Exception) {
-            messages.add(CheckMessage(e.message ?: "Unknown error"))
+            messages.add(CheckMessage("Exception:  ${e.javaClass.name}"))
+
         }
         return messages
     }
@@ -57,7 +66,7 @@ class AttributeSafeCharChecker : Checker() {
         }
         val children = element.childNodes
         val size = children.length
-        for (i in 0..size-1) {
+        for (i in 0..size - 1) {
             checkDeepElementAttributes(children.item(i), messages)
         }
     }
@@ -73,7 +82,7 @@ class AttributeSafeCharChecker : Checker() {
         val result = mutableListOf<CheckMessage>()
         val attrs = el.attributes
         val size = attrs?.length ?: 0
-        for (i in 0..size-1) {
+        for (i in 0..size - 1) {
             val key = attrs.item(i).nodeName
             val value = attrs.item(i).nodeValue
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
