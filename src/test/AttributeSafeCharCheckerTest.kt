@@ -138,8 +138,12 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkOneNonSafeOutsideAttributeValue() {
-        val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image description\" />Hi with è-symbol</body></html>"
-        assertTrue(checker!!.check(html).isEmpty())
+        val html = "<!DOCTYPE HTML><html><body>" +
+                "<span style=\"width: 500px;\" title=\"a span element\">Hi with è-symbol</span>" +
+                "</body></html>"
+        val messages = checker!!.check(html)
+
+        assertTrue("No anomalies should be detected, instead ${messages.joinToString { it.message }}", messages.isEmpty())
     }
 
     /**

@@ -31,20 +31,11 @@ class AttributeSafeCharChecker : Checker() {
         val messages = mutableListOf<CheckMessage>()
         val dbFactory = DocumentBuilderFactory.newInstance()
         val dBuilder = dbFactory.newDocumentBuilder()
-//        val doc = dBuilder.parse(html)
         try {
-            val doc = dBuilder.parse(InputSource(ByteArrayInputStream(html.toByteArray(Charset.forName("ascii")))))
-
-//        val stream = html.byteInputStream(Charset.forName("ASCII"))
-//        val doc = Jsoup.parse(stream, "ASCII", "")
-//        val doc = Jsoup.parse(html, "ASCII", Parser.xmlParser())
-
-//        doc.charset(Charset.forName("ASCII"))
-//        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
-            val body = doc.getElementsByTagName("body")
+            val doc = dBuilder.parse(InputSource(ByteArrayInputStream(html.toByteArray(Charset.forName("utf-8")))))
             val children = doc.childNodes
             val size = children.length
-            for (i in 0..size) {
+            for (i in 0..size-1) {
                 checkDeepElementAttributes(children.item(i), messages)
             }
         } catch (e: Exception) {
@@ -66,7 +57,7 @@ class AttributeSafeCharChecker : Checker() {
         }
         val children = element.childNodes
         val size = children.length
-        for (i in 0..size) {
+        for (i in 0..size-1) {
             checkDeepElementAttributes(children.item(i), messages)
         }
     }
@@ -81,8 +72,8 @@ class AttributeSafeCharChecker : Checker() {
     fun checkShallowElementAttributes(el: Node): List<CheckMessage> {
         val result = mutableListOf<CheckMessage>()
         val attrs = el.attributes
-        val size = attrs.length
-        for (i in 0..size) {
+        val size = attrs?.length ?: 0
+        for (i in 0..size-1) {
             val key = attrs.item(i).nodeName
             val value = attrs.item(i).nodeValue
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
