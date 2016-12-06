@@ -9,6 +9,8 @@ import org.junit.After
 import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
+import org.w3c.dom.Node
+import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Test the checker that detects a presence of non-safe chars inside values of html tag attributes.
@@ -54,7 +56,7 @@ class AttributeSafeCharCheckerTest {
     @Test
     fun checkSafeEscaped() {
         val html = "<!DOCTYPE HTML> <html> <body> <div title=\"these dots &hellip; are escaped\">...</body></html>"
-        val messages =  checker!!.check(html)
+        val messages = checker!!.check(html)
         assertTrue("message list must be empty, instead got \"${messages.joinToString { it.message }}\"", messages.isEmpty())
     }
 
@@ -66,8 +68,10 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkAOneNonSafe() {
-        val html = "<!DOCTYPE HTML> <html> <body> <div style=\"background-color: #ffffff; line-height: normal; text-align: 'center'; font-size: 13px; width: 500px;\">hi</div></body></html>"
-        assertTrue(checker!!.check(html).isNotEmpty())
+        val html = "<!DOCTYPE HTML><html><body>" +
+                "<div style=\"background-color: #ffffff; line-height: normal; text-align: 'center'; font-size: 13px; width: 500px;\">hi</div>" +
+                "</body></html>"
+        assertTrue("The presence of the asterisks is not detected", checker!!.check(html).isNotEmpty())
     }
 
     // Cover
@@ -78,8 +82,10 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeSameAttr() {
-        val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image<br>description\">hi</body></html>"
-        assertTrue(checker!!.check(html).isNotEmpty())
+        val html = "<!DOCTYPE HTML> <html> <body> " +
+                "<img style=\"width: 500px;\" alt=\"image<br>description\"/>" +
+                "</body></html>"
+        assertTrue("The presence of < and > is not detected.", checker!!.check(html).isNotEmpty())
     }
 
     // Cover
@@ -91,8 +97,10 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeSameTagDifferentAttrsExternal() {
-        val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\">just an image</body></html>"
-        assertTrue(checker!!.check(html).isNotEmpty())
+        val html = "<!DOCTYPE HTML> <html> <body> " +
+                "<img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\" />" +
+                "</body></html>"
+        assertTrue("The presence of non-ascii characters (ù and à) is not detected", checker!!.check(html).isNotEmpty())
     }
 
     // Cover
@@ -104,7 +112,7 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeSameTagDifferentAttrsInternal() {
-        val html = "<!DOCTYPE HTML> <html> <body><div><span> <img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\">hi</span></div></body></html>"
+        val html = "<!DOCTYPE HTML> <html> <body><div><span> <img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\" />hi</span></div></body></html>"
         assertTrue(checker!!.check(html).isNotEmpty())
     }
 
@@ -117,7 +125,7 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkTwoNonSafeDifferentTagDifferentAttrsInternal() {
-        val html = "<!DOCTYPE HTML> <html> <body> <span><img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\">hi</span>" +
+        val html = "<!DOCTYPE HTML> <html> <body> <span><img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\" />hi</span>" +
                 "<a title=\"a<br>link\" href=\"link\"></div></body></html>"
         assertTrue(checker!!.check(html).isNotEmpty())
     }
@@ -130,7 +138,7 @@ class AttributeSafeCharCheckerTest {
     // 6. escaped html entities: absent
     @Test
     fun checkOneNonSafeOutsideAttributeValue() {
-        val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image description\">Hi with è-symbol</div></body></html>"
+        val html = "<!DOCTYPE HTML> <html> <body> <img style=\"width: 500px;\" alt=\"image description\" />Hi with è-symbol</body></html>"
         assertTrue(checker!!.check(html).isEmpty())
     }
 
@@ -145,7 +153,12 @@ class AttributeSafeCharCheckerTest {
     // 2. # non-safe attr: 0
     @Test
     fun checkElementAttrsZeroAttributes() {
-        val elem = Element(Tag.valueOf("span"), "simple span element")
+        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val document = builder.newDocument()
+        val elem = document.createElement("span")
+//        val elem = Element(Tag.valueOf("span"), "simple span element")
+        elem.setAttribute("style", "color:red")
+        elem.setAttribute("class", "wide")
         assertTrue(checker!!.checkShallowElementAttributes(elem).isEmpty())
     }
 
@@ -154,9 +167,13 @@ class AttributeSafeCharCheckerTest {
     // 2. # non-safe attr: 0
     @Test
     fun checkElementAttrsOneAttrZeroAllSafe() {
-        val attrs = Attributes()
-        attrs.put(Attribute("style", "color:red;"))
-        val elem = Element(Tag.valueOf("span"), "simple span element", attrs)
+//        val attrs = Attributes()
+//        attrs.put(Attribute("style", "color:red;"))
+//        val elem = Element(Tag.valueOf("span"), "simple span element", attrs)
+        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val document = builder.newDocument()
+        val elem = document.createElement("span")
+        elem.setAttribute("style", "color:red")
         assertTrue(checker!!.checkShallowElementAttributes(elem).isEmpty())
     }
 
@@ -165,10 +182,15 @@ class AttributeSafeCharCheckerTest {
     // 2. # non-safe attr: 0
     @Test
     fun checkElementAttrsTwoAttributesAllSafe() {
-        val attrs = Attributes()
-        attrs.put(Attribute("style", "color:red;"))
-        attrs.put(Attribute("class", "wide"))
-        val elem = Element(Tag.valueOf("div"), "a div element")
+        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val document = builder.newDocument()
+        val elem = document.createElement("div")
+        elem.setAttribute("style", "color:red")
+        elem.setAttribute("class", "wide")
+//        val attrs = Attributes()
+//        attrs.put(Attribute("style", "color:red;"))
+//        attrs.put(Attribute("class", "wide"))
+//        val elem = Node.(Tag.valueOf("div"), "a div element")
         assertTrue(checker!!.checkShallowElementAttributes(elem).isEmpty())
     }
 
@@ -177,10 +199,16 @@ class AttributeSafeCharCheckerTest {
     // 2. # non-safe attr: 1
     @Test
     fun checkElementAttrsTwoAttributesOneNonSafe() {
-        val attrs = Attributes()
-        attrs.put(Attribute("style", "color:red;"))
-        attrs.put(Attribute("alt", "wide<br>image"))
-        val elem = Element(Tag.valueOf("img"), "", attrs)
+        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val document = builder.newDocument()
+        val elem = document.createElement("div")
+        elem.setAttribute("style", "color:red")
+        elem.setAttribute("class", "wide")
+        elem.setAttribute("title", "element with<br>linebreak")
+//        val attrs = Attributes()
+//        attrs.put(Attribute("style", "color:red;"))
+//        attrs.put(Attribute("alt", "wide<br>image"))
+//        val elem = Element(Tag.valueOf("img"), "", attrs)
         assertTrue(checker!!.checkShallowElementAttributes(elem).isNotEmpty())
     }
 
@@ -189,10 +217,11 @@ class AttributeSafeCharCheckerTest {
     // 2. # non-safe attr: > 1
     @Test
     fun checkElementAttrsNoAttributes() {
-        val attrs = Attributes()
-        attrs.put(Attribute("style", "color:red;\r\n"))
-        attrs.put(Attribute("class", "wide<br />"))
-        val elem = Element(Tag.valueOf("div"), "a div element", attrs)
+        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val document = builder.newDocument()
+        val elem = document.createElement("div")
+        elem.setAttribute("style", "color:red;\r\n")
+        elem.setAttribute("class", "wide<br />")
         assertTrue(checker!!.checkShallowElementAttributes(elem).isNotEmpty())
     }
 }

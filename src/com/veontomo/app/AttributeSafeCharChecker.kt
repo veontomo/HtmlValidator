@@ -5,6 +5,9 @@ import org.jsoup.nodes.Element
 import org.jsoup.nodes.Entities
 import org.jsoup.parser.Parser
 import org.w3c.dom.Document
+import org.w3c.dom.Node
+import org.xml.sax.InputSource
+import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
@@ -25,22 +28,28 @@ class AttributeSafeCharChecker : Checker() {
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
     override fun check(html: String): List<CheckMessage> {
+        val messages = mutableListOf<CheckMessage>()
         val dbFactory = DocumentBuilderFactory.newInstance()
         val dBuilder = dbFactory.newDocumentBuilder()
-        val doc = dBuilder.parse(html)
-        System.out.println("Root element :" + doc.getDocumentElement().getNodeName())
+//        val doc = dBuilder.parse(html)
+        try {
+            val doc = dBuilder.parse(InputSource(ByteArrayInputStream(html.toByteArray(Charset.forName("ascii")))))
+
 //        val stream = html.byteInputStream(Charset.forName("ASCII"))
 //        val doc = Jsoup.parse(stream, "ASCII", "")
 //        val doc = Jsoup.parse(html, "ASCII", Parser.xmlParser())
 
 //        doc.charset(Charset.forName("ASCII"))
 //        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
-//        val body = doc.body()
-//        val children = body.children()
-        val messages = mutableListOf<CheckMessage>()
-//        for (element in children) {
-//            checkDeepElementAttributes(element, messages)
-//        }
+            val body = doc.getElementsByTagName("body")
+            val children = doc.childNodes
+            val size = children.length
+            for (i in 0..size) {
+                checkDeepElementAttributes(children.item(i), messages)
+            }
+        } catch (e: Exception) {
+            messages.add(CheckMessage(e.message ?: "Unknown error"))
+        }
         return messages
     }
 
@@ -50,14 +59,15 @@ class AttributeSafeCharChecker : Checker() {
      * @param messages list of messages. It is a kind of accumulator for storing messages related
      * to the inspection. It is supposed to be modified by this method.
      */
-    private fun checkDeepElementAttributes(element: Element, messages: MutableList<CheckMessage>) {
+    private fun checkDeepElementAttributes(element: Node, messages: MutableList<CheckMessage>) {
         val elemMessages = checkShallowElementAttributes(element)
         if (elemMessages.isNotEmpty()) {
             messages.addAll(elemMessages)
         }
-        val children = element.children()
-        if (children.isNotEmpty()) {
-            children.forEach { child -> checkDeepElementAttributes(child, messages) }
+        val children = element.childNodes
+        val size = children.length
+        for (i in 0..size) {
+            checkDeepElementAttributes(children.item(i), messages)
         }
     }
 
@@ -68,11 +78,13 @@ class AttributeSafeCharChecker : Checker() {
      * @param el element whose attributes are to be inspected
      * @return list of messages.
      */
-    fun checkShallowElementAttributes(el: Element): List<CheckMessage> {
+    fun checkShallowElementAttributes(el: Node): List<CheckMessage> {
         val result = mutableListOf<CheckMessage>()
-        for (attr in el.attributes()) {
-            val key = attr.key
-            val value = attr.value
+        val attrs = el.attributes
+        val size = attrs.length
+        for (i in 0..size) {
+            val key = attrs.item(i).nodeName
+            val value = attrs.item(i).nodeValue
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
             if (unSafeChars.isNotEmpty()) {
                 result.add(CheckMessage("$key attribute value $value is not safe: ${unSafeChars.joinToString { it.toString() }}"))
