@@ -78,7 +78,7 @@ class AttributeSafeCharChecker : Checker() {
      * @param el element whose attributes are to be inspected
      * @return list of messages.
      */
-    fun checkShallowElementAttributes(el: Node): List<CheckMessage> {
+    private fun checkShallowElementAttributes(el: Node): List<CheckMessage> {
         val result = mutableListOf<CheckMessage>()
         val attrs = el.attributes
         val size = attrs?.length ?: 0
@@ -98,6 +98,6 @@ class AttributeSafeCharChecker : Checker() {
      * Whether the given char is safe for being inside an html tag attribute value or not.
      * The set of safe chars is defined in the description of the class.
      */
-    fun isSafeChar(c: Char): Boolean = safeChars.contains(c)
+    private fun isSafeChar(c: Char): Boolean = safeChars.contains(c)
 
 }

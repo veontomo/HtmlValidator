@@ -1,16 +1,10 @@
 package test
 
 import com.veontomo.app.AttributeSafeCharChecker
-import org.jsoup.nodes.Attribute
-import org.jsoup.nodes.Attributes
-import org.jsoup.nodes.Element
-import org.jsoup.parser.Tag
 import org.junit.After
 import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
-import org.w3c.dom.Node
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Test the checker that detects a presence of non-safe chars inside values of html tag attributes.
@@ -36,7 +30,7 @@ class AttributeSafeCharCheckerTest {
      * 1. unsafe chars are present: true, false
      * 2. depth level of unsafe char location: 1 (head, html), 2 (meta, body), > 2 (some tag inside body)
      * 3. unsafe chars are escaped: true, false
-     * 4. unsafe chars < (lt), > (gt), & (amp), ... (hellip)
+     * 4. unsafe chars < (lt), > (gt), ... (hellip)
      */
     // Cover
     // 1. unsafe chars are present: false
