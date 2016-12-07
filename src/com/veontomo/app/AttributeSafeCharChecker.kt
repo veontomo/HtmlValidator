@@ -1,17 +1,12 @@
 package com.veontomo.app
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-import org.jsoup.nodes.Entities
+import org.jsoup.nodes.Node
+import org.jsoup.nodes.TextNode
 import org.jsoup.parser.Parser
-import org.w3c.dom.Document
-import org.w3c.dom.Node
-import org.xml.sax.InputSource
-import org.xml.sax.SAXParseException
 import java.io.ByteArrayInputStream
+import java.io.InputStream
 import java.nio.charset.Charset
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Find a non-safe characters inside attribute values of an html document.
@@ -35,59 +30,46 @@ class AttributeSafeCharChecker : Checker() {
      */
     override fun check(html: String): List<CheckMessage> {
         val messages = mutableListOf<CheckMessage>()
-        val dbFactory = DocumentBuilderFactory.newInstance()
-        val dBuilder = dbFactory.newDocumentBuilder()
-        try {
-            val doc = dBuilder.parse(InputSource(ByteArrayInputStream(html.toByteArray(Charset.forName("utf-8")))))
-            val children = doc.childNodes
-            val size = children.length
-            for (i in 0..size - 1) {
-                checkDeepElementAttributes(children.item(i), messages)
-            }
-        } catch (e: SAXParseException) {
-            System.out.print("Warning: ${e.message}")
-        } catch (e: Exception) {
-            messages.add(CheckMessage("Exception:  ${e.javaClass.name}"))
-
-        }
+        val doc = Jsoup.parse(ByteArrayInputStream(html.toByteArray(Charset.forName("ascii"))), null, "")
+        val items = doc.childNodes()
+        items.forEach { node -> checkDeepElementAttributes(node, messages) }
         return messages
     }
 
     /**
-     * Find non-safe chars of attribute values of given element and its children.
-     * @param element this element and all its children are to be inspected. Not to be modified.
+     * Find non-safe chars of attribute values of given node and its children.
+     * @param node this node and all its children are to be inspected. Not to be modified.
      * @param messages list of messages. It is a kind of accumulator for storing messages related
      * to the inspection. It is supposed to be modified by this method.
      */
-    private fun checkDeepElementAttributes(element: Node, messages: MutableList<CheckMessage>) {
-        val elemMessages = checkShallowElementAttributes(element)
+    private fun checkDeepElementAttributes(node: Node, messages: MutableList<CheckMessage>) {
+        val elemMessages = checkShallowElementAttributes(node)
         if (elemMessages.isNotEmpty()) {
             messages.addAll(elemMessages)
         }
-        val children = element.childNodes
-        val size = children.length
-        for (i in 0..size - 1) {
-            checkDeepElementAttributes(children.item(i), messages)
-        }
+
+        val children = node.childNodes()
+        children.forEach { node -> checkDeepElementAttributes(node, messages) }
     }
 
     /**
      * Check given element and return messages concerning non-safe characters in the element attribute values.
      * The method does not inspect attributes of the element's children.
      * A single message of the resulting list might refer to multiple issues found in the element attributes.
-     * @param el element whose attributes are to be inspected
+     * @param node element whose attributes are to be inspected
      * @return list of messages.
      */
-    private fun checkShallowElementAttributes(el: Node): List<CheckMessage> {
+    private fun checkShallowElementAttributes(node: Node): List<CheckMessage> {
         val result = mutableListOf<CheckMessage>()
-        val attrs = el.attributes
-        val size = attrs?.length ?: 0
-        for (i in 0..size - 1) {
-            val key = attrs.item(i).nodeName
-            val value = attrs.item(i).nodeValue
+        if (node is TextNode) {
+            return result
+        }
+
+        val attrs = node.attributes()
+        for ((key, value) in attrs) {
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
             if (unSafeChars.isNotEmpty()) {
-                result.add(CheckMessage("$key attribute value $value is not safe: ${unSafeChars.joinToString { it.toString() }}"))
+                result.add(CheckMessage("$key=\"$value\" contains unsafe chars: ${unSafeChars.joinToString{ it.toString() }}"))
             }
         }
         return result
