@@ -33,198 +33,105 @@ class AttributeSafeCharCheckerTest {
     /**
      * Test the method that finds non-safe chars inside attribute values
      * Partition the input as follows:
-     * 1. valid xml: true, false
-     * 2. level of depth of html entities: 1, 2, > 2
-     * 3. number of html entities: 0, 1, > 1
+     * 1. unsafe chars are present: true, false
+     * 2. depth level of unsafe char location: 1 (head, html), 2 (meta, body), > 2 (some tag inside body)
+     * 3. unsafe chars are escaped: true, false
+     * 4. unsafe chars < (lt), > (gt), & (amp), ... (hellip)
      */
     // Cover
-    // 1. # non-safe chars: 0
-    // 4. presence of non-safe chars outside the attr values: no
-    // 6. escaped html entities: absent
+    // 1. unsafe chars are present: false
     @Test
     fun checkAllSafe() {
         val html = "<!DOCTYPE HTML>" +
-                "<html> <body> <div style=\"background-color: #ffffff; line-height: normal; text-align: center; font-size: 13px; width: 500px;\">hi</div></body></html>"
-        assertTrue(checker!!.check(html).isEmpty())
-    }
-
-    // Cover
-    // 1. # non-safe chars: 0
-    // 6. escaped html entities: present
-    @Test
-    fun checkSafeEscaped() {
-        val html = "<!DOCTYPE HTML>"+
-                "<html> <body> <div title=\"these dots &hellip; are escaped\">...</div></body></html>"
+                "<html><body><div style=\"color: #ffffff;\">Hi!</div></body></html>"
         val messages = checker!!.check(html)
-        assertTrue("Escaped html entities must produce no messages, instead got \"${messages.joinToString { it.message }}\"", messages.isEmpty())
-    }
-
-
-    // Cover
-    // 1. # non-safe chars: 1 (asterisk)
-    // 4.  presence of non-safe chars outside the attr values: no
-    // 5. location: external
-    // 6. escaped html entities: absent
-    @Test
-    fun checkAOneNonSafe() {
-        val html = "<!DOCTYPE HTML><html><body>" +
-                "<div style=\"background-color: #ffffff; line-height: normal; text-align: 'center'; font-size: 13px; width: 500px;\">hi</div>" +
-                "</body></html>"
-        assertTrue("The presence of the asterisks is not detected", checker!!.check(html).isNotEmpty())
+        assertTrue("Document with no unsafe chars must produce no messages, instead got ${messages.joinToString { it.message }}", messages.isEmpty())
     }
 
     // Cover
-    // 1. # non-safe chars: 2 ('<' and '>')
-    // 2. max num of non-safe chars inside the same attr: 2
-    // 3. max num of non-safe chars inside the same tag: 2
-    // 4.  presence of non-safe chars outside the attr values: no
-    // 6. escaped html entities: absent
+    // 1. unsafe chars are present: true
+    // 2. depth level: 1 (html)
+    // 3. unsafe chars are escaped: false
+    // 4. unsafe char: >
     @Test
-    fun checkTwoNonSafeSameAttr() {
-        val html = "<!DOCTYPE HTML> <html> <body> " +
-                "<img style=\"width: 500px;\" alt=\"image<br>description\"/>" +
-                "</body></html>"
-        assertTrue("The presence of < and > is not detected.", checker!!.check(html).isNotEmpty())
-    }
-
-    // Cover
-    // 1. # non-safe chars: 2 ('à' and 'ù')
-    // 2. max num of non-safe chars inside the same attr: 1
-    // 3. max num of non-safe chars inside the same tag: 2
-    // 4.  presence of non-safe chars outside the attr values: no
-    // 5. location: external
-    // 6. escaped html entities: absent
-    @Test
-    fun checkTwoNonSafeSameTagDifferentAttrsExternal() {
-        val html = "<!DOCTYPE HTML> <html> <body> " +
-                "<img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\" />" +
-                "</body></html>"
-        assertTrue("The presence of non-ascii characters (ù and à) is not detected", checker!!.check(html).isNotEmpty())
-    }
-
-    // Cover
-    // 1. # non-safe chars: 2 ('à' and 'ù')
-    // 2. max num of non-safe chars inside the same attr: 1
-    // 3. max num of non-safe chars inside the same tag: 2
-    // 4.  presence of non-safe chars outside the attr values: no
-    // 5. location: internal
-    // 6. escaped html entities: absent
-    @Test
-    fun checkTwoNonSafeSameTagDifferentAttrsInternal() {
-        val html = "<!DOCTYPE HTML> <html> <body><div><span> <img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\" />hi</span></div></body></html>"
-        assertTrue(checker!!.check(html).isNotEmpty())
-    }
-
-    // Cover
-    // 1. # non-safe chars: 2 ('à' and 'ù')
-    // 2. max num of non-safe chars inside the same attr: 1
-    // 3. max num of non-safe chars inside the same tag: 1
-    // 4.  presence of non-safe chars outside the attr values: no
-    // 5. location: internal
-    // 6. escaped html entities: absent
-    @Test
-    fun checkTwoNonSafeDifferentTagDifferentAttrsInternal() {
-        val html = "<!DOCTYPE HTML> <html> <body> <span><img style=\"width: 500px;\" class=\"ù\" alt=\"image à description\" />hi</span>" +
-                "<a title=\"a<br>link\" href=\"link\"></div></body></html>"
-        assertTrue(checker!!.check(html).isNotEmpty())
-    }
-
-    // Cover
-    // 1. # non-safe-chars: 1 ('è')
-    // 2. max num of non-safe chars inside the same attr: 0
-    // 3. max num of non-safe chars inside the same tag: 0
-    // 4.  presence of non-safe chars outside the attr values: yes
-    // 6. escaped html entities: absent
-    @Test
-    fun checkOneNonSafeOutsideAttributeValue() {
-        val html = "<!DOCTYPE HTML><html><body>" +
-                "<span style=\"width: 500px;\" title=\"a span element\">Hi with è-symbol</span>" +
-                "</body></html>"
+    fun checkDepthLevelOneHtml() {
+        val html = "<!DOCTYPE HTML>" +
+                "<head><meta name=\"description\" content=\"test\"></head>" +
+                "<html title=\"2 > 1\"><body></body></html>"
         val messages = checker!!.check(html)
-
-        assertTrue("No anomalies should be detected, instead ${messages.joinToString { it.message }}", messages.isEmpty())
+        assertTrue("Presence of \">\" in the \"html\" tag should have been reported", messages.isNotEmpty())
     }
 
-    /**
-     * Test the method that inspects the element attributes
-     * Partition the input as follows:
-     * 1. # attributes: 0, 1, > 1
-     * 2. # attributes with non-safe chars: 0, 1, > 1
-     */
+
     // Cover
-    // 1. # attributes: 0
-    // 2. # non-safe attr: 0
+    // 1. unsafe chars are present: true
+    // 2. depth level: 1 (html)
+    // 3. unsafe chars are escaped: true
+    // 4. unsafe char: >
     @Test
-    fun checkElementAttrsZeroAttributes() {
-        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = builder.newDocument()
-        val elem = document.createElement("span")
-//        val elem = Element(Tag.valueOf("span"), "simple span element")
-        elem.setAttribute("style", "color:red")
-        elem.setAttribute("class", "wide")
-        assertTrue(checker!!.checkShallowElementAttributes(elem).isEmpty())
+    fun checkDepthLevelOneHtmlEscaped() {
+        val html = "<!DOCTYPE HTML>" +
+                "<head><meta name=\"description\" content=\"test\"></head>" +
+                "<html title=\"2 &gt; 1\"><body></body></html>"
+        val messages = checker!!.check(html)
+        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.message }}", messages.isEmpty())
     }
 
     // Cover
-    // 1. # attributes: 1
-    // 2. # non-safe attr: 0
+    // 1. unsafe chars are present: true
+    // 2. depth level: 2 (meta)
+    // 3. unsafe chars are escaped: false
+    // 4. unsafe char: <
     @Test
-    fun checkElementAttrsOneAttrZeroAllSafe() {
-//        val attrs = Attributes()
-//        attrs.put(Attribute("style", "color:red;"))
-//        val elem = Element(Tag.valueOf("span"), "simple span element", attrs)
-        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = builder.newDocument()
-        val elem = document.createElement("span")
-        elem.setAttribute("style", "color:red")
-        assertTrue(checker!!.checkShallowElementAttributes(elem).isEmpty())
+    fun checkDepthLevelTwoMeta() {
+        val html = "<!DOCTYPE HTML>" +
+                "<head><meta name=\"description\" content=\"test < safe\"></head>" +
+                "<html><body></body></html>"
+        val messages = checker!!.check(html)
+        assertTrue("Presence of \"<\" in the \"meta\" tag should have been reported.", messages.isNotEmpty())
     }
 
     // Cover
-    // 1. # attributes: > 1
-    // 2. # non-safe attr: 0
+    // 1. unsafe chars are present: true
+    // 2. depth level: 2 (meta)
+    // 3. unsafe chars are escaped: true
+    // 4. unsafe char: &hellip;
     @Test
-    fun checkElementAttrsTwoAttributesAllSafe() {
-        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = builder.newDocument()
-        val elem = document.createElement("div")
-        elem.setAttribute("style", "color:red")
-        elem.setAttribute("class", "wide")
-//        val attrs = Attributes()
-//        attrs.put(Attribute("style", "color:red;"))
-//        attrs.put(Attribute("class", "wide"))
-//        val elem = Node.(Tag.valueOf("div"), "a div element")
-        assertTrue(checker!!.checkShallowElementAttributes(elem).isEmpty())
+    fun checkDepthLevelTwoMetaEscaped() {
+        val html = "<!DOCTYPE HTML>" +
+                "<head><meta name=\"description\" content=\"test &hellip; safe\"></head>" +
+                "<html><body></body></html>"
+        val messages = checker!!.check(html)
+        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.message }}", messages.isEmpty())
     }
 
     // Cover
-    // 1. # attributes: 1
-    // 2. # non-safe attr: 1
+    // 1. unsafe chars are present: true
+    // 2. depth level: > 2
+    // 3. unsafe chars are escaped: true
+    // 4. unsafe char: >
     @Test
-    fun checkElementAttrsTwoAttributesOneNonSafe() {
-        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = builder.newDocument()
-        val elem = document.createElement("div")
-        elem.setAttribute("style", "color:red")
-        elem.setAttribute("class", "wide")
-        elem.setAttribute("title", "element with<br>linebreak")
-//        val attrs = Attributes()
-//        attrs.put(Attribute("style", "color:red;"))
-//        attrs.put(Attribute("alt", "wide<br>image"))
-//        val elem = Element(Tag.valueOf("img"), "", attrs)
-        assertTrue(checker!!.checkShallowElementAttributes(elem).isNotEmpty())
+    fun checkUnsafeInsideImgEscaped() {
+        val html = "<!DOCTYPE HTML>" +
+                "<head><meta name=\"description\" content=\"test &lt; safe\"></head>" +
+                "<html><body><img alt=\"x &gt; y\"></body></html>"
+        val messages = checker!!.check(html)
+        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.message }}", messages.isEmpty())
     }
 
+
     // Cover
-    // 1. # attributes: > 1
-    // 2. # non-safe attr: > 1
+    // 1. unsafe chars are present: true
+    // 2. depth level: > 2
+    // 3. unsafe chars are escaped: false
+    // 4. unsafe char: <
     @Test
-    fun checkElementAttrsNoAttributes() {
-        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = builder.newDocument()
-        val elem = document.createElement("div")
-        elem.setAttribute("style", "color:red;\r\n")
-        elem.setAttribute("class", "wide<br />")
-        assertTrue(checker!!.checkShallowElementAttributes(elem).isNotEmpty())
+    fun checkUnsafeInsideSpan() {
+        val html = "<!DOCTYPE HTML>" +
+                "<head><meta name=\"description\" content=\"test < safe\"></head>" +
+                "<html><body><p>A paragraph</p><span title=\" 1 < 2 \">A span</span></body></html>"
+        val messages = checker!!.check(html)
+        assertTrue("Presence of \"<\" in the \"span\" tag should have been reported.", messages.isNotEmpty())
     }
+
 }
