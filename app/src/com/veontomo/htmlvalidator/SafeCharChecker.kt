@@ -1,4 +1,4 @@
-package com.veontomo.app
+package com.veontomo.htmlvalidator
 
 
 /**

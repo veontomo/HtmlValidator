@@ -1,11 +1,10 @@
-package com.veontomo.app
+package com.veontomo.htmlvalidator
 
-import org.jsoup.Jsoup
 import java.io.File
 
 
 /**
- * Created by Andrey on 07/06/2016.
+ * A script that makes the checkers run against given files.
  */
 fun main(args: Array<String>) {
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker())
