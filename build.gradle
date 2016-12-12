@@ -1,23 +1,15 @@
-buildscript {
-    ext.kotlin_version = '1.0.3'
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha6'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+group 'HtmlValidator'
+version '1.0-SNAPSHOT'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
 apply plugin: 'java'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
     compile 'org.jsoup:jsoup:1.10.1'
 }

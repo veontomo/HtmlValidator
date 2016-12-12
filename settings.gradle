@@ -1,2 +1,2 @@
-include ':HtmlValidatorArtifact'
-rootProject.name = 'HtmlValidatorArtifact'
+rootProject.name = 'HtmlValidator'
+
