@@ -4,8 +4,6 @@ import com.veontomo.htmlvalidator.WidthChecker
 import org.junit.After
 import org.junit.Test
 import org.junit.Before
-//import org.mockito.Mockito
-
 /**
  * Test suite for WidthChecker.
  */
@@ -24,11 +22,11 @@ class WidthCheckerTest {
 
     @Test
     fun check() {
-//        val mock = mock<WidthChecker>()
+        val mock = mock<WidthChecker>()
 
 
         /* Then */
-//        verify(mock).doSomething(any())
+        verify(mock).doSomething(any())
     }
 
 }

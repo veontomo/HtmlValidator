@@ -1,18 +1,12 @@
 group 'HtmlValidator'
 version '1.0.5'
 buildscript {
-
     repositories {
         mavenCentral()
     }
 
 }
-
-
-
-
 repositories {
     mavenCentral()
 }
-
 
