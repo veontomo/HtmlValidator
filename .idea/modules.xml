@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/HtmlValidator.iml" filepath="$PROJECT_DIR$/.idea/modules/HtmlValidator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HtmlValidator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/HtmlValidator_main.iml" group="HtmlValidator" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HtmlValidator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/HtmlValidator_test.iml" group="HtmlValidator" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
