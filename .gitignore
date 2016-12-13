@@ -11,5 +11,5 @@ hs_err_pid*
 .idea/*
 out/
 data/
-lib/*
 .gradle/
+/build/
