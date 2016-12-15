@@ -1,6 +1,7 @@
 package com.veontomo.htmlvalidator
 
 import org.jsoup.nodes.Element
+import java.util.*
 
 /**
  * Check whether all elements of the document have consistent widths.
@@ -42,6 +43,18 @@ class WidthChecker : Checker() {
     fun isConsistent(el: Element): Boolean {
         /// stub
         return false
+    }
+
+    /**
+     * Pick up the given attributes from the element's style attribute.
+     * @param el element which style attribute is to be inspected
+     * @param attrs list of attributes whose values are to selected from the element's style attribute
+     * @return a map from requested attributes to their values. If an attribute is not present in the style attribute,
+     * then the returned value of that attribute is null.
+     */
+    fun selectFromStyle(el: Element, attrs: List<String>): Map<String, String>{
+        /// stub
+        return mapOf<String, String>()
     }
 
 }

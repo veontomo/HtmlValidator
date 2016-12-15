@@ -40,20 +40,29 @@ class WidthCheckerTest {
      */
 
     // Cover
-    // 1. numerical value of the width attr: none, negative int, negative non-int, 0, positive int, positive non-int
-    // 2. unit of measurement of the width attr: none, px, em, %
-    // 3. numerical value of the inline width value: none, negative int, negative non-int, 0, positive int, positive non-int
-    // 4. unit of measurement of the inline width attr: none, px, em, %
-    // 5. numerical value of the inline max-width attr:  none, negative int, negative non-int, 0, positive int, positive non-int
-    // 6. unit of measurement of the inline max-width attr: none, px, em, %
-    // 7. numerical value of the inline min-width attr:  none, negative int, negative non-int, 0, positive int, positive non-int
-    // 8. unit of measurement of the inline min-width attr: none, px, em, %
+    // 1. numerical value of the width attr: none
+    // 2. unit of measurement of the width attr: none
+    // 3. numerical value of the inline width value: none
+    // 4. unit of measurement of the inline width attr: none
+    // 5. numerical value of the inline max-width attr:  none
+    // 6. unit of measurement of the inline max-width attr: none
+    // 7. numerical value of the inline min-width attr:  none
+    // 8. unit of measurement of the inline min-width attr: none
     @Test
     fun isConsistentNoWidth() {
         val element = Element(Tag.valueOf("span"), "")
         assertTrue(checker!!.isConsistent(element))
     }
 
+    // Cover
+    // 1. numerical value of the width attr: positive
+    // 2. unit of measurement of the width attr: none
+    // 3. numerical value of the inline width value: none
+    // 4. unit of measurement of the inline width attr: none
+    // 5. numerical value of the inline max-width attr:  none
+    // 6. unit of measurement of the inline max-width attr: none
+    // 7. numerical value of the inline min-width attr:  none
+    // 8. unit of measurement of the inline min-width attr: none
     @Test
     fun isConsistentWidthNoMeasureNoInlineWidth() {
         val element = Element(Tag.valueOf("div"), "")
