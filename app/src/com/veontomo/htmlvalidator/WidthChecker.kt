@@ -1,5 +1,7 @@
 package com.veontomo.htmlvalidator
 
+import org.jsoup.nodes.Element
+
 /**
  * Check whether all elements of the document have consistent widths.
  *
@@ -26,6 +28,20 @@ package com.veontomo.htmlvalidator
 class WidthChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+    /**
+     * Control the consistency of width parameters of a given element.
+     * The element consistency is defined in the class description.
+     *
+     * @param el element whose width is to be inspected
+     * @return true if the element's width is consistent, false otherwise
+     *
+     */
+    fun isConsistent(el: Element): Boolean {
+        /// stub
+        return false
     }
 
 }
