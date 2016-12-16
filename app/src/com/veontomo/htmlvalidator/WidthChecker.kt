@@ -31,7 +31,7 @@ class WidthChecker : Checker() {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
+    private val xxx = "aaa"
     /**
      * Control the consistency of width parameters of a given element.
      * The element consistency is defined in the class description.
@@ -52,7 +52,7 @@ class WidthChecker : Checker() {
      * @return a map from requested attributes to their values. If an attribute is not present in the style attribute,
      * then the returned value of that attribute is null.
      */
-    fun selectFromStyle(el: Element, attrs: List<String>): Map<String, String>{
+    fun selectFromStyle(el: Element, attrs: List<String>): Map<String, String> {
         /// stub
         return mapOf<String, String>()
     }

@@ -4,8 +4,7 @@ import com.veontomo.htmlvalidator.WidthChecker
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Tag
 import org.junit.After
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.Before
 
@@ -90,4 +89,74 @@ class WidthCheckerTest {
         element.attr("width", "0.5%")
         assertFalse(checker!!.isConsistent(element))
     }
+
+    /**
+     * Test the method that selects given attributes from the element's style attribute
+     *
+     * Partition the input as follows:
+     * 1. the number of keys in the style attr: 0, 1, > 1
+     * 2. the number of attrs to select: 0, 1, > 1
+     * 3. the number of overlapping attrs: 0, 1, > 1
+     */
+    // Cover:
+    // 1. the number of keys in the style attr: 0
+    // 2. the number of attrs to select: 0
+    // 3. the number of overlapping attrs: 0
+    @Test
+    fun selectFrommStyleEmptyNothing() {
+        val el = Element(Tag.valueOf("div"), "")
+        val map = checker!!.selectFromStyle(el, listOf())
+        assertTrue(map.isEmpty())
+    }
+
+    // Cover:
+    // 1. the number of keys in the style attr: 0
+    // 2. the number of attrs to select: 1
+    // 3. the number of overlapping attrs: 0
+    @Test
+    fun selectFromStyleEmptyOne() {
+        val el = Element(Tag.valueOf("div"), "")
+        val map = checker!!.selectFromStyle(el, listOf("width"))
+        assertTrue(map.isEmpty())
+    }
+
+    // Cover:
+    // 1. the number of keys in the style attr: 1
+    // 2. the number of attrs to select: 0
+    // 3. the number of overlapping attrs: 0
+    @Test
+    fun selectFromStyleOneAttrNothing() {
+        val el = Element(Tag.valueOf("div"), "")
+        el.attr("style", "width:100px;")
+        val map = checker!!.selectFromStyle(el, listOf("padding"))
+        assertTrue(map.isEmpty())
+    }
+
+    // Cover:
+    // 1. the number of keys in the style attr: 1
+    // 2. the number of attrs to select: 1
+    // 3. the number of overlapping attrs: 1
+    @Test
+    fun selectFromStyleOneAttrOneOverlap() {
+        val el = Element(Tag.valueOf("div"), "")
+        el.attr("style", "width:55px;")
+        val map = checker!!.selectFromStyle(el, listOf("width"))
+        assertEquals("The map must contain exactly one key", 1, map.size)
+        assertEquals("The key \"width\" must have value \"55px\"", "55px", map["width"])
+    }
+
+    // Cover:
+    // 1. the number of keys in the style attr: > 1
+    // 2. the number of attrs to select: > 1
+    // 3. the number of overlapping attrs: > 1
+    @Test
+    fun selectFromStyleOneAttrTwoOverlap() {
+        val el = Element(Tag.valueOf("span"), "")
+        el.attr("style", "padding: 5px; border-top: 10px solid  #ABCDEF; margin: 10px;")
+        val map = checker!!.selectFromStyle(el, listOf("border-top", "margin", "font-size"))
+        assertEquals("The map must contain exactly two keys", 2, map.size)
+        assertEquals("The key \"border-top\" must have value \"10px solid #ABCDEF\"", "10px solid #ABCDEF", map["border-top"])
+        assertEquals("The key \"margin\" must have value \"10px\"", "10px", map["margin"])
+    }
+
 }
