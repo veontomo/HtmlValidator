@@ -1,7 +1,6 @@
 package com.veontomo.htmlvalidator
 
 import org.jsoup.nodes.Element
-import java.util.*
 
 /**
  * Check whether all elements of the document have consistent widths.
@@ -31,7 +30,6 @@ class WidthChecker : Checker() {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private val xxx = "aaa"
     /**
      * Control the consistency of width parameters of a given element.
      * The element consistency is defined in the class description.
@@ -41,20 +39,49 @@ class WidthChecker : Checker() {
      *
      */
     fun isConsistent(el: Element): Boolean {
-        /// stub
-        return false
+        val width = el.attr("width")
+        // initialize by some illegal value (negative one)
+        var widthInt = -1
+        try {
+            widthInt = Integer.valueOf(width)
+        } catch (e: NumberFormatException) {
+            return false
+        }
+        val widths = selectFromStyle(el, listOf("width", "min-width", "max-width"))
+        if ((width == null || width.isBlank()) && widths.isEmpty()) {
+            return true
+        }
+        if (widths.size != 3 || width.isNotBlank() ) {
+            return false
+        }
+        val widthValue = widths["width"]!!
+        // all widths must have the same value (i.e. equal to that of "width")
+        if (!widths.all { it -> it.key.equals(widthValue) }) {
+            return false
+        }
+        val pattern = Regex("^\\d+?px")
+        val width2 = pattern.matchEntire(widthValue)?.groups?.get(1)?.value
+        return width2 != null && width2.isNotBlank() && width2.equals(widthInt.toString())
     }
 
     /**
      * Pick up the given attributes from the element's style attribute.
+     * In the resulting map, the trailing spaces are removed from both keys and values.
      * @param el element which style attribute is to be inspected
      * @param attrs list of attributes whose values are to selected from the element's style attribute
      * @return a map from requested attributes to their values. If an attribute is not present in the style attribute,
      * then the returned value of that attribute is null.
      */
     fun selectFromStyle(el: Element, attrs: List<String>): Map<String, String> {
-        /// stub
-        return mapOf<String, String>()
+        val result = mutableMapOf<String, String>()
+        val style = el.attr("style")
+        val pairs = style.split(";")
+        pairs.map { it -> it.split(":") }
+                .filter { it -> it.size == 2 }
+                .map { it -> listOf(it[0].trim(), it[1].trim()) }
+                .filter { it -> attrs.contains(it[0]) }
+                .forEach { it -> result.put(it[0], it[1]) }
+        return result
     }
 
 }

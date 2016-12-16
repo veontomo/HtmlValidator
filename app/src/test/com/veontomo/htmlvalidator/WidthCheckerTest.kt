@@ -30,38 +30,26 @@ class WidthCheckerTest {
      * Partition the input as follows
      * 1. numerical value of the width attr: none, negative int, negative non-int, 0, positive int, positive non-int
      * 2. unit of measurement of the width attr: none, px, em, %
-     * 3. numerical value of the inline width value: none, negative int, negative non-int, 0, positive int, positive non-int
-     * 4. unit of measurement of the inline width attr: none, px, em, %
-     * 5. numerical value of the inline max-width attr:  none, negative int, negative non-int, 0, positive int, positive non-int
-     * 6. unit of measurement of the inline max-width attr: none, px, em, %
-     * 7. numerical value of the inline min-width attr:  none, negative int, negative non-int, 0, positive int, positive non-int
-     * 8. unit of measurement of the inline min-width attr: none, px, em, %
+     * 3. width, min-width and max-width are present: true, false
+     * 4. width, min-width and max-width have the same value: true, false
      */
 
     // Cover
     // 1. numerical value of the width attr: none
     // 2. unit of measurement of the width attr: none
-    // 3. numerical value of the inline width value: none
-    // 4. unit of measurement of the inline width attr: none
-    // 5. numerical value of the inline max-width attr:  none
-    // 6. unit of measurement of the inline max-width attr: none
-    // 7. numerical value of the inline min-width attr:  none
-    // 8. unit of measurement of the inline min-width attr: none
+    // 3. width, min-width and max-width are present: true
+    // 4. width, min-width and max-width have the same value: true
     @Test
     fun isConsistentNoWidth() {
-        val element = Element(Tag.valueOf("span"), "")
+        val element = Element(Tag.valueOf("div"), "")
         assertTrue(checker!!.isConsistent(element))
     }
 
     // Cover
     // 1. numerical value of the width attr: positive
     // 2. unit of measurement of the width attr: none
-    // 3. numerical value of the inline width value: none
-    // 4. unit of measurement of the inline width attr: none
-    // 5. numerical value of the inline max-width attr:  none
-    // 6. unit of measurement of the inline max-width attr: none
-    // 7. numerical value of the inline min-width attr:  none
-    // 8. unit of measurement of the inline min-width attr: none
+    // 3. width, min-width and max-width are present: false
+    // 4. width, min-width and max-width have the same value: false
     @Test
     fun isConsistentWidthNoMeasureNoInlineWidth() {
         val element = Element(Tag.valueOf("div"), "")
@@ -69,11 +57,43 @@ class WidthCheckerTest {
         assertFalse(checker!!.isConsistent(element))
     }
 
+    // Cover
+    // 1. numerical value of the width attr: positive
+    // 2. unit of measurement of the width attr: em
+    // 3. width, min-width and max-width are present: true
+    // 4. width, min-width and max-width have the same value: true
     @Test
-    fun isConsistentWidthWithMeasureNoInlineWidth() {
+    fun isConsistentWidthWithMeasureInlineWidth() {
         val element = Element(Tag.valueOf("div"), "")
         element.attr("width", "10em")
+        element.attr("style", "width: 10em; min-width: 10em; max-width: 10em;")
         assertFalse(checker!!.isConsistent(element))
+    }
+
+    // Cover
+    // 1. numerical value of the width attr: positive
+    // 2. unit of measurement of the width attr: no
+    // 3. width, min-width and max-width are present: true
+    // 4. width, min-width and max-width have the same value: true
+    @Test
+    fun isConsistentWidthNoMeasureInlineWidthPx() {
+        val element = Element(Tag.valueOf("div"), "")
+        element.attr("width", "10")
+        element.attr("style", "width: 10px; min-width: 10px; max-width: 10px;")
+        assertTrue(checker!!.isConsistent(element))
+    }
+
+    // Cover
+    // 1. numerical value of the width attr: positive
+    // 2. unit of measurement of the width attr: no
+    // 3. width, min-width and max-width are present: true
+    // 4. width, min-width and max-width have the same value: true
+    @Test
+    fun isConsistentWidthNoMeasureInlineWidthEm() {
+        val element = Element(Tag.valueOf("div"), "")
+        element.attr("width", "10")
+        element.attr("style", "width: 10em; min-width: 10em; max-width: 10em;")
+        assertTrue(checker!!.isConsistent(element))
     }
 
     @Test
@@ -152,7 +172,7 @@ class WidthCheckerTest {
     @Test
     fun selectFromStyleOneAttrTwoOverlap() {
         val el = Element(Tag.valueOf("span"), "")
-        el.attr("style", "padding: 5px; border-top: 10px solid  #ABCDEF; margin: 10px;")
+        el.attr("style", "padding: 5px; border-top: 10px solid #ABCDEF; margin: 10px;")
         val map = checker!!.selectFromStyle(el, listOf("border-top", "margin", "font-size"))
         assertEquals("The map must contain exactly two keys", 2, map.size)
         assertEquals("The key \"border-top\" must have value \"10px solid #ABCDEF\"", "10px solid #ABCDEF", map["border-top"])
