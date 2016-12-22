@@ -1,9 +1,13 @@
 package com.veontomo.htmlvalidator
 
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 /**
  * Check whether all elements of the document have consistent widths.
+ *
+ * This checker is to be revisited because not all elements should have "min-width", "max-width"
+ * attributes, i.e.: <img width="10" style="width:10px;" ... />
  *
  * The width of an element can be set by parameters "width", "max-width" and "min-width".
  *
@@ -27,7 +31,13 @@ import org.jsoup.nodes.Element
  */
 class WidthChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val document = Jsoup.parse(html)
+        val elements = document.select("*")
+        val messages: MutableList<CheckMessage> = mutableListOf()
+        elements.filterNot { isConsistent(it) }
+                .forEach { messages.add(CheckMessage("Inconsistent width ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"${it.value}\"" }}")) }
+        return messages
+
     }
 
     /**

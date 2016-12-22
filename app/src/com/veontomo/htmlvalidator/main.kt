@@ -7,7 +7,7 @@ import java.io.File
  * A script that makes the checkers run against given files.
  */
 fun main(args: Array<String>) {
-    val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker())
+    val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(), WidthChecker())
     if (args.isNotEmpty()) {
         val folder = args[0]
         println("Processing files from folder $folder")
