@@ -93,7 +93,7 @@ class WidthCheckerTest {
         val element = Element(Tag.valueOf("div"), "")
         element.attr("width", "10")
         element.attr("style", "width: 10em; min-width: 10em; max-width: 10em;")
-        assertTrue(checker!!.isConsistent(element))
+        assertFalse(checker!!.isConsistent(element))
     }
 
     @Test

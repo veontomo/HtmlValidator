@@ -39,29 +39,30 @@ class WidthChecker : Checker() {
      *
      */
     fun isConsistent(el: Element): Boolean {
-        val width = el.attr("width")
-        // initialize by some illegal value (negative one)
-        var widthInt = -1
-        try {
-            widthInt = Integer.valueOf(width)
-        } catch (e: NumberFormatException) {
-            return false
-        }
-        val widths = selectFromStyle(el, listOf("width", "min-width", "max-width"))
-        if ((width == null || width.isBlank()) && widths.isEmpty()) {
+        val widthAttr = el.attr("width")
+        val widthKeys = listOf("width", "min-width", "max-width")
+        val widthsMap = selectFromStyle(el, widthKeys)
+        // it is consistent if no widths are given
+        if ((widthAttr == null || widthAttr.isBlank()) && widthsMap.isEmpty()) {
             return true
         }
-        if (widths.size != 3 || width.isNotBlank() ) {
+        if (widthsMap.keys.size != widthKeys.size) {
             return false
         }
-        val widthValue = widths["width"]!!
-        // all widths must have the same value (i.e. equal to that of "width")
-        if (!widths.all { it -> it.key.equals(widthValue) }) {
+        // once the width attribute is given, it must contain only digits
+        val patternDigits = Regex("^\\d+?$")
+        if (!patternDigits.matches(widthAttr)) {
             return false
         }
-        val pattern = Regex("^\\d+?px")
-        val width2 = pattern.matchEntire(widthValue)?.groups?.get(1)?.value
-        return width2 != null && width2.isNotBlank() && width2.equals(widthInt.toString())
+        // the element style attribute must contain the widths that all have the same value
+        val values = widthsMap.values.distinct()
+        if (values.size != 1) {
+            return false
+        }
+        // the width in the style attribute must be an integer followed by "px"
+        val patternDigitsPx = Regex("^(\\d+?)px")
+        val widthStyle = patternDigitsPx.matchEntire(values[0])?.groups?.get(1)?.value
+        return widthStyle != null && widthStyle.isNotBlank() && widthStyle == widthAttr
     }
 
     /**
