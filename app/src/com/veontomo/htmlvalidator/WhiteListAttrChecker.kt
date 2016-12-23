@@ -1,5 +1,6 @@
 package com.veontomo.htmlvalidator
 
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 /**
@@ -16,7 +17,7 @@ import org.jsoup.nodes.Element
  *
  */
 class WhiteListAttrChecker : Checker() {
-    private val attrPlain = setOf("title", "href", "width", "height", "alt", "src")
+    private val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style")
     private val attrInline = setOf(
             "width", "max-width", "min-width",
             "padding", "padding-top", "padding-bottom", "padding-left", "padding-right",
@@ -24,11 +25,15 @@ class WhiteListAttrChecker : Checker() {
             "text-decoration", "text-align", "line-height",
             "font-size", "font-weight", "font-family",
             "border", "border-style", "border-spacing",
-            "color"
+            "color",
+            "display"
     )
 
     override fun check(html: String): List<CheckMessage> {
-        throw RuntimeException("not implemented yet")
+        val doc = Jsoup.parse(html)
+        val elements = doc.select("*")
+        return elements.filterNot { it -> hasPlainAttrsFrom(it, attrPlain) && hasInlineAttrsFrom(it, attrInline) }
+                .map { it -> CheckMessage("Invalid attributes in ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"" + it.value + "\"" }}" ) }
     }
 
     /**
