@@ -15,7 +15,7 @@ import org.jsoup.nodes.Element
  * the attributes of the second type from the set "attrInline".
  *
  */
-class WhitelistAttrChecker : Checker() {
+class WhiteListAttrChecker : Checker() {
     private val attrPlain = setOf("title", "href", "width", "height", "alt", "src")
     private val attrInline = setOf(
             "width", "max-width", "min-width",
@@ -28,7 +28,7 @@ class WhitelistAttrChecker : Checker() {
     )
 
     override fun check(html: String): List<CheckMessage> {
-
+        throw RuntimeException("not implemented yet")
     }
 
     /**
@@ -38,7 +38,7 @@ class WhitelistAttrChecker : Checker() {
      * @param attrs set of allowed attributes
      * @return true if all element's attribute are in the set "attrs", false otherwise.
      */
-    fun checkAttr(el: Element, attrs: Set<String>): Boolean {
+    fun hasAttrsFrom(el: Element, attrs: Set<String>): Boolean {
         return el.attributes().all { it -> attrs.contains(it.key) }
     }
 
@@ -49,7 +49,7 @@ class WhitelistAttrChecker : Checker() {
      * @param attrs set of allowed keys in the style attribute
      * @return true if
      */
-    fun checkInline(el: Element, attrs: Set<String>) : Boolean {
+    fun checkInline(el: Element, attrs: Set<String>): Boolean {
         return el.attr("style")
                 .split(";")
                 .map { it -> it.split(":") }
