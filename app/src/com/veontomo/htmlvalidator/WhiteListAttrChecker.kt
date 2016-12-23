@@ -38,7 +38,7 @@ class WhiteListAttrChecker : Checker() {
      * @param attrs set of allowed attributes
      * @return true if all element's attribute are in the set "attrs", false otherwise.
      */
-    fun hasAttrsFrom(el: Element, attrs: Set<String>): Boolean {
+    fun hasPlainAttrsFrom(el: Element, attrs: Set<String>): Boolean {
         return el.attributes().all { it -> attrs.contains(it.key) }
     }
 
@@ -47,9 +47,9 @@ class WhiteListAttrChecker : Checker() {
      * given set.
      * @param el element whose style attribute is to be inspected
      * @param attrs set of allowed keys in the style attribute
-     * @return true if
+     * @return true if all attributes inside the "style" are allowed ones, false otherwise
      */
-    fun checkInline(el: Element, attrs: Set<String>): Boolean {
+    fun hasInlineAttrsFrom(el: Element, attrs: Set<String>): Boolean {
         return el.attr("style")
                 .split(";")
                 .map { it -> it.split(":") }
