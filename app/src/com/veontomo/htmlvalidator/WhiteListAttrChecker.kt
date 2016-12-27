@@ -23,7 +23,7 @@ class WhiteListAttrChecker : Checker() {
             "padding", "padding-top", "padding-bottom", "padding-left", "padding-right",
             "margin", "margin-top", "margin-bottom", "margin-left", "margin-right",
             "text-decoration", "text-align", "line-height",
-            "font-size", "font-weight", "font-family",
+            "font-size", "font-weight", "font-family", "font-style",
             "border", "border-style", "border-spacing",
             "color",
             "display"
