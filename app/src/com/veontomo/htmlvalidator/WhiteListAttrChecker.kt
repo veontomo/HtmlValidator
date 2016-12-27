@@ -16,18 +16,18 @@ import org.jsoup.nodes.Element
  * the attributes of the second type from the set "attrInline".
  *
  */
-class WhiteListAttrChecker : Checker() {
-    private val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style")
-    private val attrInline = setOf(
-            "width", "max-width", "min-width",
-            "padding", "padding-top", "padding-bottom", "padding-left", "padding-right",
-            "margin", "margin-top", "margin-bottom", "margin-left", "margin-right",
-            "text-decoration", "text-align", "line-height",
-            "font-size", "font-weight", "font-family", "font-style",
-            "border", "border-style", "border-spacing",
-            "color",
-            "display"
-    )
+class WhiteListAttrChecker(val attrPlain: Set<String>, val attrInline: Set<String>) : Checker() {
+//    private val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style")
+//    private val attrInline = setOf(
+//            "width", "max-width", "min-width",
+//            "padding", "padding-top", "padding-bottom", "padding-left", "padding-right",
+//            "margin", "margin-top", "margin-bottom", "margin-left", "margin-right",
+//            "text-decoration", "text-align", "line-height",
+//            "font-size", "font-weight", "font-family", "font-style",
+//            "border", "border-style", "border-spacing",
+//            "color",
+//            "display"
+//    )
 
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
