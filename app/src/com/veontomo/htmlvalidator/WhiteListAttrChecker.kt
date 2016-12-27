@@ -32,12 +32,12 @@ class WhiteListAttrChecker(val attrPlain: Set<String>, val attrInline: Set<Strin
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
         val elements = doc.select("*")
-        return elements.filterNot { it -> controlPlainAttrs(it).isEmpty() && hasInlineAttrsFrom(it, attrInline) }
+        return elements.filterNot { it -> controlPlainAttrs(it).isEmpty() && controlInlineAttrs(it, attrInline) }
                 .map { it -> CheckMessage("Invalid attributes in ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"" + it.value + "\"" }}") }
     }
 
     /**
-     * Detect the presence of non-allowed attributes among plain ones.
+     * Return non-allowed attributes found among plain ones.
      *
      * @param el element whose attributes are to be inspected.
      * @return a list of non-allowed attributes found among the element's plain attributes.
@@ -47,19 +47,18 @@ class WhiteListAttrChecker(val attrPlain: Set<String>, val attrInline: Set<Strin
     }
 
     /**
-     * Check whether the "style" attribute of the element contains only the keys from the
-     * given set.
+     * Return non-allowed attributes found in the element's "style" attribute.
+     *
      * @param el element whose style attribute is to be inspected
-     * @param attrs set of allowed keys in the style attribute
-     * @return true if all attributes inside the "style" are allowed ones, false otherwise
+     * @return list of all non-allowed attributes found inside the "style"
      */
-    fun hasInlineAttrsFrom(el: Element, attrs: Set<String>): Boolean {
+    fun controlInlineAttrs(el: Element): List<String> {
         return el.attr("style")
                 .split(";")
                 .map { it -> it.split(":") }
                 .filter { it.size == 2 }
                 .map { it[0].trim() }
-                .filterNot { attrs.contains(it) }
-                .isEmpty()
+                .filterNot { attrInline.contains(it) }
+                .map { it }
     }
 }

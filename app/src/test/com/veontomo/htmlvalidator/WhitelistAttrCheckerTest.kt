@@ -148,7 +148,7 @@ class WhiteListAttrCheckerTest {
     fun checkInlineAttrAllEmpty() {
         val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
         val el = Element(Tag.valueOf("div"), "")
-        assertTrue("element with no attr is a valid one", checker.hasInlineAttrsFrom(el, setOf()))
+        assertTrue("element with no attr is a valid one", checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -157,9 +157,9 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 0
     @Test
     fun checkInlineAttrNoPlainTwoAllowed() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf<String>(), setOf("padding", "margin"))
         val el = Element(Tag.valueOf("div"), "")
-        assertTrue("element with no attr is a valid one", checker.hasInlineAttrsFrom(el, setOf("padding", "margin")))
+        assertTrue("element with no attr is a valid one", checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -171,7 +171,7 @@ class WhiteListAttrCheckerTest {
         val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
         val el = Element(Tag.valueOf("div"), "")
         el.attr("style", "text-decoration: underline; padding: 10px;")
-        assertFalse(checker.hasInlineAttrsFrom(el, setOf<String>()))
+        assertFalse(checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -180,10 +180,10 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 0
     @Test
     fun checkInlineAttrTwoAttrsOneAllowed() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>("padding"))
         val el = Element(Tag.valueOf("span"), "")
         el.attr("style", "width: 25em;")
-        assertFalse(checker.hasInlineAttrsFrom(el, setOf("padding")))
+        assertFalse(checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -192,10 +192,10 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 1
     @Test
     fun checkInlineAttrOneAttrOneAllowed() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>("margin"))
         val el = Element(Tag.valueOf("span"), "")
         el.attr("style", "margin: 22em;")
-        assertTrue(checker.hasInlineAttrsFrom(el, setOf("margin")))
+        assertTrue(checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -204,10 +204,10 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 0
     @Test
     fun checkInlineAttrTwoAttrsTwoAllowedNoOverlap() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf<String>(), setOf("text-align", "border-style"))
         val el = Element(Tag.valueOf("span"), "")
         el.attr("style", "color: #000222; font-size: 10pt;")
-        assertFalse(checker.hasInlineAttrsFrom(el, setOf("text-align", "border-style")))
+        assertFalse(checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -216,10 +216,10 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 1 (partial)
     @Test
     fun checkInlineAttrTwoAttrsTwoAllowedpartialOverlap() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf<String>(), setOf("color", "title"))
         val el = Element(Tag.valueOf("span"), "")
         el.attr("style", "color: #000222; font-size: 10pt;")
-        assertFalse(checker.hasInlineAttrsFrom(el, setOf("color", "title")))
+        assertFalse(checker.controlInlineAttrs(el))
     }
 
     // Cover:
@@ -228,10 +228,10 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: > 1 (complete)
     @Test
     fun checkInlineAttrTwoAttrsTwoAllowedCompleteOverlap() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf<String>(), setOf("font-size", "margin"))
         val el = Element(Tag.valueOf("span"), "")
         el.attr("style", "font-size; 10px; margin: 0;")
-        assertTrue(checker.hasInlineAttrsFrom(el, setOf("font-size", "margin")))
+        assertTrue(checker.controlInlineAttrs(el)
     }
 
 
