@@ -26,7 +26,8 @@ class WhiteListAttrCheckerTest {
     fun checkAttrAllEmpty() {
         val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
         val el = Element(Tag.valueOf("div"), "")
-        assertTrue("element with no attr is a valid one", checker.hasPlainAttrsFrom(el, setOf()))
+        val messages = checker.controlPlainAttrs(el)
+        assertTrue(messages.isEmpty())
     }
 
     // Cover:
@@ -35,9 +36,10 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 0
     @Test
     fun checkAttrNoPlainTwoAllowed() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf("src", "title"), setOf<String>())
         val el = Element(Tag.valueOf("div"), "")
-        assertTrue("element with no attr is a valid one", checker!!.hasPlainAttrsFrom(el, setOf("src", "title")))
+        val messages = checker.controlPlainAttrs(el)
+        assertTrue("element with no attr is a valid one", messages.isEmpty())
     }
 
     // Cover:
@@ -50,7 +52,11 @@ class WhiteListAttrCheckerTest {
         val el = Element(Tag.valueOf("div"), "")
         el.attr("class", "wide")
         el.attr("title", "some dive")
-        assertFalse("element with 'class', 'title' attrs and no allowed attrs is not a valid one", checker.hasPlainAttrsFrom(el, setOf()))
+        val messages = checker.controlPlainAttrs(el)
+        assertEquals(2, messages.size)
+        val pattern = Regex("\\bclass|title\\b")
+        assertTrue(messages[0].contains(pattern))
+        assertTrue(messages[1].contains(pattern))
     }
 
     // Cover:
@@ -59,10 +65,12 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 0
     @Test
     fun checkAttrTwoAttrsOneAllowed() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf("alt"), setOf<String>())
         val el = Element(Tag.valueOf("span"), "")
         el.attr("title", "some dive")
-        assertFalse("element with no overlapping attrs is a not valid one", checker.hasPlainAttrsFrom(el, setOf("alt")))
+        val messages = checker.controlPlainAttrs(el)
+        assertEquals(1, messages.size)
+        assertTrue(messages[0].contains(Regex("\\btitle\\b")))
     }
 
     // Cover:
@@ -71,10 +79,11 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 1
     @Test
     fun checkAttrOneAttrOneAllowed() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf("title"), setOf<String>())
         val el = Element(Tag.valueOf("span"), "")
         el.attr("title", "some dive")
-        assertTrue("element with unique overlapping attr is a valid one", checker!!.hasPlainAttrsFrom(el, setOf("title")))
+        val messages = checker.controlPlainAttrs(el)
+        assertTrue("element with unique overlapping attr is a valid one", messages.isEmpty())
     }
 
     // Cover:
@@ -83,11 +92,15 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: 0
     @Test
     fun checkAttrTwoAttrsTwoAllowedNoOverlap() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf("alt", "href"), setOf<String>())
         val el = Element(Tag.valueOf("span"), "")
         el.attr("title", "some dive")
         el.attr("width", "20")
-        assertFalse(checker.hasPlainAttrsFrom(el, setOf("alt", "href")))
+        val messages = checker.controlPlainAttrs(el)
+        assertEquals(2, messages.size)
+        val pattern = Regex("\\bwidth|title\\b")
+        assertTrue(messages[0].contains(pattern))
+        assertTrue(messages[1].contains(pattern))
     }
 
     // Cover:
@@ -95,12 +108,14 @@ class WhiteListAttrCheckerTest {
     // 2. # attrs in the set: > 1
     // 3. # overlaps: 1 (partial)
     @Test
-    fun checkAttrTwoAttrsTwoAllowedpartialOverlap() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+    fun checkAttrTwoAttrsTwoAllowedPartialOverlap() {
+        val checker = WhiteListAttrChecker(setOf("width", "href"), setOf<String>())
         val el = Element(Tag.valueOf("span"), "")
         el.attr("title", "some dive")
         el.attr("width", "20")
-        assertFalse(checker.hasPlainAttrsFrom(el, setOf("width", "href")))
+        val messages = checker.controlPlainAttrs(el)
+        assertEquals(1, messages.size)
+        assertTrue(messages[0].contains(Regex("\\btitle\\b")))
     }
 
     // Cover:
@@ -109,19 +124,13 @@ class WhiteListAttrCheckerTest {
     // 3. # overlaps: > 1 (complete)
     @Test
     fun checkAttrTwoAttrsTwoAllowedCompleteOverlap() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
+        val checker = WhiteListAttrChecker(setOf("width", "title"), setOf<String>())
         val el = Element(Tag.valueOf("span"), "")
         el.attr("title", "some dive")
         el.attr("width", "20")
-        assertTrue(checker.hasPlainAttrsFrom(el, setOf("width", "title")))
+        val messages = checker.controlPlainAttrs(el)
+        assertTrue(messages.isEmpty())
     }
-
-    @Test
-    fun checkInline() {
-        val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
-
-    }
-
 
     /**
      * Tests for checking inline attributes.
@@ -162,7 +171,7 @@ class WhiteListAttrCheckerTest {
         val checker = WhiteListAttrChecker(setOf<String>(), setOf<String>())
         val el = Element(Tag.valueOf("div"), "")
         el.attr("style", "text-decoration: underline; padding: 10px;")
-        assertFalse(checker.hasPlainAttrsFrom(el, setOf()))
+        assertFalse(checker.hasInlineAttrsFrom(el, setOf<String>()))
     }
 
     // Cover:

@@ -32,19 +32,18 @@ class WhiteListAttrChecker(val attrPlain: Set<String>, val attrInline: Set<Strin
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
         val elements = doc.select("*")
-        return elements.filterNot { it -> hasPlainAttrsFrom(it, attrPlain) && hasInlineAttrsFrom(it, attrInline) }
-                .map { it -> CheckMessage("Invalid attributes in ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"" + it.value + "\"" }}" ) }
+        return elements.filterNot { it -> controlPlainAttrs(it).isEmpty() && hasInlineAttrsFrom(it, attrInline) }
+                .map { it -> CheckMessage("Invalid attributes in ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"" + it.value + "\"" }}") }
     }
 
     /**
-     * Check whether the element contains only allowed attributes.
+     * Detect the presence of non-allowed attributes among plain ones.
      *
      * @param el element whose attributes are to be inspected.
-     * @param attrs set of allowed attributes
-     * @return true if all element's attribute are in the set "attrs", false otherwise.
+     * @return a list of non-allowed attributes found among the element's plain attributes.
      */
-    fun hasPlainAttrsFrom(el: Element, attrs: Set<String>): Boolean {
-        return el.attributes().all { it -> attrs.contains(it.key) }
+    fun controlPlainAttrs(el: Element): List<String> {
+        return el.attributes().filterNot { it -> attrPlain.contains(it.key) }.map { it.key }
     }
 
     /**
