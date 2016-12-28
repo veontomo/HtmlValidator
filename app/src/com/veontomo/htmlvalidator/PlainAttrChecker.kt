@@ -27,7 +27,7 @@ class PlainAttrChecker(val attrPlain: Set<String>) : Checker() {
      * @return a list of non-allowed attributes found among the element's plain attributes.
      */
     fun controlPlainAttrs(el: Element): List<String> {
-        return el.attributes().filterNot { it -> attrPlain.contains(it.key) }.map { it.key }
+        return el.attributes().filterNot { it -> attrPlain.contains(it.key.toLowerCase()) }.map { it.key }
     }
 
 }

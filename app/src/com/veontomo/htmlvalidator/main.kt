@@ -34,7 +34,9 @@ fun main(args: Array<String>) {
 
 fun runCheckers(file: File, checkers: List<Checker>) {
     val text = file.readText()
-    checkers.map { checker -> checker.check(text) }.flatten().forEach { it -> println(it.message) }
+    println("File ${file.name}")
+    checkers.map { checker -> checker.check(text) }.flatten().map { it -> println(it.message) }
+
 
 }
 

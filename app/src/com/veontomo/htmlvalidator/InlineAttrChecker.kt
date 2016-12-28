@@ -31,7 +31,7 @@ class InlineAttrChecker(val attrs: Set<String>) : Checker() {
                 .split(";")
                 .map { it -> it.split(":") }
                 .filter { it.size == 2 }
-                .map { it[0].trim() }
+                .map { it[0].trim().toLowerCase() }
                 .filterNot { attrs.contains(it) }
                 .map { it }
     }
