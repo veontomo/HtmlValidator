@@ -18,9 +18,10 @@ fun main(args: Array<String>) {
             "color", "height",
             "display", "vertical-align", "background-color"
     )
+    val charsets = listOf("ascii")
 
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
-            PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline))
+            PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
     if (args.isNotEmpty()) {
         val folder = args[0]
         println("Processing files from folder $folder")
