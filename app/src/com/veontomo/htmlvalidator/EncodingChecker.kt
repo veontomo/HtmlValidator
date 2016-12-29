@@ -13,7 +13,12 @@ import org.jsoup.Jsoup
  */
 class EncodingChecker(val encodings: List<String>) : Checker() {
     override fun check(html: String): List<CheckMessage> {
-        return listOf()
+        val charsets = getCharset(html)
+        return when (charsets.size) {
+            0 -> listOf(CheckMessage("No charset is found."))
+            1 -> if (encodings.containsAll(charsets)) listOf<CheckMessage>() else listOf(CheckMessage("Non-allowed charset: ${charsets.first()}"))
+            else -> listOf(CheckMessage("Multiple charsets are found: ${charsets.joinToString { it }}"))
+        }
     }
 
     override val descr = "Encoding checker"
@@ -30,14 +35,14 @@ class EncodingChecker(val encodings: List<String>) : Checker() {
         val result = mutableSetOf<String>()
         val doc = Jsoup.parse(html)
         val metas = doc.select("meta")
-        for (meta in metas){
-            if (meta.hasAttr(token1)){
+        for (meta in metas) {
+            if (meta.hasAttr(token1)) {
                 result.add(meta.attr(token1))
             }
-            if (meta.hasAttr(token2)){
+            if (meta.hasAttr(token2)) {
                 result.addAll(meta.attr(token2).split(";").filter { it.matches(Regex("\\s?charset=.*$")) }.map { it.replace("charset=", "").trim() })
             }
         }
         return result
-   }
+    }
 }
