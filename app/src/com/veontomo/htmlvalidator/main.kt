@@ -26,16 +26,26 @@ fun main(args: Array<String>) {
         println("Processing files from folder $folder")
         val directory = File(folder)
         val fList = directory.listFiles()
-        fList.forEach { it -> runCheckers(it, checkers) }
+        for (file in fList) {
+            println("Checking file ${file.name}")
+            val reports = runCheckers(file, checkers)
+            for ((name, report) in reports) {
+                println("$name: ${if (report.isEmpty()) "OK" else "${report.size} message(s)"}")
+                println(report.joinToString { it.message })
+            }
+        }
     } else {
         println("No folder has been given hence no file has been processed.")
     }
 }
 
+/**
+ * Check given file against the checkers.
+ * Return a list of messages related to each checker grouped by the checker.
+ */
 fun runCheckers(file: File, checkers: List<Checker>): Map<String, List<CheckMessage>> {
     val text = file.readText()
-
-    return checkers.associateBy({it.descr}, {it.check(text)})
+    return checkers.associateBy({ it.descr }, { it.check(text) })
 
 
 }
