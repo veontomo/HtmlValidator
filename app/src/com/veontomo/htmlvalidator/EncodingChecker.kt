@@ -9,14 +9,20 @@ import org.jsoup.Jsoup
  * <meta charset="ascii">
  * <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
- * @param encoding list of allowed encodings
+ * @param encodings list of allowed encodings
  */
 class EncodingChecker(val encodings: List<String>) : Checker() {
     override fun check(html: String): List<CheckMessage> {
         val charsets = getCharset(html)
         return when (charsets.size) {
             0 -> listOf(CheckMessage("No charset is found."))
-            1 -> if (encodings.containsAll(charsets)) listOf<CheckMessage>() else listOf(CheckMessage("Non-allowed charset: ${charsets.first()}"))
+            1 -> {
+                val charset = charsets.first();
+                if (encodings.contains(charset))
+                    listOf<CheckMessage>()
+                else
+                    listOf(CheckMessage("The charset \"$charset\" is not among allowed ones: \"${encodings.joinToString { it }}\"."))
+            }
             else -> listOf(CheckMessage("Multiple charsets are found: ${charsets.joinToString { it }}"))
         }
     }
