@@ -46,8 +46,6 @@ fun main(args: Array<String>) {
 fun runCheckers(file: File, checkers: List<Checker>): Map<String, List<CheckMessage>> {
     val text = file.readText()
     return checkers.associateBy({ it.descr }, { it.check(text) })
-
-
 }
 
 
