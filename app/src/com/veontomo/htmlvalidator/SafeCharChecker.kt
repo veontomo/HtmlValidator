@@ -12,6 +12,7 @@ package com.veontomo.htmlvalidator
  * [32, 126].
  */
 class SafeCharChecker : Checker() {
+    override val descr = "Safe char checker"
 
     private val LINEBREAK = System.getProperty("line.separator")
 

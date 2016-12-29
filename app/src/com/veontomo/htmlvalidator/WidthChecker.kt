@@ -30,6 +30,8 @@ import org.jsoup.nodes.Element
  *
  */
 class WidthChecker : Checker() {
+    override val descr = "Width chcker"
+
     override fun check(html: String): List<CheckMessage> {
         val document = Jsoup.parse(html)
         val elements = document.select("*")

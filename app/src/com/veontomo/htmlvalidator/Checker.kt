@@ -10,5 +10,7 @@ abstract class Checker {
      * @return list of CheckMessage objects each of which reports an irregularity found in the input string.
      */
     abstract fun check(html: String): List<CheckMessage>
+
+    abstract val descr: String
 }
 

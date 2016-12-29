@@ -32,10 +32,10 @@ fun main(args: Array<String>) {
     }
 }
 
-fun runCheckers(file: File, checkers: List<Checker>) {
+fun runCheckers(file: File, checkers: List<Checker>): Map<String, List<CheckMessage>> {
     val text = file.readText()
-    println("File ${file.name}")
-    checkers.map { checker -> checker.check(text) }.flatten().map { it -> println(it.message) }
+
+    return checkers.associateBy({it.descr}, {it.check(text)})
 
 
 }

@@ -13,6 +13,8 @@ import org.jsoup.nodes.Element
  *
  */
 class PlainAttrChecker(val attrPlain: Set<String>) : Checker() {
+    override val descr = "Plain attribute checker"
+
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
         val elements = doc.select("*")

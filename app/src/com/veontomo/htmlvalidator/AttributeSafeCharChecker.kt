@@ -21,6 +21,7 @@ import java.nio.charset.Charset
  *
  */
 class AttributeSafeCharChecker : Checker() {
+    override val descr = "Attribute safe char checker"
 
     private val safeChars = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz;:.,&#!?-+=/$%()_".toSet()
     /**
