@@ -1,6 +1,5 @@
-package test.com.veontomo.htmlvalidator
+package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.EncodingChecker
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -34,7 +33,6 @@ class EncodingCheckerTest {
         val html =
                 "<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html;\">" +
                         "<title>Title</title></head><body></body><html>"
-//        assertNull(EncodingChecker(listOf()).getCharset(html))
         assertTrue(EncodingChecker(listOf()).getCharset(html).isEmpty())
     }
 
@@ -85,8 +83,6 @@ class EncodingCheckerTest {
                 "<!DOCTYPE html><html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">" +
                         "<meta charset=\"ascii\">" +
                         "<title>Title</title></head><body></body><html>"
-//        assertNull(EncodingChecker(listOf()).getCharset(html))
-//        assertTrue(EncodingChecker(listOf()).getCharset(html).isEmpty())
         val charsets = EncodingChecker(listOf()).getCharset(html)
         assertEquals(2, charsets.size)
         assertTrue(charsets.containsAll(listOf("utf-8", "ascii")))

@@ -1,6 +1,5 @@
-package test.com.veontomo.htmlvalidator
+package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.WidthChecker
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Tag
 import org.junit.After

@@ -1,6 +1,5 @@
-package test.com.veontomo.htmlvalidator
+package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.SafeCharChecker
 import org.junit.After
 import org.junit.Test
 
