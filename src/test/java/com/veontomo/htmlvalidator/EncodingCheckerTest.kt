@@ -1,7 +1,9 @@
 package com.veontomo.htmlvalidator
 
 import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.willReturn
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -117,11 +119,13 @@ class EncodingCheckerTest {
     // 2. # detected charsets: 0
     @Test
     fun checkAllEmpty() {
-        val mock = mock<EncodingChecker> {
-            on { getCharset("") } doReturn listOf()
-        }
-        assertTrue(mock.check("").isEmpty())
-        `when`(mock.check("")).thenReturn(listOf())
+//        val mock = mock<EncodingChecker> {
+//            on { getCharset("") } doReturn listOf()
+//        }
+        val checker = EncodingChecker(listOf())
+        given(checker.getCharset("")).willReturn(setOf<String>())
+        assertTrue(checker.getCharset("").isEmpty())
+//        `when`(checker.check("")).thenReturn(listOf())
 //        val classUnderTest = ClassUnderTest(mock)
 //
 //        /* When */
