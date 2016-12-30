@@ -1,8 +1,11 @@
 package com.veontomo.htmlvalidator
 
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.mockito.Mockito.`when`
 
 /**
  *  Test suite for checking the encoding.
@@ -100,6 +103,32 @@ class EncodingCheckerTest {
         val charsets = EncodingChecker(listOf()).getCharset(html)
         assertEquals(1, charsets.size)
         assertTrue(charsets.contains("ascii"))
+    }
+
+    /**
+     * Test the check method that depends on getCharsets() which is to be mocked.
+     * Partition the input as follows:
+     * 1. # allowed charsets: 0, 1, > 1
+     * 2. # detected charsets: 0, 1, > 1
+     * 3. detected charsets belong to the allowed ones: none, all, partially
+     */
+    // Cover
+    // 1. # allowed charsets: 0
+    // 2. # detected charsets: 0
+    @Test
+    fun checkAllEmpty() {
+        val mock = mock<EncodingChecker> {
+            on { getCharset("") } doReturn listOf()
+        }
+        assertTrue(mock.check("").isEmpty())
+        `when`(mock.check("")).thenReturn(listOf())
+//        val classUnderTest = ClassUnderTest(mock)
+//
+//        /* When */
+//        classUnderTest.doAction()
+//
+//        /* Then */
+//        verify(mock).doSomething(any())
     }
 
 }

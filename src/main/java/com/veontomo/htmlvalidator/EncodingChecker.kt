@@ -11,7 +11,7 @@ import org.jsoup.Jsoup
 
  * @param encodings list of allowed encodings
  */
-class EncodingChecker(val encodings: List<String>) : Checker() {
+open class EncodingChecker(val encodings: List<String>) : Checker() {
     override val descriptor = "Encoding checker"
     override fun check(html: String): List<CheckMessage> {
         val charsets = getCharset(html)
