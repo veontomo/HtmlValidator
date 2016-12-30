@@ -21,7 +21,7 @@ import java.nio.charset.Charset
  * the requested one (redirects), the number of bytes received.
  */
 class LinkChecker : Checker() {
-    override val descr: String = "Link checker"
+    override val descriptor: String = "Link checker"
 
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)

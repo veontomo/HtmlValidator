@@ -13,7 +13,7 @@ import org.jsoup.nodes.Element
  *              is considered non-allowed.
  */
 class InlineAttrChecker(val attrs: Set<String>) : Checker() {
-    override val descr = "Inline attribute checker"
+    override val descriptor = "Inline attribute checker"
 
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)

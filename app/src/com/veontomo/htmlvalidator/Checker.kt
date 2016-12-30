@@ -11,6 +11,6 @@ abstract class Checker {
      */
     abstract fun check(html: String): List<CheckMessage>
 
-    abstract val descr: String
+    abstract val descriptor: String
 }
 

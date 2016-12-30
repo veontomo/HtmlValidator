@@ -12,22 +12,24 @@ import org.jsoup.Jsoup
  * @param encodings list of allowed encodings
  */
 class EncodingChecker(val encodings: List<String>) : Checker() {
+    override val descriptor = "Encoding checker"
     override fun check(html: String): List<CheckMessage> {
         val charsets = getCharset(html)
-        return when (charsets.size) {
-            0 -> listOf(CheckMessage("No charset is found."))
+        val message = when (charsets.size) {
+            0 -> "No charset is found."
             1 -> {
-                val charset = charsets.first();
-                if (encodings.contains(charset))
-                    listOf<CheckMessage>()
-                else
-                    listOf(CheckMessage("The charset \"$charset\" is not among allowed ones: \"${encodings.joinToString { it }}\"."))
+                val charset = charsets.first()
+                if (encodings.contains(charset)) {
+                    null
+                } else {
+                    "The charset \"$charset\" is not among allowed ones: \"${encodings.joinToString { it }}\"."
+                }
             }
-            else -> listOf(CheckMessage("Multiple charsets are found: ${charsets.joinToString { it }}"))
+            else -> "Multiple charsets are found: ${charsets.joinToString { it }}"
         }
+        return if (message == null) listOf() else listOf(CheckMessage(message))
     }
 
-    override val descr = "Encoding checker"
 
     /**
      * Return all the charsets as it is specified in the meta tag inside the attribute "content" or "charset".
@@ -46,7 +48,10 @@ class EncodingChecker(val encodings: List<String>) : Checker() {
                 result.add(meta.attr(token1))
             }
             if (meta.hasAttr(token2)) {
-                result.addAll(meta.attr(token2).split(";").filter { it.matches(Regex("\\s?charset=.*$")) }.map { it.replace("charset=", "").trim() })
+                val charsets = meta.attr(token2).split(";")
+                        .filter { it.matches(Regex("\\s?$token1=.*$")) }
+                        .map { it.replace("$token1=", "").trim() }
+                result.addAll(charsets)
             }
         }
         return result

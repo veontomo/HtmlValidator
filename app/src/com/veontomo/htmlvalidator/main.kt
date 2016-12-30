@@ -31,8 +31,12 @@ fun main(args: Array<String>) {
             println("Checking file ${file.name}")
             val reports = runCheckers(file, checkers)
             for ((name, report) in reports) {
-                println("$name: ${if (report.isEmpty()) "OK" else "${report.size} message(s)"}")
-                println(report.joinToString { it.message })
+                if (report.isEmpty()) {
+                    println("$name: OK")
+                } else {
+                    println("$name: ${report.size} message(s):")
+                    println(report.mapIndexed { i, it -> "${i+1}. ${it.message}\n" }.joinToString("", "", "", -1, "", { it }))
+                }
             }
         }
     } else {
@@ -46,7 +50,7 @@ fun main(args: Array<String>) {
  */
 fun runCheckers(file: File, checkers: List<Checker>): Map<String, List<CheckMessage>> {
     val text = file.readText()
-    return checkers.associateBy({ it.descr }, { it.check(text) })
+    return checkers.associateBy({ it.descriptor }, { it.check(text) })
 }
 
 
