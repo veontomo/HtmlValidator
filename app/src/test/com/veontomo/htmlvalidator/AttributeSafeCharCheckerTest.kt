@@ -4,6 +4,7 @@ import com.veontomo.htmlvalidator.AttributeSafeCharChecker
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 /**
@@ -67,6 +68,7 @@ class AttributeSafeCharCheckerTest {
     // 4. unsafe char: >
     // 5. html is valid: true
     @Test
+    @Ignore
     fun checkDepthLevelOneHtmlEscaped() {
         val html = "<!DOCTYPE HTML>" +
                 "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=ascii\"></head>" +
@@ -97,6 +99,7 @@ class AttributeSafeCharCheckerTest {
     // 4. unsafe char: &hellip;
     // 5. html is valid: true
     @Test
+    @Ignore
     fun checkDepthLevelTwoMetaEscaped() {
         val html = "<!DOCTYPE HTML>" +
                 "<head><meta name=\"description\" content=\"(escaped) test &hellip; safe\"></head>" +
@@ -140,6 +143,7 @@ class AttributeSafeCharCheckerTest {
     // 1. unsafe chars are present: false
     // 5. html is valid: false
     @Test
+    @Ignore
     fun checkInvalidHtml() {
         val html = "<!DOCTYPE HTML>" +
                 "<html><body><p title=\"<br>\">A paragraph</p></body></html>"
