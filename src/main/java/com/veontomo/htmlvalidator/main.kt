@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
             "color", "height",
             "display", "vertical-align", "background-color"
     )
-    val charsets = listOf("ascii")
+    val charsets = setOf("ascii")
 
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))

@@ -11,8 +11,13 @@ import org.jsoup.Jsoup
 
  * @param encodings list of allowed encodings
  */
-open class EncodingChecker(val encodings: List<String>) : Checker() {
+open class EncodingChecker(val encodings: Set<String>) : Checker() {
     override val descriptor = "Encoding checker"
+    open fun getAllowedEncodings(): Set<String> {
+        return encodings
+
+    }
+
     override fun check(html: String): List<CheckMessage> {
         val charsets = getCharset(html)
         val message = when (charsets.size) {
@@ -22,7 +27,7 @@ open class EncodingChecker(val encodings: List<String>) : Checker() {
                 if (encodings.contains(charset)) {
                     null
                 } else {
-                    "The charset \"$charset\" is not among allowed ones: \"${encodings.joinToString { it }}\"."
+                    "The charset \"$charset\" is not among allowed ones: \"${getAllowedEncodings().joinToString { it }}\"."
                 }
             }
             else -> "Multiple charsets are found: ${charsets.joinToString { it }}"
