@@ -9,6 +9,8 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.mockito.Mockito.`when`
 
+//import org.mockito.Mockito.`when`
+
 /**
  *  Test suite for checking the encoding.
  */
@@ -119,12 +121,14 @@ class EncodingCheckerTest {
     // 2. # detected charsets: 0
     @Test
     fun checkAllEmpty() {
-//        val mock = mock<EncodingChecker> {
-//            on { getCharset("") } doReturn listOf()
-//        }
-        val checker = EncodingChecker(listOf())
-        given(checker.getCharset("")).willReturn(setOf<String>())
-        assertTrue(checker.getCharset("").isEmpty())
+        val mock = mock<EncodingChecker> {
+            on { getCharset("") } doReturn setOf<String>()
+        }
+//        val mock = org.mockito.Mockito.mock(EncodingChecker::class.java)
+//        ::class.java)
+//        `when`(mock.getCharset("")).thenReturn(setOf<String>())
+//        val classUnderTest = ClassUnderTest(mock)
+        assertTrue(mock.getCharset("").isEmpty())
 //        `when`(checker.check("")).thenReturn(listOf())
 //        val classUnderTest = ClassUnderTest(mock)
 //

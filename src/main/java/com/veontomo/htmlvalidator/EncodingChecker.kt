@@ -37,7 +37,7 @@ open class EncodingChecker(val encodings: List<String>) : Checker() {
      * @param html string representation of the html document
      * @return list of all found charsets. Might be empty.
      */
-    fun getCharset(html: String): Set<String> {
+    open fun getCharset(html: String): Set<String> {
         val token1 = "charset"
         val token2 = "content"
         val result = mutableSetOf<String>()
