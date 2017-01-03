@@ -6,6 +6,23 @@ buildscript {
     }
 
 }
+// create an auxiliary file for the MockMaker of the Mockito 2 framework.
+// see http://hadihariri.com/2016/10/04/Mocking-Kotlin-With-Mockito/
+task createTestResources << {
+    def separator = File.separator
+    def fileName = [projectDir, 'src', 'text', 'resources', 'mockito-extensions', 'org.mockito.plugins.MockMaker'].join(separator)
+    def mockMakerFile = new File(fileName)
+    if (mockMakerFile.exists()) {
+        logger.info("File ${mockMakerFile.name} already exists.")
+    } else {
+        def content = System.env.MOCK_MAKER ?: "mock-maker-inline"
+        mockMakerFile.parentFile.mkdirs()
+        mockMakerFile.createNewFile()
+        mockMakerFile.write(content)
+        println "create file ${mockMakerFile.name}"
+    }
+
+}
 repositories {
     mavenCentral()
 }
@@ -21,6 +38,8 @@ buildscript {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'org.jsoup:jsoup:1.10.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.5'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.mockito:mockito-core:2.5.0"
     testCompile 'com.nhaarman:mockito-kotlin:1.1.0'

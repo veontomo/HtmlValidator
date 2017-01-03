@@ -11,9 +11,9 @@ import org.jsoup.Jsoup
 
  * @param encodings list of allowed encodings
  */
-open class EncodingChecker(val encodings: Set<String>) : Checker() {
+class EncodingChecker(val encodings: Set<String>) : Checker() {
     override val descriptor = "Encoding checker"
-    open fun getAllowedEncodings(): Set<String> {
+    fun getAllowedEncodings(): Set<String> {
         return encodings
 
     }
@@ -42,7 +42,7 @@ open class EncodingChecker(val encodings: Set<String>) : Checker() {
      * @param html string representation of the html document
      * @return list of all found charsets. Might be empty.
      */
-    open fun getCharset(html: String): Set<String> {
+    fun getCharset(html: String): Set<String> {
         val token1 = "charset"
         val token2 = "content"
         val result = mutableSetOf<String>()
