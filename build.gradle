@@ -10,7 +10,7 @@ buildscript {
 // see http://hadihariri.com/2016/10/04/Mocking-Kotlin-With-Mockito/
 task createTestResources << {
     def separator = File.separator
-    def fileName = [projectDir, 'src', 'text', 'resources', 'mockito-extensions', 'org.mockito.plugins.MockMaker'].join(separator)
+    def fileName = [projectDir, 'src', 'test', 'resources', 'mockito-extensions', 'org.mockito.plugins.MockMaker'].join(separator)
     def mockMakerFile = new File(fileName)
     if (mockMakerFile.exists()) {
         logger.info("File ${mockMakerFile.name} already exists.")

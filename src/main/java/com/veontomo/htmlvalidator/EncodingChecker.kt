@@ -1,21 +1,23 @@
 package com.veontomo.htmlvalidator
 
+import org.jetbrains.concurrency.all
 import org.jsoup.Jsoup
 
 /**
  * Check the encoding.
- * An html document might have the charset impoosed in the tag "meta" in one of the two ways:
+ * An html document might have the charset imposed in the tag "meta" in one of the two ways:
 
  * <meta charset="ascii">
  * <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
- * @param encodings list of allowed encodings
+ * @param allowedEncodings list of allowed encodings
  */
-class EncodingChecker(val encodings: Set<String>) : Checker() {
+class EncodingChecker(private val allowedEncodings: Set<String>) : Checker() {
     override val descriptor = "Encoding checker"
-    fun getAllowedEncodings(): Set<String> {
-        return encodings
 
+    // create a defencive copy in order to avoid the rep exposure
+    val encodings: Set<String> get() {
+        return allowedEncodings.map { it }.toSet()
     }
 
     override fun check(html: String): List<CheckMessage> {
@@ -27,7 +29,7 @@ class EncodingChecker(val encodings: Set<String>) : Checker() {
                 if (encodings.contains(charset)) {
                     null
                 } else {
-                    "The charset \"$charset\" is not among allowed ones: \"${getAllowedEncodings().joinToString { it }}\"."
+                    "The charset \"$charset\" is not among allowed ones: \"${encodings.joinToString { it }}\"."
                 }
             }
             else -> "Multiple charsets are found: ${charsets.joinToString { it }}"

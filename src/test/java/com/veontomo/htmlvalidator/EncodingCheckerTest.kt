@@ -1,22 +1,16 @@
 package com.veontomo.htmlvalidator
 
-//import com.nhaarman.mockito_kotlin.*
-import de.jodamob.kotlin.testrunner.KotlinTestRunner
-import de.jodamob.kotlin.testrunner.OpenedClasses
 import org.junit.Test
 
 import org.junit.Assert.*
-import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
-//import org.mockito.Mockito.`when`
 
 /**
  *  Test suite for checking the encoding.
  */
-//@RunWith(KotlinTestRunner::class)
-//@OpenedClasses(EncodingChecker::class)
 class EncodingCheckerTest {
     /**
      * Test for the method that picks up the charset.
@@ -122,162 +116,157 @@ class EncodingCheckerTest {
     // Cover
     // 1. # allowed charsets: 0
     // 2. # detected charsets: 0
-//    @Test
-//    fun checkAllEmpty() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf<String>()
-//            on { getCharset("") } doReturn setOf<String>()
-//        }
-//        assertEquals(1, mock.check("a text").size)
-//    }
-//
-//     Cover
-//     1. # allowed charsets: 1
-//     2. # detected charsets: 0
-//    @Test
-//    fun checkOneAllowedNoDetected() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("ascii")
-//            on { getCharset("a text") } doReturn setOf<String>()
-//        }
-//        assertEquals(1, mock.check("a text").size)
-//    }
-//
-//     Cover
-//     1. # allowed charsets:  > 1
-//     2. # detected charsets: 0
-//    @Test
-//    fun checkThreeAllowedNoDetected() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("ascii", "utf-8", "cp-1251")
-//            on { getCharset("a text") } doReturn setOf<String>()
-//        }
-//        assertEquals(1, mock.check("a text").size)
-//    }
-//
-//     Cover
-//     1. # allowed charsets: 0
-//     2. # detected charsets: 1
-//     3. detected charsets belong to the allowed ones: none
-//    @Test
-//    fun checkZeroAllowedOneDetected() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf<String>()
-//            on { getCharset("a text") } doReturn setOf("enc1")
-//        }
-//        assertEquals(1, mock.check("a text").size)
-//    }
+    @Test
+    fun checkAllEmpty() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.getCharset("")).thenReturn(setOf<String>())
+        `when`(mock.encodings).thenReturn(setOf<String>())
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("a text").size)
+    }
+
+    // Cover
+    // 1. # allowed charsets: 1
+    // 2. # detected charsets: 0
+    @Test
+    fun checkOneAllowedNoDetected() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.getCharset("a text")).thenReturn(setOf<String>())
+        `when`(mock.encodings).thenReturn(setOf("ascii"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("a text").size)
+    }
+
+    // Cover
+    // 1. # allowed charsets:  > 1
+    // 2. # detected charsets: 0
+    @Test
+    fun checkThreeAllowedNoDetected() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("ascii", "utf-8", "cp-1251"))
+        `when`(mock.getCharset("a text")).thenReturn(setOf<String>())
+        `when`(mock.check("a text")).thenCallRealMethod()
+        assertEquals(1, mock.check("a text").size)
+    }
+
+    // Cover
+    // 1. # allowed charsets: 0
+    // 2. # detected charsets: 1
+    // 3. detected charsets belong to the allowed ones: none
+    @Test
+    fun checkZeroAllowedOneDetected() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf<String>())
+        `when`(mock.getCharset("a text")).thenReturn(setOf("enc1"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("a text").size)
+    }
 
     // Cover
     // 1. # allowed charsets: 1
     // 2. # detected charsets: 1
     // 3. detected charsets belong to the allowed ones: none
-//    @Test
-//    fun checkOneAllowedOneDetected() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("enc2")
-//            on { getCharset("a text") } doReturn setOf("enc1")
-//        }
-//        assertEquals(1, mock.check("a text").size)
-//    }
+    @Test
+    fun checkOneAllowedOneDetected() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("enc2"))
+        `when`(mock.getCharset("a text")).thenReturn(setOf("enc1"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("a text").size)
+    }
 
     // Cover
     // 1. # allowed charsets: 1
     // 2. # detected charsets: 1
     // 3. detected charsets belong to the allowed ones: all
-//    @Test
-//    fun checkOneAllowedOneDetectedCoincide() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("enc")
-//            on { getCharset("a text") } doReturn setOf("enc")
-//        }
-//        assertTrue(mock.check("a text").isEmpty())
-//    }
+    @Test
+    fun checkOneAllowedOneDetectedCoincide() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("enc"))
+        `when`(mock.getCharset("a string")).thenReturn(setOf("enc"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertTrue(mock.check("a string").isEmpty())
+    }
 
     // Cover
     // 1. # allowed charsets: > 1
     // 2. # detected charsets: 1
     // 3. detected charsets belong to the allowed ones: all
-//    @Test
-//    fun checkThreeAllowedOneDetectedCoincide() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("enc1", "enc2", "enc3")
-//            on { getCharset("some html string") } doReturn setOf("enc2")
-//        }
-//        assertTrue(mock.check("some html string").isEmpty())
-//    }
-//
+    @Test
+    fun checkThreeAllowedOneDetectedCoincide() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("enc1", "enc2", "enc3"))
+        `when`(mock.getCharset("some html string")).thenReturn(setOf("enc2"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertTrue(mock.check("some html string").isEmpty())
+    }
+
+
     // Cover
     // 1. # allowed charsets: 0
     // 2. # detected charsets: > 1
     // 3. detected charsets belong to the allowed ones: none
-//    @Test
-//    fun checkNoAllowedTwoDetected() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf<String>()
-//            on { getCharset("document 1") } doReturn setOf("enc-1", "enc-2")
-//        }
-//        assertEquals(1, mock.check("document 1").size)
-//    }
+    @Test
+    fun checkNoAllowedTwoDetected() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.getCharset("document 1")).thenReturn(setOf("enc-1", "enc-2"))
+        `when`(mock.encodings).thenReturn(setOf<String>())
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("document 1").size)
+    }
 
     // Cover
     // 1. # allowed charsets: 1
     // 2. # detected charsets: > 1
     // 3. detected charsets belong to the allowed ones: none
-//    @Test
-//    fun checkOneAllowedTwoDetectedNoOverlap() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("encoding")
-//            on { getCharset("document 1") } doReturn setOf("enc-1", "enc-2")
-//        }
-//        assertEquals(1, mock.check("document 1").size)
-//    }
+    @Test
+    fun checkOneAllowedTwoDetectedNoOverlap() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("encoding"))
+        `when`(mock.getCharset("document 1")).thenReturn(setOf("enc-1", "enc-2"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("document 1").size)
+    }
 
     // Cover
     // 1. # allowed charsets: 1
     // 2. # detected charsets: > 1
     // 3. detected charsets belong to the allowed ones: partially
-//    @Test
-//    fun checkOneAllowedTwoDetectedPartialOverlap() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("enc-1")
-//            on { getCharset("document 1") } doReturn setOf("enc-1", "enc-2")
-//        }
-//        assertEquals(1, mock.getAllowedEncodings().size)
-//        assertEquals(2, mock.getCharset("document 1").size)
-//        assertEquals(1, mock.check("document 1").size)
-//    }
+    @Test
+    fun checkOneAllowedTwoDetectedPartialOverlap() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("enc-1"))
+        `when`(mock.getCharset("document 1")).thenReturn(setOf("enc-1", "enc-2"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.encodings.size)
+        assertEquals(2, mock.getCharset("document 1").size)
+        assertEquals(1, mock.check("document 1").size)
+    }
 
     // Cover
     // 1. # allowed charsets: > 1
     // 2. # detected charsets: > 1
     // 3. detected charsets belong to the allowed ones: partially
-//    @Test
-//    fun checkTwoAllowedTwoDetectedPartialOverlap() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("enc-1", "char")
-//            on { getCharset("document 1") } doReturn setOf("enc-1", "enc-2")
-//        }
-//        assertEquals(1, mock.check("document 1").size)
-//    }
-//
+    @Test
+    fun checkTwoAllowedTwoDetectedPartialOverlap() {
+        val mock = mock(EncodingChecker::class.java)
+        `when`(mock.encodings).thenReturn(setOf("enc-1", "char"))
+        `when`(mock.getCharset("document 1")).thenReturn(setOf("enc-1", "enc-2"))
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("document 1").size)
+    }
+
     // Cover
     // 1. # allowed charsets: > 1
     // 2. # detected charsets: > 1
     // 3. detected charsets belong to the allowed ones: all
     @Test
     fun checkTwoAllowedTwoDetectedCompleteOverlap() {
-//        val mock = mock<EncodingChecker> {
-//            on { getAllowedEncodings() } doReturn setOf("enc-2", "enc-1")
-//            on { getCharset("document 1") } doReturn setOf("enc-1", "enc-2")
-//        }
         val mock = mock(EncodingChecker::class.java)
-        `when`(mock.getAllowedEncodings()).thenReturn(setOf("enc-2", "enc-1"))
+        `when`(mock.encodings).thenReturn(setOf("enc-2", "enc-1"))
         `when`(mock.getCharset("document 1")).thenReturn(setOf("enc-1", "enc-2"))
-        val list = mock.check("document 1")
-
-//        verify(mock, times(1)).getAllowedEncodings()
-//        verify(mock, times(1)).getCharset("document 1")
-        assertEquals(1, list.size)
+        `when`(mock.check(anyString())).thenCallRealMethod()
+        assertEquals(1, mock.check("document 1").size)
     }
+
 }
