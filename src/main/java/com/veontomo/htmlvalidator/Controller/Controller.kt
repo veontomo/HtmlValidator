@@ -1,6 +1,7 @@
 package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.*
+import com.veontomo.htmlvalidator.Models.Report
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
@@ -31,32 +32,14 @@ class Controller(val stage: Stage, val view: GUI) {
     init {
         view.enableSelectBtn(true)
         view.enableAalyzeBtn(false)
-        view.loadItems(checkers.map { it.descriptor })
+        view.loadItems(checkers.map { Report(it.descriptor, "", "") })
     }
 
     private fun performCheck(file: File) {
-        println("Checking file ${file.name}")
-        val reports = runCheckers(file, checkers)
-        for ((name, report) in reports) {
-            if (report.isEmpty()) {
-                println("$name: OK")
-            } else {
-                println("$name: ${report.size} message(s):")
-                println(report.mapIndexed { i, it -> "${i + 1}. ${it.message}\n" }.joinToString("", "", "", -1, "", { it }))
-            }
-        }
-    }
-
-
-    /**
-     * Check given file against the checkers.
-     * Return a list of messages related to each checker grouped by the checker.
-     */
-
-    fun runCheckers(file: File, checkers: List<Checker>): Map<String, List<CheckMessage>> {
         val text = file.readText()
-        return checkers.associateBy({ it.descriptor }, { it.check(text) })
+        view.loadItems(checkers.map { Report(it.descriptor, "", it.check(text).joinToString { it.message }) })
     }
+
 
     fun onSelectBtnClick() {
         val fileChooser = FileChooser()

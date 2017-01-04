@@ -1,21 +1,27 @@
 package com.veontomo.htmlvalidator
 
 import com.veontomo.htmlvalidator.Controller.Controller
+import com.veontomo.htmlvalidator.Models.Report
 
 import javafx.application.Application
+import javafx.beans.property.ReadOnlyStringWrapper
+import javafx.beans.property.StringProperty
+import javafx.beans.property.StringPropertyBase
+import javafx.beans.property.adapter.JavaBeanStringProperty
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.control.ListView
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.Stage
+import javafx.util.Callback
 
 /**
  * Entry point
@@ -32,7 +38,11 @@ class GUI : Application() {
     val browser = WebView()
     val selectBtn = Button("Select file")
     val analyzeBtn = Button("Analyze")
-    val checkersView = TableView<String>()
+    val checkersView = TableView<Report>()
+    val checkerNameCol = TableColumn<Report, String>("Checker")
+    val checkerStatusCol = TableColumn<Report, String>("Status")
+    val checkerCommentCol = TableColumn<Report, String>("Comment")
+
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -46,7 +56,13 @@ class GUI : Application() {
         hbBtn.alignment = Pos.BOTTOM_RIGHT
         hbBtn.children.addAll(selectBtn, analyzeBtn)
 
-        checkersView.columns.addAll(TableColumn<String, String>("Checker"), TableColumn<String, String>("status"))
+        checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
+        checkerNameCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.name) }
+        checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
+        checkerStatusCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.status) }
+        checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
+        checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
+        checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
         grid.add(hbBtn, 1, 1)
         grid.add(fileNameText, 1, 2)
         grid.add(browser, 0, 3, 10, 10)
@@ -96,7 +112,7 @@ class GUI : Application() {
      * Load the items in to the list view
      * @param items
      */
-    fun loadItems(items: List<String>) {
+    fun loadItems(items: List<Report>) {
         checkersView.items = FXCollections.observableArrayList(items)
     }
 
