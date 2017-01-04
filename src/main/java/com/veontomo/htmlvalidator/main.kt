@@ -9,6 +9,8 @@ import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ListView
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
@@ -30,7 +32,7 @@ class GUI : Application() {
     val browser = WebView()
     val selectBtn = Button("Select file")
     val analyzeBtn = Button("Analyze")
-    val checkersListView = ListView<String>()
+    val checkersView = TableView<String>()
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -44,10 +46,11 @@ class GUI : Application() {
         hbBtn.alignment = Pos.BOTTOM_RIGHT
         hbBtn.children.addAll(selectBtn, analyzeBtn)
 
+        checkersView.columns.addAll(TableColumn<String, String>("Checker"), TableColumn<String, String>("status"))
         grid.add(hbBtn, 1, 1)
         grid.add(fileNameText, 1, 2)
         grid.add(browser, 0, 3, 10, 10)
-        grid.add(checkersListView, 14, 3, 3, 10)
+        grid.add(checkersView, 14, 3, 3, 10)
         val scene = Scene(grid, 600.0, 800.0)
 
         primaryStage.scene = scene
@@ -94,7 +97,7 @@ class GUI : Application() {
      * @param items
      */
     fun loadItems(items: List<String>) {
-        checkersListView.items = FXCollections.observableArrayList(items)
+        checkersView.items = FXCollections.observableArrayList(items)
     }
 
     companion object {
