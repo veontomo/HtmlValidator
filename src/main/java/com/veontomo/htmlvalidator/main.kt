@@ -15,6 +15,7 @@ import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
+import javafx.scene.web.WebView
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 
@@ -28,6 +29,7 @@ fun main(args: Array<String>) {
 
 class GUI : Application() {
     val fileNameText = Text()
+    val browser = WebView()
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -37,6 +39,7 @@ class GUI : Application() {
         grid.vgap = 10.0
         grid.padding = Insets(25.0, 25.0, 25.0, 25.0)
         grid.add(fileNameText, 2, 2, 1, 1)
+        grid.add(browser, 0, 2, 4, 4)
         val sceneTitle = Text("Welcome")
         sceneTitle.font = Font.font("Tahoma", FontWeight.NORMAL, 20.0)
         grid.add(sceneTitle, 0, 0, 2, 1)
@@ -63,8 +66,12 @@ class GUI : Application() {
         }
     }
 
-    fun showFileName(name: String){
-       fileNameText.text = name
+    fun showFileName(name: String) {
+        fileNameText.text = name
+    }
+
+    fun showFileContent(url: String) {
+        browser.engine.load(url)
     }
 
     companion object {

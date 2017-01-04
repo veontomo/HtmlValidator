@@ -60,6 +60,7 @@ class Controller(val stage: Stage, val view: GUI) {
         val file = fileChooser.showOpenDialog(stage)
         if (file != null && file.exists()) {
             view.showFileName(file.name)
+            view.showFileContent(file.toURI().toURL().toExternalForm())
             performCheck(file)
         } else
             println("no file is chosen")
