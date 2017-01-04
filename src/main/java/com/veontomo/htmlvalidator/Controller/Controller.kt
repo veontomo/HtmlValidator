@@ -26,21 +26,15 @@ class Controller(val stage: Stage, val view: GUI) {
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
 
-    private fun performCheck() {
-        val folder = "data"
-        println("Processing files from folder $folder")
-        val directory = File(folder)
-        val fList = directory.listFiles()
-        for (file in fList) {
-            println("Checking file ${file.name}")
-            val reports = runCheckers(file, checkers)
-            for ((name, report) in reports) {
-                if (report.isEmpty()) {
-                    println("$name: OK")
-                } else {
-                    println("$name: ${report.size} message(s):")
-                    println(report.mapIndexed { i, it -> "${i + 1}. ${it.message}\n" }.joinToString("", "", "", -1, "", { it }))
-                }
+    private fun performCheck(file: File) {
+        println("Checking file ${file.name}")
+        val reports = runCheckers(file, checkers)
+        for ((name, report) in reports) {
+            if (report.isEmpty()) {
+                println("$name: OK")
+            } else {
+                println("$name: ${report.size} message(s):")
+                println(report.mapIndexed { i, it -> "${i + 1}. ${it.message}\n" }.joinToString("", "", "", -1, "", { it }))
             }
         }
     }
@@ -66,6 +60,7 @@ class Controller(val stage: Stage, val view: GUI) {
         val file = fileChooser.showOpenDialog(stage)
         if (file != null && file.exists()) {
             view.showFileName(file.name)
+            performCheck(file)
         } else
             println("no file is chosen")
     }

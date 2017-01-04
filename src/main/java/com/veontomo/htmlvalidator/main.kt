@@ -32,13 +32,13 @@ class GUI : Application() {
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
         val grid = GridPane()
-        grid.setAlignment(Pos.CENTER)
-        grid.setHgap(10.0)
-        grid.setVgap(10.0)
-        grid.setPadding(Insets(25.0, 25.0, 25.0, 25.0))
+        grid.alignment = Pos.CENTER
+        grid.hgap = 10.0
+        grid.vgap = 10.0
+        grid.padding = Insets(25.0, 25.0, 25.0, 25.0)
         grid.add(fileNameText, 2, 2, 1, 1)
         val sceneTitle = Text("Welcome")
-        sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20.0))
+        sceneTitle.font = Font.font("Tahoma", FontWeight.NORMAL, 20.0)
         grid.add(sceneTitle, 0, 0, 2, 1)
 
 
@@ -50,12 +50,12 @@ class GUI : Application() {
 
         val btn = Button("Select file")
         val hbBtn = HBox(10.0)
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT)
-        hbBtn.getChildren().add(btn)
+        hbBtn.alignment = Pos.BOTTOM_RIGHT
+        hbBtn.children.add(btn)
         grid.add(hbBtn, 1, 4)
         val scene = Scene(grid, 300.0, 275.0)
 
-        primaryStage.setScene(scene)
+        primaryStage.scene = scene
         primaryStage.show()
         val controller = Controller(primaryStage, this)
         btn.setOnAction { e ->
