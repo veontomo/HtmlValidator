@@ -8,7 +8,7 @@ import java.io.File
 /**
  * A controller that orchestrates execution of available checks of given file.
  */
-class Controller(val stage: Stage) {
+class Controller(val stage: Stage, val view: GUI) {
 
     val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target", "http-equiv", "content", "cellpadding", "cellspacing")
     val attrInline = setOf(
@@ -58,10 +58,14 @@ class Controller(val stage: Stage) {
 
     fun onClick() {
         val fileChooser = FileChooser()
-        fileChooser.title = "Select file"
+        fileChooser.extensionFilters.addAll(
+                FileChooser.ExtensionFilter("html", "*.html"),
+                FileChooser.ExtensionFilter("htm", "*.htm")
+        )
+        fileChooser.title = "Select a file"
         val file = fileChooser.showOpenDialog(stage)
-        if (file != null) {
-            println("file is chosen")
+        if (file != null && file.exists()) {
+            view.showFileName(file.name)
         } else
             println("no file is chosen")
     }

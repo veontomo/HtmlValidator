@@ -27,6 +27,8 @@ fun main(args: Array<String>) {
 
 
 class GUI : Application() {
+    val fileNameText = Text()
+
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
         val grid = GridPane()
@@ -34,9 +36,11 @@ class GUI : Application() {
         grid.setHgap(10.0)
         grid.setVgap(10.0)
         grid.setPadding(Insets(25.0, 25.0, 25.0, 25.0))
+        grid.add(fileNameText, 2, 2, 1, 1)
         val sceneTitle = Text("Welcome")
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20.0))
         grid.add(sceneTitle, 0, 0, 2, 1)
+
 
         val userName = Label("File")
         grid.add(userName, 0, 1)
@@ -53,11 +57,14 @@ class GUI : Application() {
 
         primaryStage.setScene(scene)
         primaryStage.show()
-        val controller = Controller(primaryStage)
+        val controller = Controller(primaryStage, this)
         btn.setOnAction { e ->
             controller.onClick()
-
         }
+    }
+
+    fun showFileName(name: String){
+       fileNameText.text = name
     }
 
     companion object {
