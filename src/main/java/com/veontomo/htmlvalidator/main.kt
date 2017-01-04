@@ -7,16 +7,10 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
-import javafx.scene.paint.Color
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
-import javafx.stage.FileChooser
 import javafx.stage.Stage
 
 /**
@@ -30,6 +24,8 @@ fun main(args: Array<String>) {
 class GUI : Application() {
     val fileNameText = Text()
     val browser = WebView()
+    val selectBtn = Button("Select file")
+    val analyzeBtn = Button("Analyze")
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -38,40 +34,53 @@ class GUI : Application() {
         grid.hgap = 10.0
         grid.vgap = 10.0
         grid.padding = Insets(25.0, 25.0, 25.0, 25.0)
-        grid.add(fileNameText, 2, 2, 1, 1)
-        grid.add(browser, 0, 2, 4, 4)
-        val sceneTitle = Text("Welcome")
-        sceneTitle.font = Font.font("Tahoma", FontWeight.NORMAL, 20.0)
-        grid.add(sceneTitle, 0, 0, 2, 1)
 
-
-        val userName = Label("File")
-        grid.add(userName, 0, 1)
-
-        val userTextField = TextField()
-        grid.add(userTextField, 1, 1)
-
-        val btn = Button("Select file")
         val hbBtn = HBox(10.0)
         hbBtn.alignment = Pos.BOTTOM_RIGHT
-        hbBtn.children.add(btn)
-        grid.add(hbBtn, 1, 4)
-        val scene = Scene(grid, 300.0, 275.0)
+        hbBtn.children.addAll(selectBtn, analyzeBtn)
+
+        grid.add(hbBtn, 1, 1)
+        grid.add(fileNameText, 1, 2)
+        grid.add(browser, 0, 3, 10, 10)
+        val scene = Scene(grid, 600.0, 800.0)
 
         primaryStage.scene = scene
         primaryStage.show()
         val controller = Controller(primaryStage, this)
-        btn.setOnAction { e ->
-            controller.onClick()
-        }
+        selectBtn.setOnAction { controller.onSelectBtnClick() }
+        analyzeBtn.setOnAction { controller.onAnalyzeBtnClick() }
     }
 
+    /**
+     * Display the selected file name
+     * @param name file name
+     */
     fun showFileName(name: String) {
         fileNameText.text = name
     }
 
+    /**
+     * Display the content of the selected file inside the web viewer.
+     * @param url
+     */
     fun showFileContent(url: String) {
         browser.engine.load(url)
+    }
+
+    /**
+     * Enable/disable the analyze button
+     * @param isEnabled status of the button: true to enable, false to disable
+     */
+    fun enableAalyzeBtn(isEnabled: Boolean) {
+        analyzeBtn.isDisable = !isEnabled
+    }
+
+    /**
+     * Enable/disable the button that is used to select a file
+     * @param isEnabled status of the button: true to enable, false to disable
+     */
+    fun enableSelectBtn(isEnabled: Boolean) {
+        selectBtn.isDisable = !isEnabled
     }
 
     companion object {

@@ -26,6 +26,13 @@ class Controller(val stage: Stage, val view: GUI) {
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
 
+    var selectedFile: File? = null
+
+    init {
+        view.enableSelectBtn(true)
+        view.enableAalyzeBtn(false)
+    }
+
     private fun performCheck(file: File) {
         println("Checking file ${file.name}")
         val reports = runCheckers(file, checkers)
@@ -50,20 +57,31 @@ class Controller(val stage: Stage, val view: GUI) {
         return checkers.associateBy({ it.descriptor }, { it.check(text) })
     }
 
-    fun onClick() {
+    fun onSelectBtnClick() {
         val fileChooser = FileChooser()
         fileChooser.extensionFilters.addAll(
                 FileChooser.ExtensionFilter("html", "*.html"),
                 FileChooser.ExtensionFilter("htm", "*.htm")
         )
         fileChooser.title = "Select a file"
-        val file = fileChooser.showOpenDialog(stage)
-        if (file != null && file.exists()) {
-            view.showFileName(file.name)
-            view.showFileContent(file.toURI().toURL().toExternalForm())
+        selectedFile = fileChooser.showOpenDialog(stage)
+        if (selectedFile?.exists() ?: false) {
+            view.showFileName(selectedFile!!.path)
+            view.showFileContent(selectedFile!!.toURI().toURL().toExternalForm())
+            view.enableAalyzeBtn(true)
+        } else {
+            view.enableAalyzeBtn(false)
+        }
+    }
+
+    /**
+     * Perform check of the selected file
+     */
+    fun onAnalyzeBtnClick() {
+        val file = selectedFile
+        if (file != null) {
             performCheck(file)
-        } else
-            println("no file is chosen")
+        }
     }
 }
 
