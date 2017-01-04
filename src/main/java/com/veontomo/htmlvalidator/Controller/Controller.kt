@@ -31,6 +31,7 @@ class Controller(val stage: Stage, val view: GUI) {
     init {
         view.enableSelectBtn(true)
         view.enableAalyzeBtn(false)
+        view.loadItems(checkers.map { it.descriptor })
     }
 
     private fun performCheck(file: File) {
