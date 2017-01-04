@@ -1,12 +1,14 @@
 package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.*
+import javafx.stage.FileChooser
+import javafx.stage.Stage
 import java.io.File
 
 /**
  * A controller that orchestrates execution of available checks of given file.
  */
-class Controller {
+class Controller(val stage: Stage) {
 
     val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target", "http-equiv", "content", "cellpadding", "cellspacing")
     val attrInline = setOf(
@@ -55,6 +57,13 @@ class Controller {
     }
 
     fun onClick() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val fileChooser = FileChooser()
+        fileChooser.title = "Select file"
+        val file = fileChooser.showOpenDialog(stage)
+        if (file != null) {
+            println("file is chosen")
+        } else
+            println("no file is chosen")
     }
 }
+
