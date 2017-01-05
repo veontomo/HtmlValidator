@@ -63,10 +63,10 @@ class GUI : Application() {
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
-        grid.add(hbBtn, 1, 1)
-        grid.add(fileNameText, 1, 2)
-        grid.add(browser, 0, 3, 10, 10)
-        grid.add(checkersView, 14, 3, 3, 10)
+        grid.add(checkersView, 0, 0, 10, 10)
+        grid.add(hbBtn, 11, 0)
+        grid.add(browser, 11, 1, 10, 10)
+        grid.add(fileNameText, 11, 12)
         val scene = Scene(grid, 600.0, 800.0)
 
         primaryStage.scene = scene
