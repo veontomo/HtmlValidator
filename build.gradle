@@ -40,8 +40,8 @@ buildscript {
     }
 }
 sourceSets {
-    main.java.srcDirs += 'src/main/java/'
-    test.java.srcDirs += 'src/test/java/'
+    main.java.srcDirs += 'src/main/kotlin/'
+    test.java.srcDirs += 'src/test/kotlin/'
 }
 
 jar {
