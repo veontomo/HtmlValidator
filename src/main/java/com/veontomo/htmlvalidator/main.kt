@@ -59,13 +59,11 @@ class GUI : Application() {
 
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerNameCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.name) }
-        checkerNameCol.prefWidthProperty().bind(checkersView.widthProperty().divide(2.5))
         checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerStatusCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
-        checkerStatusCol.prefWidthProperty().bind(checkersView.widthProperty().divide(5))
+        checkerStatusCol.maxWidth = 40.0
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
-        checkerCommentCol.prefWidthProperty().bind(checkersView.widthProperty().divide(2.5))
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
         val checkerWidth = 20
         val browserWidth  = 10
