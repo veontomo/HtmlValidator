@@ -37,7 +37,7 @@ class WidthChecker : Checker() {
         val elements = document.select("*")
         val messages: MutableList<CheckMessage> = mutableListOf()
         elements.filterNot { isConsistent(it) }
-                .forEach { messages.add(CheckMessage("Inconsistent width ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"${it.value}\"" }}", false)) }
+                .forEach { messages.add(CheckMessage("Inconsistent width ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"${it.value}\"" }}", false, descriptor)) }
         return messages
 
     }

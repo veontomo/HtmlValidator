@@ -22,7 +22,7 @@ class PlainAttrChecker(val attrPlain: Set<String>) : Checker() {
                 .map { it -> controlPlainAttrs(it) }
                 .filterNot { it.isEmpty() }
                 .distinct()
-                .map { it -> CheckMessage(it.joinToString { it }, false) }
+                .map { it -> CheckMessage(it.joinToString { it }, false, descriptor) }
     }
 
     /**

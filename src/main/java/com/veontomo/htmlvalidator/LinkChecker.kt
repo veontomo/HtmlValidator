@@ -57,7 +57,7 @@ class LinkChecker : Checker() {
         if (history.isNotEmpty()) {
             msgBuilder.append(" after ${history.size} redirects:\n ${history.joinToString(",\n ", "", "", 5, "...", null)}")
         }
-        return CheckMessage(msgBuilder.toString(), status)
+        return CheckMessage(msgBuilder.toString(), status, descriptor)
     }
 
 

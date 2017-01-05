@@ -32,14 +32,30 @@ class Controller(val stage: Stage, val view: GUI) {
     init {
         view.enableSelectBtn(true)
         view.enableAalyzeBtn(false)
-        view.loadItems(checkers.map { Report(it.descriptor, "", "") })
+        view.loadItems(checkers.map { Report(it.descriptor, true, "") })
     }
 
     private fun performCheck(file: File) {
         val text = file.readText()
-        view.loadItems(checkers.map { Report(it.descriptor, "", it.check(text).joinToString { it.msg }) })
+        view.loadItems(checkers.map { val messages = it.check(text); if (messages.isEmpty()) Report(it.descriptor, true, "") else createReport(messages) })
     }
 
+    /**
+     * Merge check messages into a single report.
+     * Assume that all check messages originate from the same checker and that the list contains at least one
+     * message.
+     * The status of the resulting report instance is to be true if and only if statuses of all
+     * check messages are true.
+     * @param messages list of messages. Require that the list contains at least one message and all messages have
+     * the same origin.
+     * @return a report summarizing the check messages
+     */
+    private fun createReport(messages: List<CheckMessage>): Report {
+        val origin = messages[0].origin
+        val status = messages.all { it.status }
+        val summary = messages.joinToString { it.msg }
+        return Report(origin, status, summary)
+    }
 
     fun onSelectBtnClick() {
         val fileChooser = FileChooser()

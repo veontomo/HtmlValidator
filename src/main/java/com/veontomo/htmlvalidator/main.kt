@@ -4,6 +4,7 @@ import com.veontomo.htmlvalidator.Controller.Controller
 import com.veontomo.htmlvalidator.Models.Report
 
 import javafx.application.Application
+import javafx.beans.property.ReadOnlyBooleanWrapper
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.beans.property.StringProperty
 import javafx.beans.property.StringPropertyBase
@@ -59,7 +60,7 @@ class GUI : Application() {
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerNameCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.name) }
         checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerStatusCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.status) }
+        checkerStatusCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
