@@ -65,7 +65,7 @@ class GUI : Application() {
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
-        val checkerWidth = 20
+        val checkerWidth = 30
         val browserWidth  = 10
         grid.add(checkersView, 0, 0, checkerWidth, 10)
         grid.add(hbBtn, checkerWidth + 1, 0)
