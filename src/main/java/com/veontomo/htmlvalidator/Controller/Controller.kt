@@ -14,11 +14,11 @@ class Controller(val stage: Stage, val view: GUI) {
     val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target", "http-equiv", "content", "cellpadding", "cellspacing")
     val attrInline = setOf(
             "width", "max-width", "min-width",
-            "padding", "padding-top", "padding-bottom", "padding-left", "padding-right",
-            "margin", "margin-top", "margin-bottom", "margin-left", "margin-right",
+            "padding", "margin",
             "text-decoration", "text-align", "line-height",
             "font-size", "font-weight", "font-family", "font-style",
             "border", "border-style", "border-spacing",
+            "border-top", "border-bottom",
             "color", "height",
             "display", "vertical-align", "background-color"
     )
