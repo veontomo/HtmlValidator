@@ -22,7 +22,7 @@ class InlineAttrChecker(val attrs: Set<String>) : Checker() {
                 .map { it -> controlInlineAttrs(it) }
                 .filterNot { it.isEmpty() }
                 .distinct()
-                .map { it -> CheckMessage(it.joinToString { it }, false, descriptor) }
+                .map { it -> CheckMessage(it.joinToString { it }, false ) }
     }
 
     /**

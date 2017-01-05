@@ -70,7 +70,7 @@ class AttributeSafeCharChecker : Checker() {
         for ((key, value) in attrs) {
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
             if (unSafeChars.isNotEmpty()) {
-                result.add(CheckMessage("$key=\"$value\" contains unsafe chars: ${unSafeChars.joinToString{ it.toString() }}", false, descriptor))
+                result.add(CheckMessage("$key=\"$value\" contains unsafe chars: ${unSafeChars.joinToString { it.toString() }}", false))
             }
         }
         return result
