@@ -59,16 +59,21 @@ class GUI : Application() {
 
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerNameCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.name) }
+        checkerNameCol.prefWidthProperty().bind(checkersView.widthProperty().divide(2.5))
         checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerStatusCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
+        checkerStatusCol.prefWidthProperty().bind(checkersView.widthProperty().divide(5))
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
+        checkerCommentCol.prefWidthProperty().bind(checkersView.widthProperty().divide(2.5))
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
-        grid.add(checkersView, 0, 0, 10, 10)
-        grid.add(hbBtn, 11, 0)
-        grid.add(browser, 11, 1, 10, 10)
-        grid.add(fileNameText, 11, 12)
-        val scene = Scene(grid, 600.0, 800.0)
+        val checkerWidth = 20
+        val browserWidth  = 10
+        grid.add(checkersView, 0, 0, checkerWidth, 10)
+        grid.add(hbBtn, checkerWidth + 1, 0)
+        grid.add(browser, checkerWidth + 1, 1, browserWidth, 10)
+        grid.add(fileNameText, checkerWidth + 1, 12)
+        val scene = Scene(grid, 1000.0, 800.0)
 
         primaryStage.scene = scene
         primaryStage.show()

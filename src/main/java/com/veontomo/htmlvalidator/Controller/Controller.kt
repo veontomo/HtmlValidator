@@ -50,7 +50,7 @@ class Controller(val stage: Stage, val view: GUI) {
      */
     private fun createReport(origin: String, messages: List<CheckMessage>): Report {
         val status = messages.isEmpty() || messages.all { it.status }
-        val summary = messages.joinToString { it.msg }
+        val summary = messages.joinToString("\n", "", "", -1, "", { it.msg })
         return Report(origin, status, summary)
     }
 
