@@ -44,18 +44,20 @@ class LinkChecker : Checker() {
                 .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
                 .build()
         val msgBuilder = StringBuilder()
+        var status = true
         try {
             val response = client.execute(HttpGet(url), BasicResponseHandler())
             msgBuilder.append("$url returned ${response.length} bytes")
 
         } catch (e: Exception) {
             msgBuilder.append("Error while connecting to url \"$url\": ${e.message}")
+            status = false
         }
         val history = strategy.log
         if (history.isNotEmpty()) {
             msgBuilder.append(" after ${history.size} redirects:\n ${history.joinToString(",\n ", "", "", 5, "...", null)}")
         }
-        return CheckMessage(msgBuilder.toString())
+        return CheckMessage(msgBuilder.toString(), status)
     }
 
 

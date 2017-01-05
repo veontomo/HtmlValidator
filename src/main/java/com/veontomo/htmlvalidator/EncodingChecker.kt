@@ -1,6 +1,5 @@
 package com.veontomo.htmlvalidator
 
-import org.jetbrains.concurrency.all
 import org.jsoup.Jsoup
 
 /**
@@ -34,7 +33,7 @@ class EncodingChecker(private val allowedEncodings: Set<String>) : Checker() {
             }
             else -> "Multiple charsets are found: ${charsets.joinToString { it }}"
         }
-        return if (message == null) listOf() else listOf(CheckMessage(message))
+        return if (message == null) listOf() else listOf(CheckMessage(message, false))
     }
 
 

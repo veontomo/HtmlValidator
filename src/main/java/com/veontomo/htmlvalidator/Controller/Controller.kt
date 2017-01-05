@@ -37,7 +37,7 @@ class Controller(val stage: Stage, val view: GUI) {
 
     private fun performCheck(file: File) {
         val text = file.readText()
-        view.loadItems(checkers.map { Report(it.descriptor, "", it.check(text).joinToString { it.message }) })
+        view.loadItems(checkers.map { Report(it.descriptor, "", it.check(text).joinToString { it.msg }) })
     }
 
 

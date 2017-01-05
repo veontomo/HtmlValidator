@@ -48,7 +48,7 @@ class SafeCharChecker : Checker() {
         lines.forEachIndexed { i, s ->
             val res = filterOutSafe(s)
             if (!res.isEmpty()) {
-                messages.add(CheckMessage("line ${i + 1} \"$s\" contains non-ascii symbols: ${res.joinToString { it -> "\"$it\" (ascii code: ${it.toInt()})" }}"))
+                messages.add(CheckMessage("line ${i + 1} \"$s\" contains non-ascii symbols: ${res.joinToString { it -> "\"$it\" (ascii code: ${it.toInt()})" }}", false))
             }
         }
         return messages

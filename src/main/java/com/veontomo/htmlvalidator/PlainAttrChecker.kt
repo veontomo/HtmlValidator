@@ -18,8 +18,11 @@ class PlainAttrChecker(val attrPlain: Set<String>) : Checker() {
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
         val elements = doc.select("*")
-        return elements.map { it -> controlPlainAttrs(it) }.filterNot { it.isEmpty() }
-                .map { it -> CheckMessage("Invalid attributes: ${it.joinToString { it }}") }
+        return elements
+                .map { it -> controlPlainAttrs(it) }
+                .filterNot { it.isEmpty() }
+                .distinct()
+                .map { it -> CheckMessage(it.joinToString { it }, false) }
     }
 
     /**

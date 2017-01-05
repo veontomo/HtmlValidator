@@ -30,14 +30,14 @@ import org.jsoup.nodes.Element
  *
  */
 class WidthChecker : Checker() {
-    override val descriptor = "Width chcker"
+    override val descriptor = "Width checker"
 
     override fun check(html: String): List<CheckMessage> {
         val document = Jsoup.parse(html)
         val elements = document.select("*")
         val messages: MutableList<CheckMessage> = mutableListOf()
         elements.filterNot { isConsistent(it) }
-                .forEach { messages.add(CheckMessage("Inconsistent width ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"${it.value}\"" }}")) }
+                .forEach { messages.add(CheckMessage("Inconsistent width ${it.tagName()}: ${it.attributes().joinToString { it.key + "=\"${it.value}\"" }}", false)) }
         return messages
 
     }
