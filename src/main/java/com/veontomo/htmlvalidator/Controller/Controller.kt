@@ -38,6 +38,8 @@ class Controller(val stage: Stage, val view: GUI) {
     private fun performCheck(file: File) {
         val text = file.readText()
         view.loadItems(checkers.map { createReport(it.descriptor, it.check(text)) })
+        view.enableAalyzeBtn(true)
+        view.enableSelectBtn(true)
     }
 
     /**
@@ -81,6 +83,8 @@ class Controller(val stage: Stage, val view: GUI) {
     fun onAnalyzeBtnClick() {
         val file = selectedFile
         if (file != null) {
+            view.enableAalyzeBtn(false)
+            view.enableSelectBtn(false)
             performCheck(file)
         }
     }
