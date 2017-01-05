@@ -4,25 +4,19 @@ import com.veontomo.htmlvalidator.Controller.Controller
 import com.veontomo.htmlvalidator.Models.Report
 
 import javafx.application.Application
-import javafx.beans.property.ReadOnlyBooleanWrapper
 import javafx.beans.property.ReadOnlyStringWrapper
-import javafx.beans.property.StringProperty
-import javafx.beans.property.StringPropertyBase
-import javafx.beans.property.adapter.JavaBeanStringProperty
-import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.*
-import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.control.cell.TextFieldTableCell
+import javafx.scene.image.Image
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.Stage
-import javafx.util.Callback
 
 /**
  * Entry point
@@ -47,6 +41,7 @@ class GUI : Application() {
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
+        primaryStage.icons.add(Image("/logo.png"))
         val grid = GridPane()
         grid.alignment = Pos.CENTER
         grid.hgap = 10.0
