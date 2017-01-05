@@ -1,11 +1,12 @@
 group 'HtmlValidator'
-version '1.0.5'
+version '0.0.1'
 buildscript {
     repositories {
         mavenCentral()
     }
 
 }
+
 // create an auxiliary file for the MockMaker of the Mockito 2 framework.
 // see http://hadihariri.com/2016/10/04/Mocking-Kotlin-With-Mockito/
 task createTestResources << {
@@ -28,11 +29,24 @@ repositories {
 }
 
 apply plugin: "application"
+apply plugin: "java"
+apply plugin: "kotlin"
+mainClassName = 'com.veontomo.htmlvalidator.GUI'
+
 buildscript {
     ext.kotlin_version = '1.0.5-2'
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.veontomo.htmlvalidator.MainKt'
+    }
+    // This line of code recursively collects and copies all of a project's files
+    // and adds them to the JAR itself. One can extend this task, to skip certain
+    // files or particular types at will
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 dependencies {

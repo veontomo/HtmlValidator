@@ -41,7 +41,7 @@ class AttributeSafeCharCheckerTest {
         val html = "<!DOCTYPE HTML>" +
                 "<html><body><div style=\"color: #ffffff;\">Hi!</div></body></html>"
         val messages = checker!!.check(html)
-        assertTrue("Document with no unsafe chars must produce no messages, instead got ${messages.joinToString { it.message }}", messages.isEmpty())
+        assertTrue("Document with no unsafe chars must produce no messages, instead got ${messages.joinToString { it.msg }}", messages.isEmpty())
     }
 
     // Cover
@@ -73,7 +73,7 @@ class AttributeSafeCharCheckerTest {
                 "<head><meta http-equiv=\"content-type\" content=\"text/html; charset=ascii\"></head>" +
                 "<html title=\"(escaped) 2 &gt; 1\"><body></body></html>"
         val messages = checker!!.check(html)
-        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.message }}", messages.isEmpty())
+        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.msg }}", messages.isEmpty())
     }
 
     // Cover
@@ -104,7 +104,7 @@ class AttributeSafeCharCheckerTest {
                 "<head><meta name=\"description\" content=\"(escaped) test &hellip; safe\"></head>" +
                 "<html><body></body></html>"
         val messages = checker!!.check(html)
-        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.message }}", messages.isEmpty())
+        assertTrue("Escaped html entities must produce no messages, instead ${messages.joinToString { it.msg }}", messages.isEmpty())
     }
 
     // Cover
@@ -147,7 +147,7 @@ class AttributeSafeCharCheckerTest {
         val html = "<!DOCTYPE HTML>" +
                 "<html><body><p title=\"<br>\">A paragraph</p></body></html>"
         val messages = checker!!.check(html)
-        assertTrue("Presence of a tag \"br\" inside a \"title\" attribute should have been reported: ${messages.joinToString { it.message }}", messages.isEmpty())
+        assertTrue("Presence of a tag \"br\" inside a \"title\" attribute should have been reported: ${messages.joinToString { it.msg }}", messages.isEmpty())
     }
 
 }
