@@ -4,15 +4,21 @@ import org.jsoup.Jsoup
 
 /**
  * Check the encoding.
- * An html document might have the charset impoosed in the tag "meta" in one of the two ways:
+ * An html document might have the charset imposed in the tag "meta" in one of the two ways:
 
  * <meta charset="ascii">
  * <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
- * @param encodings list of allowed encodings
+ * @param allowedEncodings list of allowed encodings
  */
-open class EncodingChecker(val encodings: List<String>) : Checker() {
+class EncodingChecker(private val allowedEncodings: Set<String>) : Checker() {
     override val descriptor = "Encoding checker"
+
+    // create a defencive copy in order to avoid the rep exposure
+    val encodings: Set<String> get() {
+        return allowedEncodings.map { it }.toSet()
+    }
+
     override fun check(html: String): List<CheckMessage> {
         val charsets = getCharset(html)
         val message = when (charsets.size) {
@@ -27,7 +33,7 @@ open class EncodingChecker(val encodings: List<String>) : Checker() {
             }
             else -> "Multiple charsets are found: ${charsets.joinToString { it }}"
         }
-        return if (message == null) listOf() else listOf(CheckMessage(message))
+        return if (message == null) listOf() else listOf(CheckMessage(message, false))
     }
 
 

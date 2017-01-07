@@ -18,8 +18,11 @@ class InlineAttrChecker(val attrs: Set<String>) : Checker() {
     override fun check(html: String): List<CheckMessage> {
         val doc = Jsoup.parse(html)
         val elements = doc.select("*")
-        return elements.map { it -> controlInlineAttrs(it) }.filterNot { it.isEmpty() }
-                .map { it -> CheckMessage("Invalid inline attributes: ${it.joinToString { it }}") }
+        return elements
+                .map { it -> controlInlineAttrs(it) }
+                .filterNot { it.isEmpty() }
+                .distinct()
+                .map { it -> CheckMessage(it.joinToString { it }, false ) }
     }
 
     /**

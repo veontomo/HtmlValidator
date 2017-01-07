@@ -20,13 +20,13 @@ import java.nio.charset.Charset
  * The report refers to a validity of a link: the number of intermediate url used to retrieve
  * the requested one (redirects), the number of bytes received.
  */
-class LinkChecker : Checker() {
+class LinkChecker : com.veontomo.htmlvalidator.Checker() {
     override val descriptor: String = "Link checker"
 
-    override fun check(html: String): List<CheckMessage> {
-        val doc = Jsoup.parse(html)
-        doc.charset(Charset.forName("ASCII"))
-        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
+    override fun check(html: String): List<com.veontomo.htmlvalidator.CheckMessage> {
+        val doc = org.jsoup.Jsoup.parse(html)
+        doc.charset(java.nio.charset.Charset.forName("ASCII"))
+        doc.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml)
         val body = doc.body()
         val links = body.select("a")
         return links.map { link -> link.attr("href") }.distinct().map { it -> analyze(it) }
@@ -37,25 +37,27 @@ class LinkChecker : Checker() {
      * @param url
      * @return  a message about the number of bytes in the received response and the number of redirects
      */
-    private fun analyze(url: String): CheckMessage {
-        val strategy = RedirectLogger()
-        val client = HttpClients.custom()
+    private fun analyze(url: String): com.veontomo.htmlvalidator.CheckMessage {
+        val strategy = com.veontomo.htmlvalidator.LinkChecker.RedirectLogger()
+        val client = org.apache.http.impl.client.HttpClients.custom()
                 .setRedirectStrategy(strategy)
-                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
+                .setDefaultRequestConfig(org.apache.http.client.config.RequestConfig.custom().setCookieSpec(org.apache.http.client.config.CookieSpecs.STANDARD).build())
                 .build()
         val msgBuilder = StringBuilder()
+        var status = true
         try {
-            val response = client.execute(HttpGet(url), BasicResponseHandler())
+            val response = client.execute(org.apache.http.client.methods.HttpGet(url), org.apache.http.impl.client.BasicResponseHandler())
             msgBuilder.append("$url returned ${response.length} bytes")
 
         } catch (e: Exception) {
             msgBuilder.append("Error while connecting to url \"$url\": ${e.message}")
+            status = false
         }
         val history = strategy.log
         if (history.isNotEmpty()) {
             msgBuilder.append(" after ${history.size} redirects:\n ${history.joinToString(",\n ", "", "", 5, "...", null)}")
         }
-        return CheckMessage(msgBuilder.toString())
+        return com.veontomo.htmlvalidator.CheckMessage(msgBuilder.toString(), status)
     }
 
 
@@ -63,8 +65,8 @@ class LinkChecker : Checker() {
      * Immutable class for tracking the log of redirects that occur during retrieval of an uri.
      * The immutability is achieved by using an immutable type (String) and defencive copy.
      */
-    private class RedirectLogger() : DefaultRedirectStrategy() {
-        private val redirectSequence = mutableListOf<URI>()
+    private class RedirectLogger() : org.apache.http.impl.client.DefaultRedirectStrategy() {
+        private val redirectSequence = mutableListOf<java.net.URI>()
 
         val log: List<String>
             get() = redirectSequence.map(URI::toString)

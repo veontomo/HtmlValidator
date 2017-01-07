@@ -11,6 +11,11 @@ abstract class Checker {
      */
     abstract fun check(html: String): List<CheckMessage>
 
+    /**
+     * A short description of the checker.
+     * Require that every checker has a unique descriptor in order to be able
+     * to identify it by this string.
+     */
     abstract val descriptor: String
 }
 
