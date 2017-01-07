@@ -57,26 +57,6 @@ class Controller(val stage: Stage, val view: GUI) {
         return Report(origin, status, summary)
     }
 
-    fun onSelectBtnClick() {
-        val allowedExtensions = listOf("html", "htm")
-        val fileChooser = FileChooser()
-        fileChooser.extensionFilters.addAll(
-                FileChooser.ExtensionFilter("html", allowedExtensions.map { "*.$it" })
-        )
-        fileChooser.title = "Select a file"
-        val file = fileChooser.showOpenDialog(stage)
-
-        if (file?.exists() ?: false) {
-            if (allowedExtensions.contains(file.extension)) {
-                selectedFile = file
-                view.showFileName(selectedFile!!.path)
-                view.showFileContent(selectedFile!!.toURI().toURL().toExternalForm())
-                view.enableAalyzeBtn(true)
-            }
-        } else {
-            view.enableAalyzeBtn(false)
-        }
-    }
 
     /**
      * Perform check of the selected file
@@ -88,6 +68,10 @@ class Controller(val stage: Stage, val view: GUI) {
             view.enableSelectBtn(false)
             performCheck(file)
         }
+    }
+
+    fun  setFile(file: File) {
+        selectedFile = file
     }
 }
 

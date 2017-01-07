@@ -1,6 +1,7 @@
 package com.veontomo.htmlvalidator
 
 import com.veontomo.htmlvalidator.Controller.Controller
+import com.veontomo.htmlvalidator.Controller.FileChooserController
 import com.veontomo.htmlvalidator.Models.Report
 
 import javafx.application.Application
@@ -17,6 +18,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.Stage
+import java.io.File
 
 /**
  * Entry point
@@ -37,7 +39,8 @@ class GUI : Application() {
     val checkerNameCol = TableColumn<Report, String>("Checker")
     val checkerStatusCol = TableColumn<Report, String>("Status")
     val checkerCommentCol = TableColumn<Report, String>("Comment")
-
+    var controller: Controller? = null
+    val fileChooserController: FileChooserController? = null
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -53,15 +56,15 @@ class GUI : Application() {
         hbBtn.children.addAll(selectBtn, analyzeBtn)
 
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerNameCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.name) }
+        checkerNameCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.name) }
         checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerStatusCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
+        checkerStatusCol.setCellValueFactory { data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
         checkerStatusCol.maxWidth = 40.0
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerCommentCol.setCellValueFactory  {data -> ReadOnlyStringWrapper(data.value.comment) }
+        checkerCommentCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.comment) }
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
         val checkerWidth = 30
-        val browserWidth  = 10
+        val browserWidth = 10
         grid.add(checkersView, 0, 0, checkerWidth, 10)
         grid.add(hbBtn, checkerWidth + 1, 0)
         grid.add(browser, checkerWidth + 1, 1, browserWidth, 10)
@@ -70,9 +73,10 @@ class GUI : Application() {
 
         primaryStage.scene = scene
         primaryStage.show()
-        val controller = Controller(primaryStage, this)
-        selectBtn.setOnAction { controller.onSelectBtnClick() }
-        analyzeBtn.setOnAction { controller.onAnalyzeBtnClick() }
+        controller = Controller(primaryStage, this)
+        fileChooserController = FileChooserController(primaryStage, this)
+        selectBtn.setOnAction { fileChooserController?.onSelectBtnClick() }
+        analyzeBtn.setOnAction { controller?.onAnalyzeBtnClick() }
     }
 
     /**
@@ -120,6 +124,10 @@ class GUI : Application() {
         fun main(args: Array<String>) {
             launch(GUI::class.java)
         }
+    }
+
+    fun onFileSelected(file: File) {
+        controller?.setFile(file)
     }
 
 }
