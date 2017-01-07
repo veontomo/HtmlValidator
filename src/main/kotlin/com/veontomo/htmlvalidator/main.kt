@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.Controller.Controller
+import com.veontomo.htmlvalidator.Controller.AnalyzerController
 import com.veontomo.htmlvalidator.Controller.FileChooserController
 import com.veontomo.htmlvalidator.Models.Report
 
@@ -39,8 +39,8 @@ class GUI : Application() {
     val checkerNameCol = TableColumn<Report, String>("Checker")
     val checkerStatusCol = TableColumn<Report, String>("Status")
     val checkerCommentCol = TableColumn<Report, String>("Comment")
-    var controller: Controller? = null
-    val fileChooserController: FileChooserController? = null
+    var analyzerController: AnalyzerController? = null
+    var fileChooserController: FileChooserController? = null
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -73,10 +73,10 @@ class GUI : Application() {
 
         primaryStage.scene = scene
         primaryStage.show()
-        controller = Controller(primaryStage, this)
+        analyzerController = AnalyzerController(primaryStage, this)
         fileChooserController = FileChooserController(primaryStage, this)
         selectBtn.setOnAction { fileChooserController?.onSelectBtnClick() }
-        analyzeBtn.setOnAction { controller?.onAnalyzeBtnClick() }
+        analyzeBtn.setOnAction { analyzerController?.onAnalyzeBtnClick() }
     }
 
     /**
@@ -126,8 +126,12 @@ class GUI : Application() {
         }
     }
 
+    /**
+     * Inform the appropriate controller that the user has selected a file.
+     * @param file
+     */
     fun onFileSelected(file: File) {
-        controller?.setFile(file)
+        analyzerController?.setFile(file)
     }
 
 }
