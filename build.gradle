@@ -9,7 +9,7 @@ buildscript {
 repositories {
     mavenCentral()
 }
-
+apply plugin: 'idea'
 apply plugin: "application"
 buildscript {
     ext.kotlin_version = '1.0.5-2'
