@@ -45,8 +45,10 @@ class GUI : Application() {
     val checkerCommentCol = TableColumn<Report, String>("Comment")
     var analyzerController: AnalyzerController? = null
     var fileChooserController: FileChooserController? = null
-    // keyboard shortcut
-    val fileOpenShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
+    // keyboard shortcut for selecting a file "Ctrl+o"
+    val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
+    // keyboard shortcut for analyzing a selected file "Ctrl+A"
+    val analyzeShortcut = KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN)
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -83,7 +85,8 @@ class GUI : Application() {
         fileChooserController = FileChooserController(primaryStage, this)
         selectBtn.setOnAction { fileChooserController?.onSelectBtnClick() }
         analyzeBtn.setOnAction { analyzerController?.onAnalyzeBtnClick() }
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileOpenShortcut.match(event)) fileChooserController?.onSelectBtnClick() })
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelectBtnClick() })
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyzeBtnClick() })
     }
 
     /**
