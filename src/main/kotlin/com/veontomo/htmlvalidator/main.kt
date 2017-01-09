@@ -13,6 +13,10 @@ import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.image.Image
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
@@ -41,6 +45,8 @@ class GUI : Application() {
     val checkerCommentCol = TableColumn<Report, String>("Comment")
     var analyzerController: AnalyzerController? = null
     var fileChooserController: FileChooserController? = null
+    // keyboard shortcut
+    val fileOpenShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -77,6 +83,7 @@ class GUI : Application() {
         fileChooserController = FileChooserController(primaryStage, this)
         selectBtn.setOnAction { fileChooserController?.onSelectBtnClick() }
         analyzeBtn.setOnAction { analyzerController?.onAnalyzeBtnClick() }
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileOpenShortcut.match(event)) fileChooserController?.onSelectBtnClick() })
     }
 
     /**
