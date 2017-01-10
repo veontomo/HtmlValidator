@@ -33,6 +33,7 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
     init {
         view.enableSelect(true)
         view.enableAnalyze(false)
+        view.enableClear(false)
         view.loadItems(checkers.map { Report(it.descriptor, true, "") })
     }
 
@@ -72,6 +73,15 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
 
     fun  setFile(file: File) {
         selectedFile = file
+    }
+
+    /**
+     * Clear the file
+     */
+    fun onClear() {
+        selectedFile = null
+        view.enableClear(false)
+        view.enableAnalyze(false)
     }
 }
 

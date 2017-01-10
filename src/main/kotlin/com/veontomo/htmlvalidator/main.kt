@@ -20,6 +20,7 @@ import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.Stage
 import java.io.File
+import java.security.Key
 
 /**
  * Entry point
@@ -44,7 +45,8 @@ class GUI : Application() {
     val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
     // keyboard shortcut for analyzing a selected file "Ctrl+a"
     val analyzeShortcut = KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN)
-
+    // keyboard shortcut for clearing the results
+    val clearShortcut = KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN)
     val menuSelect = MenuItem("Select file")
     val menuAnalyze = MenuItem("Analyze file")
     val menuClear = MenuItem("Clear")
@@ -78,7 +80,6 @@ class GUI : Application() {
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty())
         val menuFile = Menu("File")
         val menuInfo = Menu("?")
-        menuSelect.setOnAction({ println("click") })
         menuFile.items.addAll(menuSelect, menuAnalyze, menuClear)
         menuAnalyze.isDisable = true
         menuBar.menus.addAll(menuFile, menuInfo)
@@ -91,10 +92,13 @@ class GUI : Application() {
         fileChooserController = FileChooserController(primaryStage, this)
         menuSelect.setOnAction { fileChooserController?.onSelect() }
         menuAnalyze.setOnAction { analyzerController?.onAnalyze() }
+        menuClear.setOnAction { analyzerController?.onClear() }
         menuSelect.accelerator = fileSelectShortcut
         menuAnalyze.accelerator = analyzeShortcut
+        menuClear.accelerator = clearShortcut
         scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelect() })
         scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyze() })
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (clearShortcut.match(event)) analyzerController?.onClear() })
     }
 
     /**
@@ -127,6 +131,14 @@ class GUI : Application() {
      */
     fun enableSelect(isEnabled: Boolean) {
         menuSelect.isDisable = !isEnabled
+    }
+
+    /**
+     * Enable/disable a menu item that is used to clear the result of analysis
+     * @param isEnabled true to enable, false to disable
+     */
+    fun enableClear(isEnabled: Boolean) {
+        menuClear.isDisable = !isEnabled
     }
 
     /**

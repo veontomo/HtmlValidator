@@ -35,6 +35,7 @@ class FileChooserController(val stage: Stage, val view: GUI) {
                 view.showFileContent(file!!.toURI().toURL().toExternalForm())
                 view.enableAnalyze(true)
                 view.onFileSelected(file)
+                view.enableClear(true)
                 saveLastUsedDir(file!!.parent)
             }
         } else {
@@ -62,5 +63,7 @@ class FileChooserController(val stage: Stage, val view: GUI) {
         val file = File(pref)
         file.writeText(dirName)
     }
+
+
 
 }
