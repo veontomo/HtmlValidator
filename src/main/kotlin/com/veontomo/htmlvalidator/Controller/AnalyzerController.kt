@@ -32,14 +32,14 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
 
     init {
         view.enableSelectBtn(true)
-        view.enableAalyzeBtn(false)
+        view.enableAnalyzeBtn(false)
         view.loadItems(checkers.map { Report(it.descriptor, true, "") })
     }
 
     private fun performCheck(file: File) {
         val text = file.readText()
         view.loadItems(checkers.map { createReport(it.descriptor, it.check(text)) })
-        view.enableAalyzeBtn(true)
+        view.enableAnalyzeBtn(true)
         view.enableSelectBtn(true)
     }
 
@@ -64,7 +64,7 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
     fun onAnalyzeBtnClick() {
         val file = selectedFile
         if (file != null) {
-            view.enableAalyzeBtn(false)
+            view.enableAnalyzeBtn(false)
             view.enableSelectBtn(false)
             performCheck(file)
         }

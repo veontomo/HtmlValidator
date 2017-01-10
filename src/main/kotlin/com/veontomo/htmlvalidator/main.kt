@@ -13,10 +13,7 @@ import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.image.Image
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCombination
-import javafx.scene.input.KeyEvent
+import javafx.scene.input.*
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
@@ -50,14 +47,15 @@ class GUI : Application() {
     // keyboard shortcut for analyzing a selected file "Ctrl+a"
     val analyzeShortcut = KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN)
 
+
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
         primaryStage.icons.add(Image("/logo.png"))
         val grid = GridPane()
-        grid.alignment = Pos.CENTER
+        grid.alignment = Pos.TOP_LEFT
         grid.hgap = 10.0
         grid.vgap = 10.0
-        grid.padding = Insets(25.0, 25.0, 25.0, 25.0)
+        grid.padding = Insets(0.0, 10.0, 10.0, 10.0)
 
         val hbBtn = HBox(10.0)
         hbBtn.alignment = Pos.BOTTOM_LEFT
@@ -74,14 +72,20 @@ class GUI : Application() {
         checkerCommentCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.comment) }
 
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
-        checkersView.minWidth = 500.0
-        val checkerWidth = 30
-        val browserWidth = 30
-        grid.add(checkersView, 0, 0, checkerWidth, 10)
-        grid.add(fileNameText, 0, 10)
-        grid.add(browser, 0, 11, browserWidth, 10)
-        grid.add(hbBtn, checkerWidth + 1, 0)
-        val scene = Scene(grid, 1000.0, 800.0)
+        val checkerWidth = 1
+        val browserWidth = 1
+        grid.add(checkersView, 0, 1, checkerWidth, 10)
+        grid.add(fileNameText, 0, 11)
+        grid.add(browser, 0, 12, browserWidth, 10)
+        val menuBar = MenuBar()
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty())
+        val menuSelect = Menu("Select")
+        menuSelect.addEventHandler(MouseEvent.MOUSE_CLICKED, {_ -> println("select") })
+        val menuAnalyze = Menu("Analyze")
+        val menuClear = Menu("Clear")
+        menuBar.menus.addAll(menuSelect, menuAnalyze, menuClear)
+        grid.children.add(menuBar)
+        val scene = Scene(grid, primaryStage.width - grid.padding.left - grid.padding.right, 500.0)
 
         primaryStage.scene = scene
         primaryStage.show()
@@ -99,7 +103,6 @@ class GUI : Application() {
      */
     fun showFileName(name: String) {
         fileNameText.text = name
-        fileNameText.wrappingWidth = 0.75*browser.width
     }
 
     /**
@@ -114,7 +117,7 @@ class GUI : Application() {
      * Enable/disable the analyze button
      * @param isEnabled status of the button: true to enable, false to disable
      */
-    fun enableAalyzeBtn(isEnabled: Boolean) {
+    fun enableAnalyzeBtn(isEnabled: Boolean) {
         analyzeBtn.isDisable = !isEnabled
     }
 

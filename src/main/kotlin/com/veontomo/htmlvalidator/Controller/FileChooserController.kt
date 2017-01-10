@@ -33,12 +33,12 @@ class FileChooserController(val stage: Stage, val view: GUI) {
             if (allowedExtensions.contains(file.extension)) {
                 view.showFileName(file!!.path)
                 view.showFileContent(file!!.toURI().toURL().toExternalForm())
-                view.enableAalyzeBtn(true)
+                view.enableAnalyzeBtn(true)
                 view.onFileSelected(file)
                 saveLastUsedDir(file!!.parent)
             }
         } else {
-            view.enableAalyzeBtn(false)
+            view.enableAnalyzeBtn(false)
         }
     }
 
