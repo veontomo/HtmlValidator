@@ -14,7 +14,7 @@ class FileChooserController(val stage: Stage, val view: GUI) {
      */
     val pref = "HtmlValidator.history"
 
-    fun onSelectBtnClick() {
+    fun onSelect() {
         val allowedExtensions = listOf("html", "htm")
         val last = readLastUsedFileName()
         val fileChooser = FileChooser()
@@ -33,12 +33,12 @@ class FileChooserController(val stage: Stage, val view: GUI) {
             if (allowedExtensions.contains(file.extension)) {
                 view.showFileName(file!!.path)
                 view.showFileContent(file!!.toURI().toURL().toExternalForm())
-                view.enableAnalyzeBtn(true)
+                view.enableAnalyze(true)
                 view.onFileSelected(file)
                 saveLastUsedDir(file!!.parent)
             }
         } else {
-            view.enableAnalyzeBtn(false)
+            view.enableAnalyze(false)
         }
     }
 

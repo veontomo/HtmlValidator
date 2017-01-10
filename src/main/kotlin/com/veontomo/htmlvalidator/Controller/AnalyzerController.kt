@@ -31,16 +31,16 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
     var selectedFile: File? = null
 
     init {
-        view.enableSelectBtn(true)
-        view.enableAnalyzeBtn(false)
+        view.enableSelect(true)
+        view.enableAnalyze(false)
         view.loadItems(checkers.map { Report(it.descriptor, true, "") })
     }
 
     private fun performCheck(file: File) {
         val text = file.readText()
         view.loadItems(checkers.map { createReport(it.descriptor, it.check(text)) })
-        view.enableAnalyzeBtn(true)
-        view.enableSelectBtn(true)
+        view.enableAnalyze(true)
+        view.enableSelect(true)
     }
 
     /**
@@ -61,11 +61,11 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
     /**
      * Perform check of the selected file
      */
-    fun onAnalyzeBtnClick() {
+    fun onAnalyze() {
         val file = selectedFile
         if (file != null) {
-            view.enableAnalyzeBtn(false)
-            view.enableSelectBtn(false)
+            view.enableAnalyze(false)
+            view.enableSelect(false)
             performCheck(file)
         }
     }

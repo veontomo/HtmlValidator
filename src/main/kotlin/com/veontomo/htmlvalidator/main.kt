@@ -34,8 +34,6 @@ fun main(args: Array<String>) {
 class GUI : Application() {
     val fileNameText = Text()
     val browser = WebView()
-    val selectBtn = Button("Select file")
-    val analyzeBtn = Button("Analyze")
     val checkersView = TableView<Report>()
     val checkerNameCol = TableColumn<Report, String>("Checker")
     val checkerStatusCol = TableColumn<Report, String>("Status")
@@ -47,6 +45,9 @@ class GUI : Application() {
     // keyboard shortcut for analyzing a selected file "Ctrl+a"
     val analyzeShortcut = KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN)
 
+    val menuSelect = MenuItem("Select")
+    val menuAnalyze = MenuItem("Analyze")
+    val menuClear = MenuItem("Clear")
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Html validator"
@@ -56,10 +57,6 @@ class GUI : Application() {
         grid.hgap = 10.0
         grid.vgap = 10.0
         grid.padding = Insets(0.0, 10.0, 10.0, 10.0)
-
-        val hbBtn = HBox(10.0)
-        hbBtn.alignment = Pos.BOTTOM_LEFT
-        hbBtn.children.addAll(selectBtn, analyzeBtn)
 
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerNameCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.name) }
@@ -79,11 +76,12 @@ class GUI : Application() {
         grid.add(browser, 0, 12, browserWidth, 10)
         val menuBar = MenuBar()
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty())
-        val menuSelect = Menu("Select")
-        menuSelect.addEventHandler(MouseEvent.MOUSE_CLICKED, {_ -> println("select") })
-        val menuAnalyze = Menu("Analyze")
-        val menuClear = Menu("Clear")
-        menuBar.menus.addAll(menuSelect, menuAnalyze, menuClear)
+        val menuFile = Menu("File")
+        val menuInfo = Menu("?")
+        menuSelect.setOnAction({ println("click") })
+        menuFile.items.addAll(menuSelect, menuAnalyze, menuClear)
+        menuAnalyze.isDisable = true
+        menuBar.menus.addAll(menuFile, menuInfo)
         grid.children.add(menuBar)
         val scene = Scene(grid, primaryStage.width - grid.padding.left - grid.padding.right, 500.0)
 
@@ -91,10 +89,10 @@ class GUI : Application() {
         primaryStage.show()
         analyzerController = AnalyzerController(primaryStage, this)
         fileChooserController = FileChooserController(primaryStage, this)
-        selectBtn.setOnAction { fileChooserController?.onSelectBtnClick() }
-        analyzeBtn.setOnAction { analyzerController?.onAnalyzeBtnClick() }
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelectBtnClick() })
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyzeBtnClick() })
+        menuSelect.setOnAction { fileChooserController?.onSelect() }
+        menuAnalyze.setOnAction { analyzerController?.onAnalyze() }
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelect() })
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyze() })
     }
 
     /**
@@ -114,19 +112,19 @@ class GUI : Application() {
     }
 
     /**
-     * Enable/disable the analyze button
-     * @param isEnabled status of the button: true to enable, false to disable
+     * Enable/disable a menu item that is used to analyze the file
+     * @param isEnabled true to enable, false to disable
      */
-    fun enableAnalyzeBtn(isEnabled: Boolean) {
-        analyzeBtn.isDisable = !isEnabled
+    fun enableAnalyze(isEnabled: Boolean) {
+        menuAnalyze.isDisable = !isEnabled
     }
 
     /**
-     * Enable/disable the button that is used to select a file
-     * @param isEnabled status of the button: true to enable, false to disable
+     * Enable/disable a menu item that is used to select a file
+     * @param isEnabled true to enable, false to disable
      */
-    fun enableSelectBtn(isEnabled: Boolean) {
-        selectBtn.isDisable = !isEnabled
+    fun enableSelect(isEnabled: Boolean) {
+        menuSelect.isDisable = !isEnabled
     }
 
     /**
