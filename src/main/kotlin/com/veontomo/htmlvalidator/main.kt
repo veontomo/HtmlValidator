@@ -45,8 +45,8 @@ class GUI : Application() {
     // keyboard shortcut for analyzing a selected file "Ctrl+a"
     val analyzeShortcut = KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN)
 
-    val menuSelect = MenuItem("Select")
-    val menuAnalyze = MenuItem("Analyze")
+    val menuSelect = MenuItem("Select file")
+    val menuAnalyze = MenuItem("Analyze file")
     val menuClear = MenuItem("Clear")
 
     override fun start(primaryStage: Stage) {
@@ -91,6 +91,8 @@ class GUI : Application() {
         fileChooserController = FileChooserController(primaryStage, this)
         menuSelect.setOnAction { fileChooserController?.onSelect() }
         menuAnalyze.setOnAction { analyzerController?.onAnalyze() }
+        menuSelect.accelerator = fileSelectShortcut
+        menuAnalyze.accelerator = analyzeShortcut
         scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelect() })
         scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyze() })
     }
