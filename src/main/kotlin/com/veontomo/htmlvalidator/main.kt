@@ -47,7 +47,7 @@ class GUI : Application() {
     var fileChooserController: FileChooserController? = null
     // keyboard shortcut for selecting a file "Ctrl+o"
     val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
-    // keyboard shortcut for analyzing a selected file "Ctrl+A"
+    // keyboard shortcut for analyzing a selected file "Ctrl+a"
     val analyzeShortcut = KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN)
 
     override fun start(primaryStage: Stage) {
@@ -60,7 +60,7 @@ class GUI : Application() {
         grid.padding = Insets(25.0, 25.0, 25.0, 25.0)
 
         val hbBtn = HBox(10.0)
-        hbBtn.alignment = Pos.BOTTOM_RIGHT
+        hbBtn.alignment = Pos.BOTTOM_LEFT
         hbBtn.children.addAll(selectBtn, analyzeBtn)
 
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
@@ -68,15 +68,19 @@ class GUI : Application() {
         checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerStatusCol.setCellValueFactory { data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
         checkerStatusCol.maxWidth = 40.0
+        checkerNameCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.3))
+        checkerCommentCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.5))
         checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerCommentCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.comment) }
+
         checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
+        checkersView.minWidth = 500.0
         val checkerWidth = 30
-        val browserWidth = 10
+        val browserWidth = 30
         grid.add(checkersView, 0, 0, checkerWidth, 10)
+        grid.add(fileNameText, 0, 10)
+        grid.add(browser, 0, 11, browserWidth, 10)
         grid.add(hbBtn, checkerWidth + 1, 0)
-        grid.add(browser, checkerWidth + 1, 1, browserWidth, 10)
-        grid.add(fileNameText, checkerWidth + 1, 12)
         val scene = Scene(grid, 1000.0, 800.0)
 
         primaryStage.scene = scene
@@ -95,6 +99,7 @@ class GUI : Application() {
      */
     fun showFileName(name: String) {
         fileNameText.text = name
+        fileNameText.wrappingWidth = 0.75*browser.width
     }
 
     /**
