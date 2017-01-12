@@ -3,6 +3,7 @@ package com.veontomo.htmlvalidator.Controller
 import com.veontomo.htmlvalidator.*
 import com.veontomo.htmlvalidator.*
 import com.veontomo.htmlvalidator.Models.Report
+import com.veontomo.htmlvalidator.Views.MainView
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
@@ -10,7 +11,7 @@ import java.io.File
 /**
  * A controller that orchestrates execution of available checks of given file.
  */
-class AnalyzerController(val stage: Stage, val view: GUI) {
+class AnalyzerController(val stage: Stage, val view: MainView) {
 
     val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target",
             "http-equiv", "content", "cellpadding", "cellspacing", "lang", "border")

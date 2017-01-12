@@ -1,6 +1,7 @@
 package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.GUI
+import com.veontomo.htmlvalidator.Views.MainView
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
@@ -13,7 +14,7 @@ import java.util.*
 /**
  * Controller for choosing and selecting files for further analysis.
  */
-class FileChooserController(val stage: Stage, val view: GUI) {
+class FileChooserController(val stage: Stage, val view: MainView) {
     /**
      * Name of the file that stores the preferences
      */
