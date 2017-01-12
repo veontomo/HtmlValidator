@@ -4,6 +4,11 @@ import com.veontomo.htmlvalidator.GUI
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
+import java.sql.Time
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 /**
  * Controller for choosing and selecting files for further analysis.
@@ -32,15 +37,26 @@ class FileChooserController(val stage: Stage, val view: GUI) {
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {
                 view.showFileName(file!!.path)
-                view.showFileContent(file!!.toURI().toURL().toExternalForm())
+                view.showFileContent(file.toURI().toURL().toExternalForm())
                 view.enableAnalyze(true)
                 view.onFileSelected(file)
                 view.enableClear(true)
-                saveLastUsedDir(file!!.parent)
+                showFileInfo(file)
+                saveLastUsedDir(file.parent)
             }
         } else {
             view.enableAnalyze(false)
         }
+    }
+
+    /**
+     * Gets info about file (its last modification time) and displays it.
+     * @param file
+     */
+    private fun showFileInfo(file: File) {
+        val time = Date(file.lastModified())
+        val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale("Italy"))
+        view.showFileInfo(formatter.format(time))
     }
 
     /**

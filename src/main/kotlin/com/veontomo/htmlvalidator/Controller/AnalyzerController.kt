@@ -12,13 +12,14 @@ import java.io.File
  */
 class AnalyzerController(val stage: Stage, val view: GUI) {
 
-    val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target", "http-equiv", "content", "cellpadding", "cellspacing")
+    val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target",
+            "http-equiv", "content", "cellpadding", "cellspacing", "lang", "border")
     val attrInline = setOf(
             "width", "max-width", "min-width",
             "padding", "margin",
             "text-decoration", "text-align", "line-height",
             "font-size", "font-weight", "font-family", "font-style",
-            "border", "border-style", "border-spacing",
+            "border", "border-style", "border-spacing", "border-collapse",
             "border-top", "border-bottom",
             "color", "height",
             "display", "vertical-align", "background-color"
@@ -37,11 +38,9 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
         view.loadItems(checkers.map { Report(it.descriptor, true, "") })
     }
 
-    private fun performCheck(file: File) {
+    private fun performCheck(file: File): List<Report> {
         val text = file.readText()
-        view.loadItems(checkers.map { createReport(it.descriptor, it.check(text)) })
-        view.enableAnalyze(true)
-        view.enableSelect(true)
+        return checkers.map { createReport(it.descriptor, it.check(text)) }
     }
 
     /**
@@ -67,11 +66,14 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
         if (file != null) {
             view.enableAnalyze(false)
             view.enableSelect(false)
-            performCheck(file)
+            val reports = performCheck(file)
+            view.loadItems(reports)
+            view.enableAnalyze(true)
+            view.enableSelect(true)
         }
     }
 
-    fun  setFile(file: File) {
+    fun setFile(file: File) {
         selectedFile = file
     }
 
@@ -82,6 +84,17 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
         selectedFile = null
         view.enableClear(false)
         view.enableAnalyze(false)
+        view.showFileInfo("")
+        view.showFileName("")
+        view.showFileContent(null)
+        view.loadItems(createEmptyReport())
+    }
+
+    /**
+     * Create a fictitious report in order to clear the table with checkers' results.
+     */
+    private fun createEmptyReport(): List<Report> {
+        return checkers.map { Report(it.descriptor, null, null) }
     }
 }
 

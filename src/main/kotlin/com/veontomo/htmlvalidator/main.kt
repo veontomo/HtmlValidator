@@ -15,12 +15,10 @@ import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.image.Image
 import javafx.scene.input.*
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.Stage
 import java.io.File
-import java.security.Key
 
 /**
  * Entry point
@@ -34,6 +32,7 @@ fun main(args: Array<String>) {
  */
 class GUI : Application() {
     val fileNameText = Text()
+    val fileInfoText = Text()
     val browser = WebView()
     val checkersView = TableView<Report>()
     val checkerNameCol = TableColumn<Report, String>("Checker")
@@ -63,7 +62,11 @@ class GUI : Application() {
         checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
         checkerNameCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.name) }
         checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerStatusCol.setCellValueFactory { data -> ReadOnlyStringWrapper(if (data.value.status) "OK" else "Fail") }
+        checkerStatusCol.setCellValueFactory { data -> ReadOnlyStringWrapper(when (data.value.status ){
+            true -> "OK"
+            false -> "Fail"
+            else -> ""
+        }) }
         checkerStatusCol.maxWidth = 40.0
         checkerNameCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.3))
         checkerCommentCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.5))
@@ -74,8 +77,9 @@ class GUI : Application() {
         val checkerWidth = 1
         val browserWidth = 1
         grid.add(checkersView, 0, 1, checkerWidth, 10)
-        grid.add(fileNameText, 0, 11)
-        grid.add(browser, 0, 12, browserWidth, 10)
+        grid.add(browser, 0, 11, browserWidth, 10)
+        grid.add(fileNameText, 0, 21)
+        grid.add(fileInfoText, 0, 22)
         val menuBar = MenuBar()
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty())
         val menuFile = Menu("File")
@@ -110,10 +114,18 @@ class GUI : Application() {
     }
 
     /**
+     * Display file info
+     * @param data information to display
+     */
+    fun showFileInfo(data: String) {
+        fileInfoText.text =  if (!data.isBlank()) "Last modified: $data" else null
+    }
+
+    /**
      * Display the content of the selected file inside the web viewer.
      * @param url
      */
-    fun showFileContent(url: String) {
+    fun showFileContent(url: String?) {
         browser.engine.load(url)
     }
 
@@ -145,7 +157,7 @@ class GUI : Application() {
      * Load the items in to the list view
      * @param items
      */
-    fun loadItems(items: List<Report>) {
+    fun loadItems(items: List<Report>){
         checkersView.items = FXCollections.observableArrayList(items)
     }
 
@@ -163,6 +175,7 @@ class GUI : Application() {
     fun onFileSelected(file: File) {
         analyzerController?.setFile(file)
     }
+
 
 }
 
