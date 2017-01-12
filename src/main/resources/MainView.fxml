@@ -12,21 +12,22 @@
     <padding>
         <Insets top="5" right="5" bottom="5" left="5"/>
     </padding>
-    <MenuBar fx:id="" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
+    <gridLinesVisible>true</gridLinesVisible>
+    <MenuBar GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
         <menus>
             <Menu text="File">
-                <MenuItem text="Load"></MenuItem>
-                <MenuItem text="Analyze"></MenuItem>
+                <MenuItem text="Load" fx:id="menuSelect" disable="true"/>
+                <MenuItem text="Analyze" fx:id="menuAnalyze" disable="true"/>
+                <MenuItem text="Clear" fx:id="menuClear" disable="true"/>
             </Menu>
         </menus>
     </MenuBar>
-    <gridLinesVisible>true</gridLinesVisible>
-    <TableView fx:id="checkersView" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
-    <WebView fx:id="browser" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
-    <Text fx:id="fileNameText" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.columnSpan="2">
+    <TableView fx:id="checkersView" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
+    <WebView fx:id="browser" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
+    <Text fx:id="fileNameText" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
         File name
     </Text>
-    <Text fx:id="fileInfoText" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="2">
+    <Text fx:id="fileInfoText" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
         File info
     </Text>
 
