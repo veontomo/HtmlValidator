@@ -1,7 +1,13 @@
 import com.veontomo.htmlvalidator.GUI;
+import com.veontomo.htmlvalidator.Views.MainView;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.matcher.base.NodeMatchers.hasChildren;
 
 /**
  * Test suite for  GUI of the app.
@@ -9,8 +15,21 @@ import org.testfx.framework.junit.ApplicationTest;
 public class AcceptanceTest extends ApplicationTest {
     @Override
     public void start(Stage stage) throws Exception {
-//        Scene scene = new Scene(new GUI(), 800, 600);
-//        stage.setScene(scene);
-//        stage.show();
+//        Scene scene = new Scene(MainView(stage).getScene(), 800, 600);
+
+        stage.setScene(new MainView(stage).getScene());
+        stage.show();
+    }
+
+    @Test
+    public void should_drag_file_into_trashcan() {
+        // given:
+//        clickOn(".menuSelect");
+//        rightClickOn("#desktop").moveTo("New").clickOn("Text Document");
+//        write("myTextfile.txt").push(KeyCode.ENTER);
+
+
+        // then:
+//        verifyThat("#desktop", hasChildren(0, ".file"));
     }
 }

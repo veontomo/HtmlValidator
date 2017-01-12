@@ -1,14 +1,10 @@
 package com.veontomo.htmlvalidator.Controller
 
-import com.veontomo.htmlvalidator.GUI
 import com.veontomo.htmlvalidator.Views.MainView
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
-import java.sql.Time
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**

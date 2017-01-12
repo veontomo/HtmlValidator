@@ -1,10 +1,8 @@
 package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.*
-import com.veontomo.htmlvalidator.*
 import com.veontomo.htmlvalidator.Models.Report
 import com.veontomo.htmlvalidator.Views.MainView
-import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
 
