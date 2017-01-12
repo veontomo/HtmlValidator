@@ -35,7 +35,7 @@ class AnalyzerController(val stage: Stage, val view: GUI) {
         view.enableSelect(true)
         view.enableAnalyze(false)
         view.enableClear(false)
-        view.loadItems(checkers.map { Report(it.descriptor, true, "") })
+        view.loadItems(createEmptyReport())
     }
 
     private fun performCheck(file: File): List<Report> {
