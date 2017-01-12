@@ -22,9 +22,9 @@ public class AcceptanceTest extends ApplicationTest {
     }
 
     @Test
-    public void should_drag_file_into_trashcan() {
+    public void clickOnMenuSelect() {
         // given:
-//        clickOn(".menuSelect");
+        clickOn("menuSelect");
 //        rightClickOn("#desktop").moveTo("New").clickOn("Text Document");
 //        write("myTextfile.txt").push(KeyCode.ENTER);
 
