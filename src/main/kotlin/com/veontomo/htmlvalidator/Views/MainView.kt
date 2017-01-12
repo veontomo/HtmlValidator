@@ -26,7 +26,6 @@ import java.io.File
  */
 class MainView(val stage: Stage) {
 
-    val browser = WebView()
     val checkerNameCol = TableColumn<Report, String>("Checker")
     val checkerStatusCol = TableColumn<Report, String>("Status")
     val checkerCommentCol = TableColumn<Report, String>("Comment")
@@ -119,7 +118,7 @@ class MainView(val stage: Stage) {
      * @param url
      */
     fun showFileContent(url: String?) {
-        browser.engine.load(url)
+//        browser.engine.load(url)
     }
 
     /**

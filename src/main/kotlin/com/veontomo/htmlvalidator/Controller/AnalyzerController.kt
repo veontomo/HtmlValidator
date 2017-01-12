@@ -6,13 +6,14 @@ import com.veontomo.htmlvalidator.Views.MainView
 import javafx.fxml.FXML
 import javafx.scene.control.TableView
 import javafx.scene.text.Text
+import javafx.scene.web.WebView
 import javafx.stage.Stage
 import java.io.File
 
 /**
  * A controller that orchestrates execution of available checks of given file.
  */
-class AnalyzerController() {
+class AnalyzerController {
 
 
     @FXML
@@ -21,6 +22,9 @@ class AnalyzerController() {
     val fileNameText = Text()
     @FXML
     val fileInfoText = Text()
+    @FXML
+    val browser = WebView()
+
     val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target",
             "http-equiv", "content", "cellpadding", "cellspacing", "lang", "border")
     val attrInline = setOf(

@@ -6,15 +6,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.web.WebView?>
 <GridPane fx:controller="com.veontomo.htmlvalidator.Controller.AnalyzerController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <padding>
-        <Insets top="25" right="25" bottom="10" left="25"/>
+        <Insets top="5" right="5" bottom="5" left="5"/>
     </padding>
+    <MenuBar fx:id="" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
+        <menus>
+            <Menu text="File">
+                <MenuItem text="Load"></MenuItem>
+                <MenuItem text="Analyze"></MenuItem>
+            </Menu>
+        </menus>
+    </MenuBar>
     <gridLinesVisible>true</gridLinesVisible>
-    <TableView fx:id="checkersView"
-          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    <Text fx:id="fileNameText" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.rowSpan="3">
-
+    <TableView fx:id="checkersView" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
+    <WebView fx:id="browser" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
+    <Text fx:id="fileNameText" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.columnSpan="2">
+        File name
     </Text>
+    <Text fx:id="fileInfoText" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="2">
+        File info
+    </Text>
+
 </GridPane>
