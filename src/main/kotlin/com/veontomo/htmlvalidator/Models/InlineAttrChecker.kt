@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator
+package com.veontomo.htmlvalidator.Models
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element

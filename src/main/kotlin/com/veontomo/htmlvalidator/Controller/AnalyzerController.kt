@@ -1,7 +1,9 @@
 package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.*
+import com.veontomo.htmlvalidator.Models.PlainAttrChecker
 import com.veontomo.htmlvalidator.Models.Report
+import com.veontomo.htmlvalidator.Models.SafeCharChecker
 import com.veontomo.htmlvalidator.Views.MainView
 import javafx.fxml.FXML
 import javafx.fxml.Initializable

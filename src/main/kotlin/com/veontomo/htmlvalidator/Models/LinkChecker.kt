@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator
+package com.veontomo.htmlvalidator.Models
 
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
@@ -20,10 +20,10 @@ import java.nio.charset.Charset
  * The report refers to a validity of a link: the number of intermediate url used to retrieve
  * the requested one (redirects), the number of bytes received.
  */
-class LinkChecker : com.veontomo.htmlvalidator.Checker() {
+class LinkChecker : com.veontomo.htmlvalidator.Models.Checker() {
     override val descriptor: String = "Link checker"
 
-    override fun check(html: String): List<com.veontomo.htmlvalidator.CheckMessage> {
+    override fun check(html: String): List<com.veontomo.htmlvalidator.Models.CheckMessage> {
         val doc = org.jsoup.Jsoup.parse(html)
         doc.charset(java.nio.charset.Charset.forName("ASCII"))
         doc.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml)
@@ -37,8 +37,8 @@ class LinkChecker : com.veontomo.htmlvalidator.Checker() {
      * @param url
      * @return  a message about the number of bytes in the received response and the number of redirects
      */
-    private fun analyze(url: String): com.veontomo.htmlvalidator.CheckMessage {
-        val strategy = com.veontomo.htmlvalidator.LinkChecker.RedirectLogger()
+    private fun analyze(url: String): com.veontomo.htmlvalidator.Models.CheckMessage {
+        val strategy = com.veontomo.htmlvalidator.Models.LinkChecker.RedirectLogger()
         val client = org.apache.http.impl.client.HttpClients.custom()
                 .setRedirectStrategy(strategy)
                 .setDefaultRequestConfig(org.apache.http.client.config.RequestConfig.custom().setCookieSpec(org.apache.http.client.config.CookieSpecs.STANDARD).build())
@@ -57,7 +57,7 @@ class LinkChecker : com.veontomo.htmlvalidator.Checker() {
         if (history.isNotEmpty()) {
             msgBuilder.append(" after ${history.size} redirects:\n ${history.joinToString(",\n ", "", "", 5, "...", null)}")
         }
-        return com.veontomo.htmlvalidator.CheckMessage(msgBuilder.toString(), status)
+        return com.veontomo.htmlvalidator.Models.CheckMessage(msgBuilder.toString(), status)
     }
 
 
