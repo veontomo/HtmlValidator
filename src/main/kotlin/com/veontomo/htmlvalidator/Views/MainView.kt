@@ -5,6 +5,7 @@ import com.veontomo.htmlvalidator.Controller.FileChooserController
 import com.veontomo.htmlvalidator.Models.Report
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.collections.FXCollections
+import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
@@ -25,10 +26,7 @@ import java.io.File
  */
 class MainView(val stage: Stage) {
 
-    val fileNameText = Text()
-    val fileInfoText = Text()
     val browser = WebView()
-    val checkersView = TableView<Report>()
     val checkerNameCol = TableColumn<Report, String>("Checker")
     val checkerStatusCol = TableColumn<Report, String>("Status")
     val checkerCommentCol = TableColumn<Report, String>("Comment")
@@ -46,57 +44,57 @@ class MainView(val stage: Stage) {
 
     fun getScene(): Scene {
 
-        val grid = GridPane()
+        val grid = FXMLLoader.load<GridPane>(javaClass.getResource("/MainView.fxml"))
         val scene = Scene(grid, stage.width - grid.padding.left - grid.padding.right, 500.0)
-        grid.alignment = Pos.TOP_LEFT
-        grid.hgap = 10.0
-        grid.vgap = 10.0
-        grid.padding = Insets(0.0, 10.0, 10.0, 10.0)
-
-        checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerNameCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.name) }
-        checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerStatusCol.setCellValueFactory { data ->
-            ReadOnlyStringWrapper(when (data.value.status) {
-                true -> "OK"
-                false -> "Fail"
-                else -> ""
-            })
-        }
-        checkerStatusCol.maxWidth = 40.0
-        checkerNameCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.3))
-        checkerCommentCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.5))
-        checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
-        checkerCommentCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.comment) }
-
-        checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
-        val checkerWidth = 1
-        val browserWidth = 1
-        grid.add(checkersView, 0, 1, checkerWidth, 10)
-        grid.add(browser, 0, 11, browserWidth, 10)
-        grid.add(fileNameText, 0, 21)
-        grid.add(fileInfoText, 0, 22)
-        val menuBar = MenuBar()
-        menuBar.prefWidthProperty().bind(stage.widthProperty())
-        val menuFile = Menu("File")
-        val menuInfo = Menu("?")
-        menuFile.items.addAll(menuSelect, menuAnalyze, menuClear)
-        menuAnalyze.isDisable = true
-        menuBar.menus.addAll(menuFile, menuInfo)
-        grid.children.add(menuBar)
+//        grid.alignment = Pos.TOP_LEFT
+//        grid.hgap = 10.0
+//        grid.vgap = 10.0
+//        grid.padding = Insets(0.0, 10.0, 10.0, 10.0)
+//
+//        checkerNameCol.cellFactory = TextFieldTableCell.forTableColumn()
+//        checkerNameCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.name) }
+//        checkerStatusCol.cellFactory = TextFieldTableCell.forTableColumn()
+//        checkerStatusCol.setCellValueFactory { data ->
+//            ReadOnlyStringWrapper(when (data.value.status) {
+//                true -> "OK"
+//                false -> "Fail"
+//                else -> ""
+//            })
+//        }
+//        checkerStatusCol.maxWidth = 40.0
+//        checkerNameCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.3))
+//        checkerCommentCol.prefWidthProperty().bind(checkersView.widthProperty().multiply(0.5))
+//        checkerCommentCol.cellFactory = TextFieldTableCell.forTableColumn()
+//        checkerCommentCol.setCellValueFactory { data -> ReadOnlyStringWrapper(data.value.comment) }
+//
+//        checkersView.columns.addAll(checkerNameCol, checkerStatusCol, checkerCommentCol)
+//        val checkerWidth = 1
+//        val browserWidth = 1
+//        grid.add(checkersView, 0, 1, checkerWidth, 10)
+//        grid.add(browser, 0, 11, browserWidth, 10)
+//        grid.add(fileNameText, 0, 21)
+//        grid.add(fileInfoText, 0, 22)
+//        val menuBar = MenuBar()
+//        menuBar.prefWidthProperty().bind(stage.widthProperty())
+//        val menuFile = Menu("File")
+//        val menuInfo = Menu("?")
+//        menuFile.items.addAll(menuSelect, menuAnalyze, menuClear)
+//        menuAnalyze.isDisable = true
+//        menuBar.menus.addAll(menuFile, menuInfo)
+//        grid.children.add(menuBar)
 //        val scene = Scene(grid, primaryStage.width - grid.padding.left - grid.padding.right, 500.0)
 
-        analyzerController = AnalyzerController(stage, this)
-        fileChooserController = FileChooserController(stage, this)
-        menuSelect.setOnAction { fileChooserController?.onSelect() }
-        menuAnalyze.setOnAction { analyzerController?.onAnalyze() }
-        menuClear.setOnAction { analyzerController?.onClear() }
-        menuSelect.accelerator = fileSelectShortcut
-        menuAnalyze.accelerator = analyzeShortcut
-        menuClear.accelerator = clearShortcut
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelect() })
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyze() })
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (clearShortcut.match(event)) analyzerController?.onClear() })
+//        analyzerController = AnalyzerController(stage, this)
+//        fileChooserController = FileChooserController(stage, this)
+//        menuSelect.setOnAction { fileChooserController?.onSelect() }
+//        menuAnalyze.setOnAction { analyzerController?.onAnalyze() }
+//        menuClear.setOnAction { analyzerController?.onClear() }
+//        menuSelect.accelerator = fileSelectShortcut
+//        menuAnalyze.accelerator = analyzeShortcut
+//        menuClear.accelerator = clearShortcut
+//        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (fileSelectShortcut.match(event)) fileChooserController?.onSelect() })
+//        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (analyzeShortcut.match(event)) analyzerController?.onAnalyze() })
+//        scene.addEventHandler(KeyEvent.KEY_RELEASED, { event -> if (clearShortcut.match(event)) analyzerController?.onClear() })
         return scene
     }
 
@@ -105,7 +103,7 @@ class MainView(val stage: Stage) {
      * @param name file name
      */
     fun showFileName(name: String) {
-        fileNameText.text = name
+//        fileNameText.text = name
     }
 
     /**
@@ -113,7 +111,7 @@ class MainView(val stage: Stage) {
      * @param data information to display
      */
     fun showFileInfo(data: String) {
-        fileInfoText.text = if (!data.isBlank()) "Last modified: $data" else null
+//        fileInfoText.text = if (!data.isBlank()) "Last modified: $data" else null
     }
 
     /**
@@ -153,7 +151,7 @@ class MainView(val stage: Stage) {
      * @param items
      */
     fun loadItems(items: List<Report>) {
-        checkersView.items = FXCollections.observableArrayList(items)
+//        checkersView.items = FXCollections.observableArrayList(items)
     }
 
     /**

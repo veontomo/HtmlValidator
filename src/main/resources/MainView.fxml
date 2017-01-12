@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:controller="com.veontomo.htmlvalidator.Controller.AnalyzerController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <padding>
+        <Insets top="25" right="25" bottom="10" left="25"/>
+    </padding>
+    <gridLinesVisible>true</gridLinesVisible>
+    <TableView fx:id="checkersView"
+          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Text fx:id="fileNameText" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.rowSpan="3">
+
+    </Text>
+</GridPane>

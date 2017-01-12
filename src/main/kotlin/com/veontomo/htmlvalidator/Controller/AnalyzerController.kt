@@ -3,14 +3,24 @@ package com.veontomo.htmlvalidator.Controller
 import com.veontomo.htmlvalidator.*
 import com.veontomo.htmlvalidator.Models.Report
 import com.veontomo.htmlvalidator.Views.MainView
+import javafx.fxml.FXML
+import javafx.scene.control.TableView
+import javafx.scene.text.Text
 import javafx.stage.Stage
 import java.io.File
 
 /**
  * A controller that orchestrates execution of available checks of given file.
  */
-class AnalyzerController(val stage: Stage, val view: MainView) {
+class AnalyzerController() {
 
+
+    @FXML
+    val checkersView = TableView<Report>()
+    @FXML
+    val fileNameText = Text()
+    @FXML
+    val fileInfoText = Text()
     val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target",
             "http-equiv", "content", "cellpadding", "cellspacing", "lang", "border")
     val attrInline = setOf(
@@ -31,10 +41,10 @@ class AnalyzerController(val stage: Stage, val view: MainView) {
     var selectedFile: File? = null
 
     init {
-        view.enableSelect(true)
-        view.enableAnalyze(false)
-        view.enableClear(false)
-        view.loadItems(createEmptyReport())
+//        view.enableSelect(true)
+//        view.enableAnalyze(false)
+//        view.enableClear(false)
+//        view.loadItems(createEmptyReport())
     }
 
     private fun performCheck(file: File): List<Report> {
@@ -63,12 +73,12 @@ class AnalyzerController(val stage: Stage, val view: MainView) {
     fun onAnalyze() {
         val file = selectedFile
         if (file != null) {
-            view.enableAnalyze(false)
-            view.enableSelect(false)
-            val reports = performCheck(file)
-            view.loadItems(reports)
-            view.enableAnalyze(true)
-            view.enableSelect(true)
+//            view.enableAnalyze(false)
+//            view.enableSelect(false)
+//            val reports = performCheck(file)
+//            view.loadItems(reports)
+//            view.enableAnalyze(true)
+//            view.enableSelect(true)
         }
     }
 
@@ -81,12 +91,12 @@ class AnalyzerController(val stage: Stage, val view: MainView) {
      */
     fun onClear() {
         selectedFile = null
-        view.enableClear(false)
-        view.enableAnalyze(false)
-        view.showFileInfo("")
-        view.showFileName("")
-        view.showFileContent(null)
-        view.loadItems(createEmptyReport())
+//        view.enableClear(false)
+//        view.enableAnalyze(false)
+//        view.showFileInfo("")
+//        view.showFileName("")
+//        view.showFileContent(null)
+//        view.loadItems(createEmptyReport())
     }
 
     /**
