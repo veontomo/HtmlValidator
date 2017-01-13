@@ -1,5 +1,6 @@
 import com.veontomo.htmlvalidator.GUI;
 import com.veontomo.htmlvalidator.Views.MainView;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -24,7 +25,8 @@ public class AcceptanceTest extends ApplicationTest {
     @Test
     public void clickOnMenuSelect() {
         // given:
-        clickOn("menuSelect");
+        clickOn("#menuFile");
+        verifyThat("#menuSelect", Node::isDisable);
 //        rightClickOn("#desktop").moveTo("New").clickOn("Text Document");
 //        write("myTextfile.txt").push(KeyCode.ENTER);
 

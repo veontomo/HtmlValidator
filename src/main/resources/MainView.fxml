@@ -15,7 +15,7 @@
     <gridLinesVisible>true</gridLinesVisible>
     <MenuBar GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
         <menus>
-            <Menu text="File">
+            <Menu text="File" fx:id="menuFile">
                 <MenuItem text="Load" fx:id="menuSelect" disable="true"/>
                 <MenuItem text="Analyze" fx:id="menuAnalyze" disable="true"/>
                 <MenuItem text="Clear" fx:id="menuClear" disable="true"/>
