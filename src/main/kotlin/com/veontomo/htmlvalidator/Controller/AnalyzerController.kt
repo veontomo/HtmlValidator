@@ -22,7 +22,7 @@ import java.util.*
  * A controller that orchestrates execution of available checks of given file.
  */
 class AnalyzerController : Initializable {
-//    @FXML private var checkersView: TableView<Report>? = null
+    @FXML private var checkersView: TableView<Report>? = null
     @FXML private var fileNameText: Text? = null
     @FXML private var fileInfoText: Text? = null
     @FXML private var browser: WebView? = null

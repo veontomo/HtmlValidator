@@ -25,14 +25,14 @@
         </menus>
     </MenuBar>
     <TableView fx:id="checkersView" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
-        <!--<columns>-->
-            <!--<TableColumn text="Checker">-->
-            <!--</TableColumn>-->
-            <!--<TableColumn text="Status">-->
-            <!--</TableColumn>-->
-            <!--<TableColumn text="Comment">-->
-            <!--</TableColumn>-->
-        <!--</columns>-->
+        <columns>
+            <TableColumn text="Checker">
+            </TableColumn>
+            <TableColumn text="Status">
+            </TableColumn>
+            <TableColumn text="Comment">
+            </TableColumn>
+        </columns>
     </TableView>
     <WebView fx:id="browser" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
     <Text fx:id="fileNameText" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
