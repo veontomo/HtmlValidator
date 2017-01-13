@@ -21,13 +21,13 @@ import java.util.*
  * A controller that orchestrates execution of available checks of given file.
  */
 class AnalyzerController : Initializable {
-    @FXML var checkersView: TableView<Report>? = null
-    @FXML var fileNameText: Text? = null
-    @FXML var fileInfoText: Text? = null
-    @FXML var browser: WebView? = null
-    @FXML var menuSelect: MenuItem? = null
-    @FXML var menuAnalyze: MenuItem? = null
-    @FXML var menuClear: MenuItem? = null
+    @FXML private var checkersView: TableView<Report>? = null
+    @FXML private var fileNameText: Text? = null
+    @FXML private var fileInfoText: Text? = null
+    @FXML private var browser: WebView? = null
+    @FXML private var menuSelect: MenuItem? = null
+    @FXML private var menuAnalyze: MenuItem? = null
+    @FXML private var menuClear: MenuItem? = null
 
     // keyboard shortcut for selecting a file "Ctrl+o"
     val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
