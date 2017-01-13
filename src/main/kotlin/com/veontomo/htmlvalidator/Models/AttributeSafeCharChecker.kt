@@ -3,9 +3,7 @@ package com.veontomo.htmlvalidator.Models
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
-import org.jsoup.parser.Parser
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 import java.nio.charset.Charset
 
 /**
@@ -70,7 +68,7 @@ class AttributeSafeCharChecker : Checker() {
         for ((key, value) in attrs) {
             val unSafeChars = value.toCharArray().filterNot { c -> isSafeChar(c) }
             if (unSafeChars.isNotEmpty()) {
-                result.add(CheckMessage("$key=\"$value\" contains unsafe chars: ${unSafeChars.joinToString { it.toString() }}", false))
+                result.add(CheckMessage("$key=\"$value\" contains unsafe chars: ${unSafeChars.joinToString(transform = Char::toString)}", false))
             }
         }
         return result

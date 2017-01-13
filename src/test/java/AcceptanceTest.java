@@ -1,14 +1,10 @@
-import com.veontomo.htmlvalidator.GUI;
 import com.veontomo.htmlvalidator.Views.MainView;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.base.NodeMatchers.hasChildren;
 
 /**
  * Test suite for  GUI of the app.

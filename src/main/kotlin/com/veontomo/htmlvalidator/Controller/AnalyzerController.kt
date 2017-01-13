@@ -12,7 +12,6 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
-import javafx.stage.Stage
 import java.io.File
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -107,10 +106,6 @@ class AnalyzerController : Initializable {
             enableAnalyze(true)
             enableSelect(true)
         }
-    }
-
-    fun setFile(file: File) {
-        selectedFile = file
     }
 
     /**

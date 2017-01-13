@@ -1,6 +1,5 @@
 package com.veontomo.htmlvalidator.Models
 
-import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 
@@ -19,17 +18,17 @@ class Report() {
         if (comment != null) commentProp.set(comment)
     }
 
-    var name
+    var name: String
         set(value) {
             nameProp.set(value)
         }
         get() = nameProp.get()
-    var status
+    var status: Boolean?
         set(value) {
             statusProp.set(value)
         }
         get() = statusProp.get()
-    var comment
+    var comment: String?
         set(value) {
             commentProp.set(value)
         }
