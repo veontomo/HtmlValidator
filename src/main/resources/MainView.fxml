@@ -15,7 +15,7 @@
     <padding>
         <Insets top="5" right="5" bottom="5" left="5"/>
     </padding>
-    <gridLinesVisible>true</gridLinesVisible>
+    <!--<gridLinesVisible>true</gridLinesVisible>-->
     <MenuBar GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
         <menus>
             <Menu text="File" fx:id="menuFile">
@@ -27,17 +27,17 @@
     </MenuBar>
     <TableView fx:id="checkersView" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
         <columns>
-            <TableColumn text="Checker">
+            <TableColumn text="Checker" prefWidth="200">
                 <cellValueFactory>
                     <PropertyValueFactory property="name"/>
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Status">
+            <TableColumn text="Status" maxWidth="50">
                 <cellValueFactory>
                     <PropertyValueFactory property="status"/>
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Comment">
+            <TableColumn text="Comment" minWidth="500">
                 <cellValueFactory>
                     <PropertyValueFactory property="comment"/>
                 </cellValueFactory>

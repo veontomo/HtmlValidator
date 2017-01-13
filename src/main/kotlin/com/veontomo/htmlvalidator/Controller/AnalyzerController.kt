@@ -78,6 +78,11 @@ class AnalyzerController : Initializable {
         return checkers.map { createReport(it.descriptor, it.check(text)) }
     }
 
+    private val STATUS_OK = "ok"
+
+    private val STATUS_FAILURE = "Fail"
+    private val STATUS_UNKNOWN = ""
+
     /**
      * Merge check messages into a single report.
      * Assume that all check messages originate from the same checker.
@@ -89,7 +94,8 @@ class AnalyzerController : Initializable {
     private fun createReport(origin: String, messages: List<CheckMessage>): Report {
         val status = messages.isEmpty() || messages.all { it.status }
         val summary = messages.joinToString("\n", "", "", -1, "", { it.msg })
-        return Report(origin, status, summary)
+        val statusStr = if (status) STATUS_OK else STATUS_FAILURE
+        return Report(origin, statusStr, summary)
     }
 
 
@@ -125,7 +131,7 @@ class AnalyzerController : Initializable {
      * Create a fictitious report in order to clear the table with checkers' results.
      */
     private fun createEmptyReport(): List<Report> {
-        return checkers.map { Report(it.descriptor, null, null) }
+        return checkers.map { Report(it.descriptor, STATUS_UNKNOWN, null) }
     }
 
     /**
