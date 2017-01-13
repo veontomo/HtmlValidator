@@ -113,12 +113,12 @@ class AnalyzerController : Initializable {
      */
     fun onClear() {
         selectedFile = null
-//        view.enableClear(false)
-//        view.enableAnalyze(false)
-//        view.showFileInfo("")
-//        view.showFileName("")
-//        view.showFileContent(null)
-//        view.loadItems(createEmptyReport())
+        enableClear(false)
+        enableAnalyze(false)
+        fileInfoText!!.text = null
+        fileNameText!!.text = null
+        showFileContent(null)
+        loadItems(createEmptyReport())
     }
 
     /**
