@@ -10,6 +10,7 @@
 <?import javafx.collections.FXCollections?>
 
 <?import com.veontomo.htmlvalidator.Models.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <GridPane fx:controller="com.veontomo.htmlvalidator.Controller.AnalyzerController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <padding>
@@ -28,15 +29,24 @@
     <TableView fx:id="checkersView" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
         <columns>
             <TableColumn text="Checker">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name"/>
+                </cellValueFactory>
             </TableColumn>
             <TableColumn text="Status">
+                <cellValueFactory>
+                    <PropertyValueFactory property="status"/>
+                </cellValueFactory>
             </TableColumn>
             <TableColumn text="Comment">
+                <cellValueFactory>
+                    <PropertyValueFactory property="comment"/>
+                </cellValueFactory>
             </TableColumn>
         </columns>
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <Report name="null" status="null" comment="null" />
+                <Report name="dumb checker" status="ok" comment="all correct"/>
             </FXCollections>
         </items>
     </TableView>

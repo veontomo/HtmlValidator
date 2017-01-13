@@ -71,7 +71,7 @@ class AnalyzerController : Initializable {
         enableSelect(true)
         enableAnalyze(false)
         enableClear(false)
-//        loadItems(createEmptyReport())
+        loadItems(createEmptyReport())
     }
 
     private fun performCheck(file: File): List<Report> {
@@ -170,7 +170,7 @@ class AnalyzerController : Initializable {
      * @param items
      */
     fun loadItems(items: List<Report>) {
-//        checkersView!!.items = FXCollections.observableArrayList(items)
+        checkersView!!.items = FXCollections.observableArrayList(items)
     }
 
 
@@ -192,6 +192,7 @@ class AnalyzerController : Initializable {
 
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {
+                selectedFile = file
                 showFileName(file!!.path)
                 showFileContent(file.toURI().toURL().toExternalForm())
                 enableAnalyze(true)
