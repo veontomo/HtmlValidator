@@ -1,8 +1,6 @@
 package com.veontomo.htmlvalidator.Controller
 
-import com.veontomo.htmlvalidator.*
 import com.veontomo.htmlvalidator.Models.*
-import com.veontomo.htmlvalidator.Views.MainView
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -24,7 +22,7 @@ import java.util.*
  * A controller that orchestrates execution of available checks of given file.
  */
 class AnalyzerController : Initializable {
-    @FXML private var checkersView: TableView<Report>? = null
+//    @FXML private var checkersView: TableView<Report>? = null
     @FXML private var fileNameText: Text? = null
     @FXML private var fileInfoText: Text? = null
     @FXML private var browser: WebView? = null
@@ -73,7 +71,7 @@ class AnalyzerController : Initializable {
         enableSelect(true)
         enableAnalyze(false)
         enableClear(false)
-        loadItems(createEmptyReport())
+//        loadItems(createEmptyReport())
     }
 
     private fun performCheck(file: File): List<Report> {
@@ -172,7 +170,7 @@ class AnalyzerController : Initializable {
      * @param items
      */
     fun loadItems(items: List<Report>) {
-        checkersView!!.items = FXCollections.observableArrayList(items)
+//        checkersView!!.items = FXCollections.observableArrayList(items)
     }
 
 
@@ -189,7 +187,8 @@ class AnalyzerController : Initializable {
                 FileChooser.ExtensionFilter("html", allowedExtensions.map { "*.$it" })
         )
         fileChooser.title = "Select a file"
-        val file = fileChooser.showOpenDialog(checkersView!!.scene.window)
+        val file = fileChooser.showOpenDialog(fileInfoText!!.scene.window)
+//        val file = fileChooser.showOpenDialog(Stage())
 
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {
