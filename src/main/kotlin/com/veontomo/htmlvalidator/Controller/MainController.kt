@@ -12,7 +12,9 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
+import rx.Observable
 import rx.schedulers.Schedulers
+import rx.subjects.PublishSubject
 import java.io.File
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -47,10 +49,19 @@ class MainController : Initializable {
 
     private val model = Model()
 
-    private val worker = model.worker()
+    private val subject: PublishSubject<String> = PublishSubject.create()
+
+    init {
+       fun worker(): Observable<Report> = subject
+                .observeOn(Schedulers.computation())
+                .map { it -> Report("checker", "report", "a comment") }
+    }
+
+    private val worker = subject
             .subscribeOn(Schedulers.computation())
 //            .observeOn(Schedulers.mainThread())
-            .subscribe({ it -> showReport(it) }, { e -> showError(e.message) })
+            .map
+            .subscribe({ it -> showReport(it.toString()) }, { e -> showError(e.message) })
 
     private fun showError(message: String?) {
         TODO("not implemented")
@@ -71,8 +82,6 @@ class MainController : Initializable {
         enableAnalyze(false)
         enableClear(false)
         loadItems(model.createEmptyReport())
-
-
     }
 
 
@@ -85,6 +94,7 @@ class MainController : Initializable {
             enableAnalyze(false)
             enableSelect(false)
             val reports = model.performCheck(file)
+            worker.onNext("aaaa")
             loadItems(reports)
             enableAnalyze(true)
             enableSelect(true)

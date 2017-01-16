@@ -31,10 +31,6 @@ class Model {
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
 
 
-    private val subject: PublishSubject<String> = PublishSubject.create()
-    fun worker(): Observable<Report> = subject
-            .observeOn(Schedulers.computation())
-            .map { it -> Report("checker", "report", "a comment") }
 
     fun performCheck(file: File): List<Report> {
         val text = file.readText()
@@ -62,4 +58,5 @@ class Model {
     fun createEmptyReport(): List<Report> {
         return checkers.map { Report(it.descriptor, STATUS_UNKNOWN, null) }
     }
+
 }
