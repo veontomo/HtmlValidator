@@ -18,9 +18,8 @@ fun main(args: Array<String>) {
 class GUI : Application() {
 
     override fun start(primaryStage: Stage) {
-        primaryStage.title = "Html validator"
-        primaryStage.icons.add(Image("/logo.png"))
-
+        primaryStage.title = Config.appName
+        primaryStage.icons.add(Image(Config.iconPath))
         primaryStage.scene = MainView(primaryStage).getScene()
         primaryStage.show()
     }
