@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator.Models
+package com.veontomo.htmlvalidator.Models.Checkers
 
 /**
  * Superclass for checking validity of given string.

@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.Models.EncodingChecker
+import com.veontomo.htmlvalidator.Models.Checkers.EncodingChecker
 import org.junit.Test
 
 import org.junit.Assert.*

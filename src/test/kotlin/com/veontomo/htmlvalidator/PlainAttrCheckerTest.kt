@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.Models.PlainAttrChecker
+import com.veontomo.htmlvalidator.Models.Checkers.PlainAttrChecker
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Tag
 import org.junit.Test
