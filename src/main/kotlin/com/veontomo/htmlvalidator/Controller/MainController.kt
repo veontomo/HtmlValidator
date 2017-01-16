@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
+import rx.schedulers.Schedulers
 import java.io.File
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -42,10 +43,22 @@ class MainController : Initializable {
     val clearShortcut = KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN)
 
 
-
     var selectedFile: File? = null
 
-    private val model  = Model()
+    private val model = Model()
+
+    private val worker = model.worker()
+            .subscribeOn(Schedulers.computation())
+//            .observeOn(Schedulers.mainThread())
+            .subscribe({ it -> showReport(it) }, { e -> showError(e.message) })
+
+    private fun showError(message: String?) {
+        TODO("not implemented")
+    }
+
+    private fun showReport(it: Report) {
+        println(it.toString())
+    }
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         menuSelect!!.accelerator = fileSelectShortcut
@@ -58,10 +71,9 @@ class MainController : Initializable {
         enableAnalyze(false)
         enableClear(false)
         loadItems(model.createEmptyReport())
+
+
     }
-
-
-
 
 
     /**

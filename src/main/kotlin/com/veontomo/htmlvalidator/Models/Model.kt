@@ -1,6 +1,9 @@
 package com.veontomo.htmlvalidator.Models
 
 import com.veontomo.htmlvalidator.Models.Checkers.*
+import rx.Observable
+import rx.schedulers.Schedulers
+import rx.subjects.PublishSubject
 import java.io.File
 
 /**
@@ -26,6 +29,12 @@ class Model {
     val charsets = setOf("ascii")
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
+
+
+    private val subject: PublishSubject<String> = PublishSubject.create()
+    fun worker(): Observable<Report> = subject
+            .observeOn(Schedulers.computation())
+            .map { it -> Report("checker", "report", "a comment") }
 
     fun performCheck(file: File): List<Report> {
         val text = file.readText()

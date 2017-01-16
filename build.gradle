@@ -59,6 +59,9 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.1'
     compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.5'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxkotlin:0.60.0'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.mockito:mockito-core:2.5.0"
     testCompile 'com.nhaarman:mockito-kotlin:1.1.0'
