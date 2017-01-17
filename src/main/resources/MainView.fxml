@@ -60,11 +60,8 @@
         </items>
     </TableView>
     <WebView fx:id="browser" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
-    <Text fx:id="fileNameText" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
-        File name
-    </Text>
-    <Text fx:id="fileInfoText" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
-        File info
-    </Text>
+    <Text fx:id="fileNameText" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
+    <Text fx:id="fileInfoText" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="1"/>
+    <Text fx:id="checkTime" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="1"/>
 
 </GridPane>

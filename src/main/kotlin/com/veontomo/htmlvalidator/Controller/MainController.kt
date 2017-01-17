@@ -18,6 +18,7 @@ import rx.schedulers.Schedulers
 import rx.subjects.PublishSubject
 import java.io.File
 import java.net.URL
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +33,8 @@ class MainController : Initializable {
     @FXML private var menuSelect: MenuItem? = null
     @FXML private var menuRecheck: MenuItem? = null
     @FXML private var menuClear: MenuItem? = null
+    @FXML private var checkTime: Text? = null
+
 
     /**
      * Name of the file that stores the preferences
@@ -53,6 +56,8 @@ class MainController : Initializable {
 
 
     private val model = Model()
+
+    val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale("Italy"))
 
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
@@ -165,6 +170,14 @@ class MainController : Initializable {
         checkersView!!.items = FXCollections.observableArrayList(items)
         enableRefresh(true)
         enableClear(true)
+        setCheckTime(Date())
+    }
+
+    /**
+     * Set the check time.
+     */
+    private fun setCheckTime(date: Date) {
+        checkTime!!.text = "${Config.LAST_CHECK} ${formatter.format(date)}"
     }
 
 
@@ -203,9 +216,8 @@ class MainController : Initializable {
      */
     private fun showFileInfo(file: File) {
         val time = Date(file.lastModified())
-        val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale("Italy"))
         val data = formatter.format(time)
-        fileInfoText!!.text = if (!data.isBlank()) "Last modified: $data" else null
+        fileInfoText!!.text = if (!data.isBlank()) "${Config.LAST_MODIFIED} $data" else null
     }
 
     /**
