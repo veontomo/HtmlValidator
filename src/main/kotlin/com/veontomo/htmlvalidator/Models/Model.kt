@@ -31,7 +31,6 @@ class Model {
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
 
 
-
     fun performCheck(file: File): List<Report> {
         val text = file.readText()
         return checkers.map { createReport(it.descriptor, it.check(text)) }
@@ -57,6 +56,14 @@ class Model {
      */
     fun createEmptyReport(): List<Report> {
         return checkers.map { Report(it.descriptor, STATUS_UNKNOWN, null) }
+    }
+
+    private val subject: PublishSubject<File> = PublishSubject.create<File>()
+
+    fun observable(): Observable<List<Report>> = subject.map { it -> performCheck(it)}
+
+    fun analyze(file: File) {
+        subject.onNext(file)
     }
 
 }

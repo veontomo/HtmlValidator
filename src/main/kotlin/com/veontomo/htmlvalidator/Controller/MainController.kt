@@ -1,5 +1,6 @@
 package com.veontomo.htmlvalidator.Controller
 
+import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
@@ -38,38 +39,30 @@ class MainController : Initializable {
     val pref = "HtmlValidator.history"
 
     // keyboard shortcut for selecting a file "Ctrl+o"
-    val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
+    private val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
     // keyboard shortcut for analyzing a selected file "Ctrl+Enter"
-    val analyzeShortcut = KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN)
+    private val analyzeShortcut = KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN)
     // keyboard shortcut for clearing the results "Ctrl+C"
-    val clearShortcut = KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN)
+    private val clearShortcut = KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN)
 
+    private val fileChooser = FileChooser()
+    /**
+     * Set of file extensions that are allowed to be displayed in the file chooser dialog.
+     */
+    private val allowedExtensions = listOf("html", "htm")
 
     var selectedFile: File? = null
 
     private val model = Model()
 
-    private val subject: PublishSubject<String> = PublishSubject.create()
-
     init {
-       fun worker(): Observable<Report> = subject
-                .observeOn(Schedulers.computation())
-                .map { it -> Report("checker", "report", "a comment") }
+        fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
+        model.observable()
+                .subscribe(
+                        { it -> loadItems(it) },
+                        { e -> showFileName("error: ${e.message}") })
     }
 
-    private val worker = subject
-            .subscribeOn(Schedulers.computation())
-//            .observeOn(Schedulers.mainThread())
-            .map
-            .subscribe({ it -> showReport(it.toString()) }, { e -> showError(e.message) })
-
-    private fun showError(message: String?) {
-        TODO("not implemented")
-    }
-
-    private fun showReport(it: Report) {
-        println(it.toString())
-    }
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         menuSelect!!.accelerator = fileSelectShortcut
@@ -82,6 +75,7 @@ class MainController : Initializable {
         enableAnalyze(false)
         enableClear(false)
         loadItems(model.createEmptyReport())
+
     }
 
 
@@ -93,11 +87,12 @@ class MainController : Initializable {
         if (file != null) {
             enableAnalyze(false)
             enableSelect(false)
-            val reports = model.performCheck(file)
-            worker.onNext("aaaa")
-            loadItems(reports)
-            enableAnalyze(true)
-            enableSelect(true)
+//            val reports = model.performCheck(file)
+            model.analyze(file)
+//            loadItems(reports)
+//            enableAnalyze(true)
+//            enableSelect(true)
+
         }
     }
 
@@ -157,9 +152,7 @@ class MainController : Initializable {
 
 
     fun onSelect() {
-        val allowedExtensions = listOf("html", "htm")
         val last = readLastUsedFileName()
-        val fileChooser = FileChooser()
         if (last != null) {
             val file = File(last)
             if (file.exists() && file.isDirectory)
@@ -168,9 +161,8 @@ class MainController : Initializable {
         fileChooser.extensionFilters.addAll(
                 FileChooser.ExtensionFilter("html", allowedExtensions.map { "*.$it" })
         )
-        fileChooser.title = "Select a file"
         val file = fileChooser.showOpenDialog(fileInfoText!!.scene.window)
-//        val file = fileChooser.showOpenDialog(Stage())
+        //        val file = fileChooser.showOpenDialog(Stage())
 
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {

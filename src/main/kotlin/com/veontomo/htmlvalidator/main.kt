@@ -18,8 +18,8 @@ fun main(args: Array<String>) {
 class GUI : Application() {
 
     override fun start(primaryStage: Stage) {
-        primaryStage.title = Config.appName
-        primaryStage.icons.add(Image(Config.iconPath))
+        primaryStage.title = Config.APP_NAME
+        primaryStage.icons.add(Image(Config.ICON_PATH))
         primaryStage.scene = MainView(primaryStage).getScene()
         primaryStage.show()
     }
