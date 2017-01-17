@@ -7,7 +7,7 @@ import rx.subjects.PublishSubject
 import java.io.File
 
 /**
- * Created by Andrey on 16/01/2017.
+ * Model of the MVP pattern
  */
 class Model {
     private val STATUS_OK = "ok"
@@ -30,8 +30,11 @@ class Model {
     val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets))
 
+    private val subject: PublishSubject<File> = PublishSubject.create<File>()
 
-    fun performCheck(file: File): List<Report> {
+    val reports: Observable<List<Report>> = subject.map { it -> performCheck(it)}
+
+    private fun performCheck(file: File): List<Report> {
         val text = file.readText()
         return checkers.map { createReport(it.descriptor, it.check(text)) }
     }
@@ -57,10 +60,6 @@ class Model {
     fun createEmptyReport(): List<Report> {
         return checkers.map { Report(it.descriptor, STATUS_UNKNOWN, null) }
     }
-
-    private val subject: PublishSubject<File> = PublishSubject.create<File>()
-
-    fun observable(): Observable<List<Report>> = subject.map { it -> performCheck(it)}
 
     fun analyze(file: File) {
         subject.onNext(file)

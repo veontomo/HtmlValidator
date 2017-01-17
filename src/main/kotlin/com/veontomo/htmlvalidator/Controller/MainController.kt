@@ -30,18 +30,18 @@ class MainController : Initializable {
     @FXML private var fileInfoText: Text? = null
     @FXML private var browser: WebView? = null
     @FXML private var menuSelect: MenuItem? = null
-    @FXML private var menuAnalyze: MenuItem? = null
+    @FXML private var menuRefresh: MenuItem? = null
     @FXML private var menuClear: MenuItem? = null
 
     /**
      * Name of the file that stores the preferences
      */
-    val pref = "HtmlValidator.history"
+    private val pref = Config.HISTORY_FILE
 
     // keyboard shortcut for selecting a file "Ctrl+o"
     private val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
-    // keyboard shortcut for analyzing a selected file "Ctrl+Enter"
-    private val analyzeShortcut = KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN)
+    // keyboard shortcut for refreshing the results "Ctrl+F5"
+    private val refreshShortcut = KeyCodeCombination(KeyCode.F5)
     // keyboard shortcut for clearing the results "Ctrl+C"
     private val clearShortcut = KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN)
 
@@ -51,62 +51,69 @@ class MainController : Initializable {
      */
     private val allowedExtensions = listOf("html", "htm")
 
-    var selectedFile: File? = null
 
     private val model = Model()
 
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
-        model.observable()
+        model.reports
                 .subscribe(
-                        { it -> loadItems(it) },
+                        { it -> onReportsReceived(it) },
                         { e -> showFileName("error: ${e.message}") })
     }
 
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         menuSelect!!.accelerator = fileSelectShortcut
-        menuAnalyze!!.accelerator = analyzeShortcut
+        menuRefresh!!.accelerator = refreshShortcut
         menuClear!!.accelerator = clearShortcut
         menuSelect!!.setOnAction { onSelect() }
-        menuAnalyze!!.setOnAction { onAnalyze() }
         menuClear!!.setOnAction { onClear() }
         enableSelect(true)
-        enableAnalyze(false)
+        enableRefresh(false)
         enableClear(false)
-        loadItems(model.createEmptyReport())
+        clearReport()
 
+
+    }
+
+    /**
+     * Empty reports from all available checkers.
+     * Since the available checkers do not change during the application lifetime, the empty report
+     * is calculated once when it is needed.
+     */
+    private val emptyReport  by lazy {
+        model.createEmptyReport()
+    }
+
+    /**
+     * Clear the view containing the results of checks.
+     */
+    private fun clearReport() {
+        checkersView!!.items = FXCollections.observableArrayList(emptyReport)
     }
 
 
     /**
      * Perform check of the selected file
+     * @param file a file whose content is to be analyzed
      */
-    fun onAnalyze() {
-        val file = selectedFile
-        if (file != null) {
-            enableAnalyze(false)
-            enableSelect(false)
-//            val reports = model.performCheck(file)
-            model.analyze(file)
-//            loadItems(reports)
-//            enableAnalyze(true)
-//            enableSelect(true)
-
-        }
+    fun onAnalyze(file: File) {
+        enableRefresh(false)
+        enableClear(false)
+        model.analyze(file)
     }
 
     /**
      * Clear the file
      */
     fun onClear() {
-        selectedFile = null
         enableClear(false)
-        enableAnalyze(false)
+        enableRefresh(false)
         fileInfoText!!.text = null
         fileNameText!!.text = null
         showFileContent(null)
-        loadItems(model.createEmptyReport())
+        clearReport()
     }
 
 
@@ -122,8 +129,8 @@ class MainController : Initializable {
      * Enable/disable a menu item that is used to analyze the file
      * @param isEnabled true to enable, false to disable
      */
-    fun enableAnalyze(isEnabled: Boolean) {
-        menuAnalyze!!.isDisable = !isEnabled
+    fun enableRefresh(isEnabled: Boolean) {
+        menuRefresh!!.isDisable = !isEnabled
     }
 
     /**
@@ -143,11 +150,13 @@ class MainController : Initializable {
     }
 
     /**
-     * Load the items in to the list view
+     * Load the reports in corresponding view and enable the menu items.
      * @param items
      */
-    fun loadItems(items: List<Report>) {
+    fun onReportsReceived(items: List<Report>) {
         checkersView!!.items = FXCollections.observableArrayList(items)
+        enableRefresh(true)
+        enableClear(true)
     }
 
 
@@ -166,17 +175,16 @@ class MainController : Initializable {
 
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {
-                selectedFile = file
                 showFileName(file!!.path)
                 showFileContent(file.toURI().toURL().toExternalForm())
-                enableAnalyze(true)
-                onFileSelected(file)
+                enableRefresh(true)
                 enableClear(true)
                 showFileInfo(file)
                 saveLastUsedDir(file.parent)
+                onAnalyze(file)
             }
         } else {
-            enableAnalyze(false)
+            enableRefresh(false)
         }
     }
 
@@ -211,14 +219,6 @@ class MainController : Initializable {
     private fun saveLastUsedDir(dirName: String) {
         val file = File(pref)
         file.writeText(dirName)
-    }
-
-    /**
-     * Inform the appropriate controller that the user has selected a file.
-     * @param file
-     */
-    fun onFileSelected(file: File) {
-        selectedFile = file
     }
 
     /**
