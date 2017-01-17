@@ -32,12 +32,17 @@ class Model {
 
     private val subject: PublishSubject<File> = PublishSubject.create<File>()
 
-    val reports: Observable<List<Report>> = subject.map { it -> performCheck(it)}
+    val reports: Observable<List<Report>> = subject.map { it -> performCheck(it) }
 
     private fun performCheck(file: File): List<Report> {
         val text = file.readText()
         return checkers.map { createReport(it.descriptor, it.check(text)) }
     }
+
+    /**
+     * Reference to the most recent analyzed file. It may not exist.
+     */
+    private var lastAnalyzedFile: File? = null
 
     /**
      * Merge check messages into a single report.
@@ -62,7 +67,19 @@ class Model {
     }
 
     fun analyze(file: File) {
+        lastAnalyzedFile = file
         subject.onNext(file)
     }
+
+    /**
+     * Check a last used file again.
+     */
+    fun recheck() {
+        val file = lastAnalyzedFile
+        if (file != null && file.exists()){
+            subject.onNext(file)
+        }
+    }
+
 
 }

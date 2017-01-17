@@ -30,7 +30,7 @@
         <menus>
             <Menu text="File" fx:id="menuFile">
                 <MenuItem text="Open" fx:id="menuSelect" disable="true"/>
-                <MenuItem text="Refresh" fx:id="menuRefresh" disable="true"/>
+                <MenuItem text="Check again" fx:id="menuRecheck" disable="true"/>
                 <MenuItem text="Clear" fx:id="menuClear" disable="true"/>
             </Menu>
         </menus>

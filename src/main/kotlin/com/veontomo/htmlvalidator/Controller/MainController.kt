@@ -30,7 +30,7 @@ class MainController : Initializable {
     @FXML private var fileInfoText: Text? = null
     @FXML private var browser: WebView? = null
     @FXML private var menuSelect: MenuItem? = null
-    @FXML private var menuRefresh: MenuItem? = null
+    @FXML private var menuRecheck: MenuItem? = null
     @FXML private var menuClear: MenuItem? = null
 
     /**
@@ -65,9 +65,10 @@ class MainController : Initializable {
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         menuSelect!!.accelerator = fileSelectShortcut
-        menuRefresh!!.accelerator = refreshShortcut
+        menuRecheck!!.accelerator = refreshShortcut
         menuClear!!.accelerator = clearShortcut
         menuSelect!!.setOnAction { onSelect() }
+        menuRecheck!!.setOnAction { onRefresh() }
         menuClear!!.setOnAction { onClear() }
         enableSelect(true)
         enableRefresh(false)
@@ -75,6 +76,13 @@ class MainController : Initializable {
         clearReport()
 
 
+    }
+
+    /**
+     * Perform the checks of the previously selected file.
+     */
+    private fun onRefresh() {
+        model.recheck()
     }
 
     /**
@@ -130,7 +138,7 @@ class MainController : Initializable {
      * @param isEnabled true to enable, false to disable
      */
     fun enableRefresh(isEnabled: Boolean) {
-        menuRefresh!!.isDisable = !isEnabled
+        menuRecheck!!.isDisable = !isEnabled
     }
 
     /**
