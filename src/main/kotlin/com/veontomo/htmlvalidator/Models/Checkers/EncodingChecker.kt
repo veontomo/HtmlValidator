@@ -48,8 +48,8 @@ class EncodingChecker(private val allowedEncodings: Set<String>) : Checker() {
         val token2 = "content"
         val result = mutableSetOf<String>()
         val doc = Jsoup.parse(html)
-        val metas = doc.select("meta")
-        for (meta in metas) {
+        val metaTags = doc.select("meta")
+        for (meta in metaTags) {
             if (meta.hasAttr(token1)) {
                 result.add(meta.attr(token1))
             }

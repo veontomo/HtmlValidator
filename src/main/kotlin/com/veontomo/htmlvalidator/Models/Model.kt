@@ -32,9 +32,13 @@ class Model {
 
     private val subject: PublishSubject<File> = PublishSubject.create<File>()
 
-    val reports: Observable<List<Report>> = subject.map { it -> performCheck(it) }
+    val reports: Observable<List<Report>> = subject
+            .subscribeOn(Schedulers.computation())
+            .map { it -> performCheck(it) }
+            .observeOn(Schedulers.computation())
 
     private fun performCheck(file: File): List<Report> {
+        println("perform check in thread ${Thread.currentThread().name}")
         val text = file.readText()
         return checkers.map { createReport(it.descriptor, it.check(text)) }
     }
@@ -76,7 +80,7 @@ class Model {
      */
     fun recheck() {
         val file = lastAnalyzedFile
-        if (file != null && file.exists()){
+        if (file != null && file.exists()) {
             subject.onNext(file)
         }
     }

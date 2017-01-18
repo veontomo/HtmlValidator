@@ -56,7 +56,7 @@ class LinkChecker : com.veontomo.htmlvalidator.Models.Checkers.Checker() {
      * Immutable class for tracking the log of redirects that occur during retrieval of an uri.
      * The immutability is achieved by using an immutable type (String) and defencive copy.
      */
-    private class RedirectLogger() : org.apache.http.impl.client.DefaultRedirectStrategy() {
+    private class RedirectLogger : org.apache.http.impl.client.DefaultRedirectStrategy() {
         private val redirectSequence = mutableListOf<java.net.URI>()
 
         val log: List<String>

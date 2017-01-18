@@ -13,12 +13,9 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
-import rx.Observable
 import rx.schedulers.Schedulers
-import rx.subjects.PublishSubject
 import java.io.File
 import java.net.URL
-import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,6 +59,7 @@ class MainController : Initializable {
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
         model.reports
+                .subscribeOn(Schedulers.computation())
                 .subscribe(
                         { it -> onReportsReceived(it) },
                         { e -> showFileName("error: ${e.message}") })
