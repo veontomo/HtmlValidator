@@ -1,4 +1,4 @@
-package test.com.veontomo.htmlvalidator
+package com.veontomo.htmlvalidator
 
 import com.veontomo.htmlvalidator.Models.Checkers.EscapeClosureChecker
 import org.junit.Test
