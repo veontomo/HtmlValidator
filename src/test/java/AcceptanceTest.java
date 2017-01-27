@@ -40,6 +40,7 @@ public class AcceptanceTest extends ApplicationTest {
     // Cover:
     // 1. it is a first action: true
     @Test
+    @Ignore
     public void menu_select_should_be_enabled_upon_start() {
         clickOn(MENU_FILE_ID);
         verifyThat(MENU_SELECT_ID, (Node node) -> !node.isDisable());
