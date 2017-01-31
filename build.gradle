@@ -3,6 +3,9 @@ version '0.0.1'
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+        }
     }
 
 }
@@ -26,6 +29,9 @@ task createTestResources << {
 }
 repositories {
     mavenCentral()
+    maven {
+        url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+    }
 }
 apply plugin: 'idea'
 apply plugin: "application"
@@ -34,7 +40,7 @@ apply plugin: "kotlin"
 mainClassName = 'com.veontomo.htmlvalidator.MainKt'
 
 buildscript {
-    ext.kotlin_version = '1.0.5-2'
+    ext.kotlin_version ='1.1.0-beta-22'
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -68,5 +74,6 @@ dependencies {
     testCompile 'de.jodamob.kotlin:kotlin-runner-junit4:0.3.1'
     testCompile "org.testfx:testfx-core:4.0.+"
     testCompile "org.testfx:testfx-junit:4.0.+"
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.4-beta'
 }
 
