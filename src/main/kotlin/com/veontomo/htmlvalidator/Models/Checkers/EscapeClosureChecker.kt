@@ -9,7 +9,7 @@ class EscapeClosureChecker : Checker() {
 
     override fun check(html: String): List<CheckMessage> {
         val matches = pattern.findAll(html)
-        return matches.toList().map{it -> it.value}.map { it ->  CheckMessage(it, false) }
+        return matches.toList().map{it -> it.value}.distinct().map { it ->  CheckMessage(it, false) }
     }
 
 
