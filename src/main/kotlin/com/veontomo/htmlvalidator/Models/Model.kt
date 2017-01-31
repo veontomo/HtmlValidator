@@ -1,6 +1,9 @@
 package com.veontomo.htmlvalidator.Models
 
 import com.veontomo.htmlvalidator.Models.Checkers.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Here
+import kotlinx.coroutines.experimental.launch
 import rx.Observable
 import rx.schedulers.Schedulers
 import rx.subjects.PublishSubject
@@ -27,26 +30,40 @@ class Model {
             "display", "vertical-align", "background-color"
     )
     val charsets = setOf("ascii")
-    val checkers = listOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
+    val checkers = setOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker())
 
-    private val subject: PublishSubject<File> = PublishSubject.create<File>()
+    private val subject: PublishSubject<String> = PublishSubject.create<String>()
 
-    val reports: Observable<List<Report>> = subject
-            .subscribeOn(Schedulers.computation())
-            .map { it -> performCheck(it) }
-            .observeOn(Schedulers.computation())
-
-    private fun performCheck(file: File): List<Report> {
-        println("perform check in thread ${Thread.currentThread().name}")
-        val text = file.readText()
-        return checkers.map { createReport(it.descriptor, it.check(text)) }
+    /**
+     * Create a list of observable, one for each checker
+     */
+    val analyzer: List<Observable<Report>> = checkers.map {
+        checker ->
+        subject
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .map {
+                    text ->
+                    generateReport(text, checker)
+                }
     }
+
+    /**
+     * Perform a check of  the text with given checker.
+     * @param text string to be checked
+     * @param checker
+     * @return a report
+     */
+    private fun generateReport(text: String, checker: Checker): Report {
+        return createReport(checker.descriptor, checker.check(text))
+    }
+
 
     /**
      * Reference to the most recent analyzed file. It may not exist.
      */
-    private var lastAnalyzedFile: File? = null
+    private var lastAnalyzedText: String? = null
 
     /**
      * Merge check messages into a single report.
@@ -70,18 +87,19 @@ class Model {
         return checkers.map { Report(it.descriptor, STATUS_UNKNOWN, null) }
     }
 
-    fun analyze(file: File) {
-        lastAnalyzedFile = file
-        subject.onNext(file)
+    fun analyze(text: String) {
+        lastAnalyzedText = text
+        subject.onNext(text)
     }
+
 
     /**
      * Check a last used file again.
      */
     fun recheck() {
-        val file = lastAnalyzedFile
-        if (file != null && file.exists()) {
-            subject.onNext(file)
+        val text = lastAnalyzedText
+        if (text != null) {
+            subject.onNext(text)
         }
     }
 

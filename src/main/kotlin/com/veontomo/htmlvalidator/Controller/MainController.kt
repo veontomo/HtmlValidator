@@ -2,6 +2,7 @@ package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
+import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -32,6 +33,13 @@ class MainController : Initializable {
     @FXML private var menuClear: MenuItem? = null
     @FXML private var checkTime: Text? = null
 
+    /**
+     * An accumulator for the reports. Once a checker produces a report, it gets
+     * inserted to this list which then is passed to the method that displays the reports.
+     * TODO: get rid of this accumulator. Make it work in such a way that a report is sent
+     * directly to its row inside the table that shaow the reports.
+     */
+    val items = mutableListOf<Report>()
 
     /**
      * Name of the file that stores the preferences
@@ -58,11 +66,7 @@ class MainController : Initializable {
 
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
-        model.reports
-                .subscribeOn(Schedulers.computation())
-                .subscribe(
-                        { it -> onReportsReceived(it) },
-                        { e -> showFileName("error: ${e.message}") })
+        model.analyzer.forEach { it.observeOn(Schedulers.newThread()).subscribe({ report -> onReportReceived(report) }) }
     }
 
 
@@ -77,8 +81,6 @@ class MainController : Initializable {
         enableRefresh(false)
         enableClear(false)
         clearReport()
-
-
     }
 
     /**
@@ -86,6 +88,7 @@ class MainController : Initializable {
      */
     private fun onRefresh() {
         model.recheck()
+        items.clear()
     }
 
     /**
@@ -93,7 +96,7 @@ class MainController : Initializable {
      * Since the available checkers do not change during the application lifetime, the empty report
      * is calculated once when it is needed.
      */
-    private val emptyReport  by lazy {
+    private val emptyReport by lazy {
         model.createEmptyReport()
     }
 
@@ -109,10 +112,10 @@ class MainController : Initializable {
      * Perform check of the selected file
      * @param file a file whose content is to be analyzed
      */
-    fun onAnalyze(file: File) {
+    fun onAnalyze(text: String) {
         enableRefresh(false)
         enableClear(false)
-        model.analyze(file)
+        model.analyze(text)
     }
 
     /**
@@ -125,6 +128,7 @@ class MainController : Initializable {
         fileNameText!!.text = null
         showFileContent(null)
         clearReport()
+        items.clear()
     }
 
 
@@ -171,6 +175,13 @@ class MainController : Initializable {
         setCheckTime(Date())
     }
 
+
+    fun onReportReceived(item: Report) {
+        items.add(item)
+        onReportsReceived(items)
+    }
+
+
     /**
      * Set the check time.
      */
@@ -195,12 +206,14 @@ class MainController : Initializable {
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {
                 showFileName(file!!.path)
-                showFileContent(file.toURI().toURL().toExternalForm())
+                Platform.runLater {
+                    showFileContent(file.toURI().toURL().toExternalForm())
+                }
                 enableRefresh(true)
                 enableClear(true)
                 showFileInfo(file)
                 saveLastUsedDir(file.parent)
-                onAnalyze(file)
+                onAnalyze(file.readText())
             }
         } else {
             enableRefresh(false)
