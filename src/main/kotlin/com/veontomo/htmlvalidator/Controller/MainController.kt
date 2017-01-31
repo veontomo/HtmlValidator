@@ -2,7 +2,6 @@ package com.veontomo.htmlvalidator.Controller
 
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
-import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -112,10 +111,10 @@ class MainController : Initializable {
      * Perform check of the selected file
      * @param file a file whose content is to be analyzed
      */
-    fun onAnalyze(text: String) {
+    fun onAnalyze(file: File) {
         enableRefresh(false)
         enableClear(false)
-        model.analyze(text)
+        model.analyze(file)
     }
 
     /**
@@ -206,14 +205,12 @@ class MainController : Initializable {
         if (file?.exists() ?: false) {
             if (allowedExtensions.contains(file.extension)) {
                 showFileName(file!!.path)
-                Platform.runLater {
-                    showFileContent(file.toURI().toURL().toExternalForm())
-                }
+                showFileContent(file.toURI().toURL().toExternalForm())
                 enableRefresh(true)
                 enableClear(true)
                 showFileInfo(file)
                 saveLastUsedDir(file.parent)
-                onAnalyze(file.readText())
+                onAnalyze(file)
             }
         } else {
             enableRefresh(false)

@@ -33,7 +33,7 @@ class Model {
     val checkers = setOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker())
 
-    private val subject: PublishSubject<String> = PublishSubject.create<String>()
+    private val subject: PublishSubject<File> = PublishSubject.create<File>()
 
     /**
      * Create a list of observable, one for each checker
@@ -44,26 +44,26 @@ class Model {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
                 .map {
-                    text ->
-                    generateReport(text, checker)
+                    file ->
+                    generateReport(file, checker)
                 }
     }
 
     /**
      * Perform a check of  the text with given checker.
-     * @param text string to be checked
+     * @param file content of this file is to be analyzed
      * @param checker
      * @return a report
      */
-    private fun generateReport(text: String, checker: Checker): Report {
-        return createReport(checker.descriptor, checker.check(text))
+    private fun generateReport(file: File, checker: Checker): Report {
+        return createReport(checker.descriptor, checker.check(file.readText()))
     }
 
 
     /**
      * Reference to the most recent analyzed file. It may not exist.
      */
-    private var lastAnalyzedText: String? = null
+    private var lastAnalyzedFile: File? = null
 
     /**
      * Merge check messages into a single report.
@@ -87,9 +87,9 @@ class Model {
         return checkers.map { Report(it.descriptor, STATUS_UNKNOWN, null) }
     }
 
-    fun analyze(text: String) {
-        lastAnalyzedText = text
-        subject.onNext(text)
+    fun analyze(file: File) {
+        lastAnalyzedFile = file
+        subject.onNext(file)
     }
 
 
@@ -97,9 +97,9 @@ class Model {
      * Check a last used file again.
      */
     fun recheck() {
-        val text = lastAnalyzedText
-        if (text != null) {
-            subject.onNext(text)
+        val file = lastAnalyzedFile
+        if (file != null && file.exists()) {
+            subject.onNext(file)
         }
     }
 
