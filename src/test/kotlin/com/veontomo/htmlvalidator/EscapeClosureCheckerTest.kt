@@ -40,6 +40,18 @@ class EscapeClosureCheckerTest {
     }
 
     @Test
+    fun checkHtmlWithoutFinalSemicolonAmp() {
+        val html = "<div>&#039</div>"
+        assertTrue(EscapeClosureChecker().check(html).isEmpty())
+    }
+
+    @Test
+    fun checkHtmlWithFinalSemicolonAmp() {
+        val html = "<div>&#039;</div>"
+        assertTrue(EscapeClosureChecker().check(html).isEmpty())
+    }
+
+    @Test
     fun checkHtmlWithoutFinalSemicolon() {
         val html = "<div>&egrave</div>"
         assertTrue(EscapeClosureChecker().check(html).isNotEmpty())
@@ -47,9 +59,6 @@ class EscapeClosureCheckerTest {
 
     @Test
     fun getDescriptor() {
-
-        val html =
-                "<!DOCTYPE html><html><head><title>Title</title></head><body></body><html>"
         assertTrue(EscapeClosureChecker().descriptor.isNotEmpty())
     }
 
