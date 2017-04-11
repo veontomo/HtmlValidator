@@ -1,7 +1,7 @@
 group 'HtmlValidator'
 version '0.0.1'
 buildscript {
-    ext.kotlin_version = '1.1.0-beta-38'
+    ext.kotlin_version = '1.1.2-eap-44'
     repositories {
         mavenCentral()
         maven {
@@ -45,7 +45,7 @@ mainClassName = 'com.veontomo.htmlvalidator.MainKt'
 
 buildscript {
 
-    ext.kotlin_version = '1.1.0-beta-38'
+    ext.kotlin_version = '1.1.2-eap-44'
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }

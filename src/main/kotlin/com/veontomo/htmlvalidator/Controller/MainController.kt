@@ -18,6 +18,7 @@ import java.io.File
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.prefs.Preferences
 
 /**
  * A controller that orchestrates execution of available checks of given file.
@@ -40,10 +41,6 @@ class MainController : Initializable {
      */
     val items = mutableListOf<Report>()
 
-    /**
-     * Name of the file that stores the preferences
-     */
-    private val pref = Config.HISTORY_FILE
 
     // keyboard shortcut for selecting a file "Ctrl+o"
     private val fileSelectShortcut = KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN)
@@ -191,11 +188,9 @@ class MainController : Initializable {
 
     fun onSelect() {
         val last = readLastUsedFileName()
-        if (last != null) {
-            val file = File(last)
-            if (file.exists() && file.isDirectory)
-                fileChooser.initialDirectory = file
-        }
+        val lastUsedFile = File(last)
+        if (lastUsedFile.exists() && lastUsedFile.isDirectory)
+            fileChooser.initialDirectory = lastUsedFile
         fileChooser.extensionFilters.addAll(
                 FileChooser.ExtensionFilter("html", allowedExtensions.map { "*.$it" })
         )
@@ -228,16 +223,15 @@ class MainController : Initializable {
         fileInfoText!!.text = if (!data.isBlank()) "${Config.LAST_MODIFIED} $data" else null
     }
 
+    private val LAST_USED_FILE = "last-used-file"
+
     /**
      * A folder from which a file that has been chosen last time.
-     * @return name of a folder or null.
+     * @return name of a folder or empty string.
      */
-    private fun readLastUsedFileName(): String? {
-        val prefFile = File(pref)
-        if (prefFile.exists()) {
-            return prefFile.readText()
-        }
-        return null
+    private fun readLastUsedFileName(): String {
+        val prefs = Preferences.userNodeForPackage(this::class.java)
+        return prefs.get(LAST_USED_FILE, "")
     }
 
     /**
@@ -245,8 +239,9 @@ class MainController : Initializable {
      * @param dirName folder name
      */
     private fun saveLastUsedDir(dirName: String) {
-        val file = File(pref)
-        file.writeText(dirName)
+        val prefs = Preferences.userNodeForPackage(this::class.java)
+        prefs.put(LAST_USED_FILE, dirName)
+        prefs.flush()
     }
 
     /**

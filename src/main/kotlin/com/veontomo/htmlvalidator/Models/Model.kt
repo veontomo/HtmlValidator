@@ -1,9 +1,6 @@
 package com.veontomo.htmlvalidator.Models
 
 import com.veontomo.htmlvalidator.Models.Checkers.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Here
-import kotlinx.coroutines.experimental.launch
 import rx.Observable
 import rx.schedulers.Schedulers
 import rx.subjects.PublishSubject
