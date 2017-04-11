@@ -1,5 +1,5 @@
 group 'HtmlValidator'
-version '0.0.1'
+version '0.0.2'
 buildscript {
     ext.kotlin_version = '1.1.2-eap-44'
     repositories {
@@ -79,6 +79,5 @@ dependencies {
     testCompile 'de.jodamob.kotlin:kotlin-runner-junit4:0.3.1'
     testCompile "org.testfx:testfx-core:4.0.+"
     testCompile "org.testfx:testfx-junit:4.0.+"
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.4-beta'
 }
 
