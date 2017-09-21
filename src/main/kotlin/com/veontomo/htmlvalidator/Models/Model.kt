@@ -28,7 +28,8 @@ class Model {
     )
     val charsets = setOf("ascii")
     val checkers = setOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
-            PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker())
+            PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker(),
+            DuplicateAttrsChecker())
 
     private val subject: PublishSubject<File> = PublishSubject.create<File>()
 
