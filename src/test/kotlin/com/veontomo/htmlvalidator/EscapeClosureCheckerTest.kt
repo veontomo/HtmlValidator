@@ -4,6 +4,7 @@ import com.veontomo.htmlvalidator.Models.Checkers.EscapeClosureChecker
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Ignore
 
 /**
  * Test suit for the checker that detects missing final semicolon in html escape sequences.
@@ -39,12 +40,14 @@ class EscapeClosureCheckerTest {
         assertTrue(EscapeClosureChecker().check(html).isNotEmpty())
     }
 
+    @Ignore
     @Test
     fun checkHtmlWithoutFinalSemicolonAmp() {
         val html = "<div>&#039</div>"
         assertTrue(EscapeClosureChecker().check(html).isEmpty())
     }
 
+    @Ignore
     @Test
     fun checkHtmlWithFinalSemicolonAmp() {
         val html = "<div>&#039;</div>"

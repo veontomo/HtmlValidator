@@ -48,7 +48,7 @@ class AttributeSafeCharChecker : Checker() {
         }
 
         val children = node.childNodes()
-        children.forEach { node -> checkDeepElementAttributes(node, messages) }
+        children.forEach { n -> checkDeepElementAttributes(n, messages) }
     }
 
     /**
