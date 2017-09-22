@@ -1,0 +1,14 @@
+ext.versions = [
+        kotlin           : '1.1.4-3',
+        jsoup            : "1.10.2",
+        rx               : "1.1.6",
+        jUnit            : "4.12",
+        httpCore         : '4.4.5',
+        httpClient       : "4.5.2",
+        rxkotlin         : "0.60.0",
+        mockitoCore      : "2.5.0",
+        mockitoKotlin    : "1.1.0",
+        kotlinRunnerJUnit: "0.3.1",
+        testfx           : "4.0.+",
+        antlr4           : "4.5.1"
+]

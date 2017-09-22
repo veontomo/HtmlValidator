@@ -1,7 +1,8 @@
 group 'HtmlValidator'
 version '0.0.3'
+apply from: 'dependencies.gradle'
 buildscript {
-    ext.kotlin_version = '1.1.4-3'
+    apply from: 'dependencies.gradle'
     repositories {
         mavenCentral()
         maven {
@@ -9,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
     }
 
 }
@@ -61,21 +62,21 @@ jar {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'org.jsoup:jsoup:1.10.2'
-    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.5'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+    compile "org.jsoup:jsoup:$versions.jsoup"
+    compile "org.apache.httpcomponents:httpcore:$versions.httpCore"
+    compile "org.apache.httpcomponents:httpclient:$versions.httpClient"
 
-    compile 'io.reactivex:rxjava:1.1.6'
-    compile 'io.reactivex:rxkotlin:0.60.0'
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testCompile "org.mockito:mockito-core:2.5.0"
-    testCompile 'com.nhaarman:mockito-kotlin:1.1.0'
-    testCompile 'de.jodamob.kotlin:kotlin-runner-junit4:0.3.1'
-    testCompile "org.testfx:testfx-core:4.0.+"
-    testCompile "org.testfx:testfx-junit:4.0.+"
-    antlr "org.antlr:antlr4:4.5.1"
-    compile 'org.antlr:antlr4-runtime:4.5.1'
+    compile "io.reactivex:rxjava:$versions.rx"
+    compile "io.reactivex:rxkotlin:$versions.rxkotlin"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
+    testCompile "org.mockito:mockito-core:$versions.mockitoCore"
+    testCompile "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin"
+    testCompile "de.jodamob.kotlin:kotlin-runner-junit4:$versions.kotlinRunnerJUnit"
+    testCompile "org.testfx:testfx-core:$versions.testfx"
+    testCompile "org.testfx:testfx-junit:$versions.testfx"
+    antlr "org.antlr:antlr4:$versions.antlr4"
+    compile "org.antlr:antlr4-runtime:$versions.antlr4"
 }
 generateGrammarSource {
     maxHeapSize = "64m"
