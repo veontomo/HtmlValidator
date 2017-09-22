@@ -1,10 +1,9 @@
 package com.veontomo.htmlvalidator.Models.Checkers
 
-import com.veontomo.htmlvalidator.html.HTMLLexer
-import com.veontomo.htmlvalidator.html.HTMLParser
-import com.veontomo.htmlvalidator.html.HTMLParserBaseVisitor
-import com.veontomo.htmlvalidator.html.HTMLParserVisitor
+import com.veontomo.htmlvalidator.html.*
 import org.antlr.v4.runtime.ANTLRInputStream
+import org.antlr.v4.runtime.CharStream
+import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -23,7 +22,14 @@ class DuplicateAttrsChecker : Checker() {
 
 //        val fileContext = markupParser.context
 //        val visitor = HTMLParserVisitor()
-//        visitor.visit(fileContext);
+//        visitor.visit(fileContext)String expression = "42";
+        val stream = CharStreams.fromString("<div>xxx</div>")
+        val lexer =  HTMLLexer(stream)
+        val tokenStream =  CommonTokenStream(lexer);
+        val parser =  HTMLParser(tokenStream);
+        val  tree = parser.htmlDocument()
+        val result =  HTML().visit(tree);
+        System.out.println(result); // prints "42";
         val nodes = doc.allElements
         return nodes.map { node ->
             inspectSingleNode(node).flatMap { it ->
