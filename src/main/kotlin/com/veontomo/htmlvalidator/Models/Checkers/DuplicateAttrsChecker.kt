@@ -1,28 +1,29 @@
 package com.veontomo.htmlvalidator.Models.Checkers
 
+import com.veontomo.htmlvalidator.html.HTMLLexer
+import com.veontomo.htmlvalidator.html.HTMLParser
+import com.veontomo.htmlvalidator.html.HTMLParserBaseVisitor
+import com.veontomo.htmlvalidator.html.HTMLParserVisitor
 import org.antlr.v4.runtime.ANTLRInputStream
 import org.antlr.v4.runtime.CommonTokenStream
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+
 /**
  * Control that every tag has no duplicate attributes.
  *
  */
 class DuplicateAttrsChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
-//        val a = CharStreams.fromFileName("jdjj")
-//        val b = ANTLRLexer(a)
         val doc = Jsoup.parse(html)
-        val inputStream  = ANTLRInputStream(
-                "I would like to [b][i]emphasize[/i][/b] this and [u]underline [b]that[/b][/u] ." +
-                        "Let's not forget to quote: [quote author=\"John\"]You're wrong![/quote]");
-        val markupLexer = MarkupLexer(inputStream)
-        val commonTokenStream = CommonTokenStream(markupLexer);
-        val markupParser = MarkupParser(commonTokenStream);
+        val inputStream = ANTLRInputStream("I would like to <i>emphasize</i> this and <b>underline</b> .")
+        val markupLexer = HTMLLexer(inputStream)
+        val commonTokenStream = CommonTokenStream(markupLexer)
+        val markupParser = HTMLParser(commonTokenStream)
 
-        val fileContext = markupParser.file();
-        val visitor = MarkupVisitor();
-        visitor.visit(fileContext);
+//        val fileContext = markupParser.context
+//        val visitor = HTMLParserVisitor()
+//        visitor.visit(fileContext);
         val nodes = doc.allElements
         return nodes.map { node ->
             inspectSingleNode(node).flatMap { it ->
