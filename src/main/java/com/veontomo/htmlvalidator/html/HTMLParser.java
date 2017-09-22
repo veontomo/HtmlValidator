@@ -1,4 +1,4 @@
-// Generated from HTMLParser.g4 by ANTLR 4.5.1
+// Generated from HTMLParser.g4 by ANTLR 4.7
 package com.veontomo.htmlvalidator.html;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class HTMLParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -152,6 +152,7 @@ public class HTMLParser extends Parser {
 				if ( _alt==1 ) {
 					{
 					setState(36);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case SCRIPTLET:
 						{
@@ -175,6 +176,7 @@ public class HTMLParser extends Parser {
 				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 			}
 			setState(42);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==XML_DECLARATION) {
 				{
@@ -190,6 +192,7 @@ public class HTMLParser extends Parser {
 				if ( _alt==1 ) {
 					{
 					setState(46);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case SCRIPTLET:
 						{
@@ -213,6 +216,7 @@ public class HTMLParser extends Parser {
 				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
 			setState(52);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DTD) {
 				{
@@ -228,6 +232,7 @@ public class HTMLParser extends Parser {
 				if ( _alt==1 ) {
 					{
 					setState(56);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case SCRIPTLET:
 						{
@@ -419,6 +424,7 @@ public class HTMLParser extends Parser {
 		int _la;
 		try {
 			setState(118);
+			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -592,6 +598,7 @@ public class HTMLParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(121);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SEA_WS || _la==HTML_TEXT) {
 				{
@@ -608,6 +615,7 @@ public class HTMLParser extends Parser {
 					{
 					{
 					setState(126);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case SCRIPTLET:
 					case SCRIPT_OPEN:
@@ -635,6 +643,7 @@ public class HTMLParser extends Parser {
 						throw new NoViableAltException(this);
 					}
 					setState(129);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==SEA_WS || _la==HTML_TEXT) {
 						{
@@ -695,6 +704,7 @@ public class HTMLParser extends Parser {
 		enterRule(_localctx, 8, RULE_htmlAttribute);
 		try {
 			setState(141);
+			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -886,7 +896,10 @@ public class HTMLParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==SEA_WS || _la==HTML_TEXT) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -931,6 +944,7 @@ public class HTMLParser extends Parser {
 		enterRule(_localctx, 18, RULE_htmlMisc);
 		try {
 			setState(153);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case HTML_COMMENT:
 			case HTML_CONDITIONAL_COMMENT:
@@ -995,7 +1009,10 @@ public class HTMLParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==HTML_COMMENT || _la==HTML_CONDITIONAL_COMMENT) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -1215,7 +1232,10 @@ public class HTMLParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==SCRIPT_BODY || _la==SCRIPT_SHORT_BODY) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -1267,7 +1287,10 @@ public class HTMLParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==STYLE_BODY || _la==STYLE_SHORT_BODY) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -1284,7 +1307,7 @@ public class HTMLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\31\u00ae\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\31\u00ae\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\3\2\3\2\7\2\'\n\2\f\2\16\2*\13\2\3\2\5\2-\n\2\3\2\3\2\7\2\61\n\2\f\2"+
@@ -1297,8 +1320,8 @@ public class HTMLParser extends Parser {
 		"\6\3\6\3\6\3\6\5\6\u0090\n\6\3\7\3\7\3\b\3\b\3\t\3\t\3\n\3\n\3\13\3\13"+
 		"\5\13\u009c\n\13\3\f\3\f\3\r\3\r\3\16\3\16\3\17\3\17\3\20\3\20\3\21\3"+
 		"\21\3\21\3\22\3\22\3\22\3\22\2\2\23\2\4\6\b\n\f\16\20\22\24\26\30\32\34"+
-		"\36 \"\2\6\4\2\t\t\r\r\3\2\3\4\3\2\24\25\3\2\26\27\u00b6\2(\3\2\2\2\4"+
-		"H\3\2\2\2\6x\3\2\2\2\b{\3\2\2\2\n\u008f\3\2\2\2\f\u0091\3\2\2\2\16\u0093"+
+		"\36 \"\2\6\4\2\t\t\r\r\3\2\3\4\3\2\24\25\3\2\26\27\2\u00b6\2(\3\2\2\2"+
+		"\4H\3\2\2\2\6x\3\2\2\2\b{\3\2\2\2\n\u008f\3\2\2\2\f\u0091\3\2\2\2\16\u0093"+
 		"\3\2\2\2\20\u0095\3\2\2\2\22\u0097\3\2\2\2\24\u009b\3\2\2\2\26\u009d\3"+
 		"\2\2\2\30\u009f\3\2\2\2\32\u00a1\3\2\2\2\34\u00a3\3\2\2\2\36\u00a5\3\2"+
 		"\2\2 \u00a7\3\2\2\2\"\u00aa\3\2\2\2$\'\5\36\20\2%\'\7\t\2\2&$\3\2\2\2"+

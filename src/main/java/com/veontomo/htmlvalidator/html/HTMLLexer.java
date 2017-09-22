@@ -1,4 +1,4 @@
-// Generated from HTMLLexer.g4 by ANTLR 4.5.1
+// Generated from HTMLLexer.g4 by ANTLR 4.7
 package com.veontomo.htmlvalidator.html;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class HTMLLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -22,10 +22,12 @@ public class HTMLLexer extends Lexer {
 		HTML_TEXT=11, TAG_CLOSE=12, TAG_SLASH_CLOSE=13, TAG_SLASH=14, TAG_EQUALS=15, 
 		TAG_NAME=16, TAG_WHITESPACE=17, SCRIPT_BODY=18, SCRIPT_SHORT_BODY=19, 
 		STYLE_BODY=20, STYLE_SHORT_BODY=21, ATTVALUE_VALUE=22, ATTRIBUTE=23;
-	public static final int TAG = 1;
-	public static final int SCRIPT = 2;
-	public static final int STYLE = 3;
-	public static final int ATTVALUE = 4;
+	public static final int
+		TAG=1, SCRIPT=2, STYLE=3, ATTVALUE=4;
+	public static String[] channelNames = {
+		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
+	};
+
 	public static String[] modeNames = {
 		"DEFAULT_MODE", "TAG", "SCRIPT", "STYLE", "ATTVALUE"
 	};
@@ -100,13 +102,16 @@ public class HTMLLexer extends Lexer {
 	public String getSerializedATN() { return _serializedATN; }
 
 	@Override
+	public String[] getChannelNames() { return channelNames; }
+
+	@Override
 	public String[] getModeNames() { return modeNames; }
 
 	@Override
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\31\u017d\b\1\b\1"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\31\u017d\b\1\b\1"+
 		"\b\1\b\1\b\1\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4"+
 		"\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20"+
 		"\4\21\t\21\4\22\t\22\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27"+
@@ -141,29 +146,29 @@ public class HTMLLexer extends Lexer {
 		"9\30;\31=\2?\2A\2C\2E\2G\2\7\2\3\4\5\6\16\4\2\13\13\"\"\3\2>>\5\2\13\f"+
 		"\17\17\"\"\5\2\62;CHch\3\2\62;\4\2/\60aa\5\2\u00b9\u00b9\u0302\u0371\u2041"+
 		"\u2042\n\2<<C\\c|\u2072\u2191\u2c02\u2ff1\u3003\ud801\uf902\ufdd1\ufdf2"+
-		"\uffff\3\2\"\"\t\2%%-=??AAC\\aac|\4\2$$>>\4\2))>>\u0190\2\7\3\2\2\2\2"+
-		"\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2"+
-		"\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\3\35\3\2\2\2"+
-		"\3\37\3\2\2\2\3!\3\2\2\2\3#\3\2\2\2\3%\3\2\2\2\3\'\3\2\2\2\4\61\3\2\2"+
-		"\2\4\63\3\2\2\2\5\65\3\2\2\2\5\67\3\2\2\2\69\3\2\2\2\6;\3\2\2\2\7I\3\2"+
-		"\2\2\tX\3\2\2\2\13e\3\2\2\2\rs\3\2\2\2\17\u0087\3\2\2\2\21\u00a8\3\2\2"+
-		"\2\23\u00af\3\2\2\2\25\u00b3\3\2\2\2\27\u00c5\3\2\2\2\31\u00d6\3\2\2\2"+
-		"\33\u00db\3\2\2\2\35\u00df\3\2\2\2\37\u00e3\3\2\2\2!\u00e8\3\2\2\2#\u00ea"+
-		"\3\2\2\2%\u00ee\3\2\2\2\'\u00f5\3\2\2\2)\u00f9\3\2\2\2+\u00fb\3\2\2\2"+
-		"-\u0101\3\2\2\2/\u0104\3\2\2\2\61\u0109\3\2\2\2\63\u011b\3\2\2\2\65\u0127"+
-		"\3\2\2\2\67\u0138\3\2\2\29\u0144\3\2\2\2;\u0150\3\2\2\2=\u0153\3\2\2\2"+
-		"?\u0156\3\2\2\2A\u015d\3\2\2\2C\u0164\3\2\2\2E\u016b\3\2\2\2G\u0174\3"+
-		"\2\2\2IJ\7>\2\2JK\7#\2\2KL\7/\2\2LM\7/\2\2MQ\3\2\2\2NP\13\2\2\2ON\3\2"+
-		"\2\2PS\3\2\2\2QR\3\2\2\2QO\3\2\2\2RT\3\2\2\2SQ\3\2\2\2TU\7/\2\2UV\7/\2"+
-		"\2VW\7@\2\2W\b\3\2\2\2XY\7>\2\2YZ\7#\2\2Z[\7]\2\2[_\3\2\2\2\\^\13\2\2"+
-		"\2]\\\3\2\2\2^a\3\2\2\2_`\3\2\2\2_]\3\2\2\2`b\3\2\2\2a_\3\2\2\2bc\7_\2"+
-		"\2cd\7@\2\2d\n\3\2\2\2ef\7>\2\2fg\7A\2\2gh\7z\2\2hi\7o\2\2ij\7n\2\2jn"+
-		"\3\2\2\2km\13\2\2\2lk\3\2\2\2mp\3\2\2\2no\3\2\2\2nl\3\2\2\2oq\3\2\2\2"+
-		"pn\3\2\2\2qr\7@\2\2r\f\3\2\2\2st\7>\2\2tu\7#\2\2uv\7]\2\2vw\7E\2\2wx\7"+
-		"F\2\2xy\7C\2\2yz\7V\2\2z{\7C\2\2{|\7]\2\2|\u0080\3\2\2\2}\177\13\2\2\2"+
-		"~}\3\2\2\2\177\u0082\3\2\2\2\u0080\u0081\3\2\2\2\u0080~\3\2\2\2\u0081"+
-		"\u0083\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084\7_\2\2\u0084\u0085\7_\2"+
-		"\2\u0085\u0086\7@\2\2\u0086\16\3\2\2\2\u0087\u0088\7>\2\2\u0088\u0089"+
+		"\uffff\3\2\"\"\t\2%%-=??AAC\\aac|\4\2$$>>\4\2))>>\2\u0190\2\7\3\2\2\2"+
+		"\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3"+
+		"\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\3\35\3\2\2"+
+		"\2\3\37\3\2\2\2\3!\3\2\2\2\3#\3\2\2\2\3%\3\2\2\2\3\'\3\2\2\2\4\61\3\2"+
+		"\2\2\4\63\3\2\2\2\5\65\3\2\2\2\5\67\3\2\2\2\69\3\2\2\2\6;\3\2\2\2\7I\3"+
+		"\2\2\2\tX\3\2\2\2\13e\3\2\2\2\rs\3\2\2\2\17\u0087\3\2\2\2\21\u00a8\3\2"+
+		"\2\2\23\u00af\3\2\2\2\25\u00b3\3\2\2\2\27\u00c5\3\2\2\2\31\u00d6\3\2\2"+
+		"\2\33\u00db\3\2\2\2\35\u00df\3\2\2\2\37\u00e3\3\2\2\2!\u00e8\3\2\2\2#"+
+		"\u00ea\3\2\2\2%\u00ee\3\2\2\2\'\u00f5\3\2\2\2)\u00f9\3\2\2\2+\u00fb\3"+
+		"\2\2\2-\u0101\3\2\2\2/\u0104\3\2\2\2\61\u0109\3\2\2\2\63\u011b\3\2\2\2"+
+		"\65\u0127\3\2\2\2\67\u0138\3\2\2\29\u0144\3\2\2\2;\u0150\3\2\2\2=\u0153"+
+		"\3\2\2\2?\u0156\3\2\2\2A\u015d\3\2\2\2C\u0164\3\2\2\2E\u016b\3\2\2\2G"+
+		"\u0174\3\2\2\2IJ\7>\2\2JK\7#\2\2KL\7/\2\2LM\7/\2\2MQ\3\2\2\2NP\13\2\2"+
+		"\2ON\3\2\2\2PS\3\2\2\2QR\3\2\2\2QO\3\2\2\2RT\3\2\2\2SQ\3\2\2\2TU\7/\2"+
+		"\2UV\7/\2\2VW\7@\2\2W\b\3\2\2\2XY\7>\2\2YZ\7#\2\2Z[\7]\2\2[_\3\2\2\2\\"+
+		"^\13\2\2\2]\\\3\2\2\2^a\3\2\2\2_`\3\2\2\2_]\3\2\2\2`b\3\2\2\2a_\3\2\2"+
+		"\2bc\7_\2\2cd\7@\2\2d\n\3\2\2\2ef\7>\2\2fg\7A\2\2gh\7z\2\2hi\7o\2\2ij"+
+		"\7n\2\2jn\3\2\2\2km\13\2\2\2lk\3\2\2\2mp\3\2\2\2no\3\2\2\2nl\3\2\2\2o"+
+		"q\3\2\2\2pn\3\2\2\2qr\7@\2\2r\f\3\2\2\2st\7>\2\2tu\7#\2\2uv\7]\2\2vw\7"+
+		"E\2\2wx\7F\2\2xy\7C\2\2yz\7V\2\2z{\7C\2\2{|\7]\2\2|\u0080\3\2\2\2}\177"+
+		"\13\2\2\2~}\3\2\2\2\177\u0082\3\2\2\2\u0080\u0081\3\2\2\2\u0080~\3\2\2"+
+		"\2\u0081\u0083\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084\7_\2\2\u0084\u0085"+
+		"\7_\2\2\u0085\u0086\7@\2\2\u0086\16\3\2\2\2\u0087\u0088\7>\2\2\u0088\u0089"+
 		"\7#\2\2\u0089\u008d\3\2\2\2\u008a\u008c\13\2\2\2\u008b\u008a\3\2\2\2\u008c"+
 		"\u008f\3\2\2\2\u008d\u008e\3\2\2\2\u008d\u008b\3\2\2\2\u008e\u0090\3\2"+
 		"\2\2\u008f\u008d\3\2\2\2\u0090\u0091\7@\2\2\u0091\20\3\2\2\2\u0092\u0093"+
