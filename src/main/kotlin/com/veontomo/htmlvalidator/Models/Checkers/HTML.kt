@@ -10,7 +10,8 @@ import org.antlr.v4.runtime.tree.TerminalNode
 
 class HTML: HTMLParserBaseVisitor<String>() {
 
-    override fun visitHtmlComment(ctx: HTMLParser.HtmlCommentContext?): String {
+    override fun visitHtmlAttribute(ctx: HTMLParser.HtmlAttributeContext?): String {
         return visitChildren(ctx).capitalize()
+//        return super.visitHtmlAttribute(ctx)
     }
 }
