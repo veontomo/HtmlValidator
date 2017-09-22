@@ -16,20 +16,20 @@ import com.veontomo.htmlvalidator.html.CalculatorLexer
  */
 class DuplicateAttrsChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
-//        val stream = CharStreams.fromString(html)
-//        val lexer =  HTMLLexer(stream)
-//        val tokenStream =  CommonTokenStream(lexer)
-//        val parser =  HTMLParser(tokenStream);
-//        val  tree = parser.htmlElement()
-//        val result =  HTML().visit(tree)
-
-        val expression = "42"
-        val stream = CharStreams.fromString(expression)
-        val lexer = CalculatorLexer(stream)
-        val tokenStream = CommonTokenStream(lexer)
-        val parser = CalculatorParser(tokenStream)
-        val tree = parser.expression()
-        val result = Calculator().visit(tree)
+        val stream = CharStreams.fromString(html)
+        val lexer =  HTMLLexer(stream)
+        val tokenStream =  CommonTokenStream(lexer)
+        val parser =  HTMLParser(tokenStream);
+        val  tree = parser.htmlElement()
+        val result =  HTML().visit(tree)
+//
+//        val expression = "42"
+//        val stream = CharStreams.fromString(expression)
+//        val lexer = CalculatorLexer(stream)
+//        val tokenStream = CommonTokenStream(lexer)
+//        val parser = CalculatorParser(tokenStream)
+//        val tree = parser.expression()
+//        val result = Calculator().visit(tree)
         println(result) // prints "42"
 
 
