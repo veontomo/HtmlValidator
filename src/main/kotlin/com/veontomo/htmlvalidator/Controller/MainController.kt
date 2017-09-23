@@ -3,8 +3,11 @@ package com.veontomo.htmlvalidator.Controller
 import com.veontomo.htmlvalidator.Calculator
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
+import com.veontomo.htmlvalidator.Models.Checkers.HTML
 import com.veontomo.htmlvalidator.html.CalculatorLexer
 import com.veontomo.htmlvalidator.html.CalculatorParser
+import com.veontomo.htmlvalidator.html.HTMLLexer
+import com.veontomo.htmlvalidator.html.HTMLParser
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -68,14 +71,27 @@ class MainController : Initializable {
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
         model.analyzer.forEach { it.observeOn(Schedulers.newThread()).subscribe({ report -> onReportReceived(report) }) }
-        val expression = "1+2 * (2+1)/2"
-        val stream = CharStreams.fromString(expression)
-        val lexer = CalculatorLexer(stream)
+//        val expression = "1+2 * (2+1)/2"
+//        val stream = CharStreams.fromString(expression)
+//        val lexer = CalculatorLexer(stream)
+//        val tokenStream = CommonTokenStream(lexer)
+//        val parser = CalculatorParser(tokenStream)
+//        val tree = parser.expression()
+//        val result = Calculator().visit(tree)
+//        println(result)
+
+        val stream = CharStreams.fromString("<html><body class=\"first\">hi!</body></html>")
+        val lexer = HTMLLexer(stream)
         val tokenStream = CommonTokenStream(lexer)
-        val parser = CalculatorParser(tokenStream)
-        val tree = parser.expression()
-        val result = Calculator().visit(tree)
-        println(result) // prints "42"
+        val parser = HTMLParser(tokenStream)
+        val tree = parser.htmlElements()
+        val result = HTML().visit(tree)
+        println(result)
+        val s = tree.childCount
+        for (i in 0..s-1){
+            val ch = tree.children[i]
+            println("$i: ${ch?.text}")
+        }
     }
 
 
