@@ -22,15 +22,7 @@ class DuplicateAttrsChecker : Checker() {
         val parser =  HTMLParser(tokenStream);
         val  tree = parser.htmlElement()
         val result =  HTML().visit(tree)
-//
-//        val expression = "42"
-//        val stream = CharStreams.fromString(expression)
-//        val lexer = CalculatorLexer(stream)
-//        val tokenStream = CommonTokenStream(lexer)
-//        val parser = CalculatorParser(tokenStream)
-//        val tree = parser.expression()
-//        val result = Calculator().visit(tree)
-        println(result) // prints "42"
+
 
 
         return listOf(CheckMessage(result.toString(), false))

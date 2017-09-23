@@ -1,7 +1,10 @@
 package com.veontomo.htmlvalidator.Controller
 
+import com.veontomo.htmlvalidator.Calculator
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
+import com.veontomo.htmlvalidator.html.CalculatorLexer
+import com.veontomo.htmlvalidator.html.CalculatorParser
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -13,6 +16,8 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
+import org.antlr.v4.runtime.CharStreams
+import org.antlr.v4.runtime.CommonTokenStream
 import rx.schedulers.Schedulers
 import java.io.File
 import java.net.URL
@@ -63,6 +68,14 @@ class MainController : Initializable {
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
         model.analyzer.forEach { it.observeOn(Schedulers.newThread()).subscribe({ report -> onReportReceived(report) }) }
+        val expression = "1+2 * (2+1)/2"
+        val stream = CharStreams.fromString(expression)
+        val lexer = CalculatorLexer(stream)
+        val tokenStream = CommonTokenStream(lexer)
+        val parser = CalculatorParser(tokenStream)
+        val tree = parser.expression()
+        val result = Calculator().visit(tree)
+        println(result) // prints "42"
     }
 
 
