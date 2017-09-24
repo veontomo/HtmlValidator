@@ -17,10 +17,19 @@ class HTML : HTMLParserBaseVisitor<String>() {
     }
 
     override fun visitDtd(ctx: HTMLParser.DtdContext?): String {
-        println("visiting a dtd")
-        return super.visitDtd(ctx)
+        println("visiting a dtd: ${ctx?.DTD()}")
+        return ctx?.let { it ->
+            super.visitDtd(it)
+        } ?: "no dtd"
 
     }
+
+    override fun visitHtmlDocument(ctx: HTMLParser.HtmlDocumentContext?): String {
+        print("visiting html document: dtd = ${ctx?.dtd()?.DTD()}, # scriplets = ${ctx?.scriptlet()?.size}, " +
+                "# html elems: ${ctx?.htmlElements()?.size} ")
+        return ctx?.let { super.visitHtmlDocument(ctx) } ?: "no html document"
+    }
+
 
     override fun visitHtmlElements(ctx: HTMLParser.HtmlElementsContext?): String {
         println("visiting html elements: rule index ${ctx?.ruleIndex}")

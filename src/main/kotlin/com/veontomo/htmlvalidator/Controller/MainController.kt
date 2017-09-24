@@ -84,11 +84,11 @@ class MainController : Initializable {
         val lexer = HTMLLexer(stream)
         val tokenStream = CommonTokenStream(lexer)
         val parser = HTMLParser(tokenStream)
-        val tree = parser.htmlElements()
+        val tree = parser.htmlDocument()
         val result = HTML().visit(tree)
         println(result)
         val s = tree.childCount
-        for (i in 0..s-1){
+        (0 until s).forEach { i ->
             val ch = tree.children[i]
             println("$i: ${ch?.text}")
         }
