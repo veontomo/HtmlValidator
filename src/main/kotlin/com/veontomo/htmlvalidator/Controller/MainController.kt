@@ -22,6 +22,7 @@ import javafx.scene.web.WebView
 import javafx.stage.FileChooser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.antlr.v4.runtime.tree.ParseTree
 import rx.schedulers.Schedulers
 import java.io.File
 import java.net.URL
@@ -80,23 +81,38 @@ class MainController : Initializable {
 //        val tree = parser.expression()
 //        val result = Calculator().visit(tree)
 //        println(result)
-        val input = "<!DOCTYPE html><html><body class=\"first\">hi!</body></html>"
+        val input = "<!DOCTYPE html><html><body class=\"first\">hi!<p>paragraph<a href=\"link\">lll</a></p></body></html>"
         val stream = CharStreams.fromString(input)
         val lexer = HTMLLexer(stream)
         val tokenStream = CommonTokenStream(lexer)
         val parser = HTMLParser(tokenStream)
         val tree = parser.htmlDocument()
         val result1 = HTML().visit(tree)
-        print("dtd=${result1.dtd}, xml = ${result1.xml}, scripts = ${result1.scripts.joinToString { it }}, nodes = ${result1.nodes.joinToString { it.name }}")
+        println("dtd=${result1.dtd}, " +
+                "xml = ${result1.xml}, " +
+                "scripts = ${result1.scripts.joinToString { it }}, " +
+                "nodes = ${result1.nodes}")
 //        val result2 = HTML2().visit(tree)
 //
 //        lexer.ruleNames.forEach { it -> println(it) }
-//        println(result1)
+        println(terminalNodeToString(tree))
 //        val s = tree.childCount
 //        (0 until s).forEach { i ->
 //            val ch = tree.children[i]
-//            println("$i: ${ch?.text}")
+//            println("$i: ${ch?.getChild(0)}")
 //        }
+    }
+
+    fun terminalNodeToString(ch: ParseTree): String {
+        val s = ch.childCount
+        if (s == 0) {
+            return ch.text
+        }
+        var output = ""
+        (0 until s).forEach { i ->
+            output += terminalNodeToString(ch.getChild(i)) + "|"
+        }
+        return output
     }
 
 
