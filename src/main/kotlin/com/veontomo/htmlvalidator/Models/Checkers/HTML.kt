@@ -1,5 +1,6 @@
 package com.veontomo.htmlvalidator.Models.Checkers
 
+import com.veontomo.htmlvalidator.Models.HtmlNode
 import com.veontomo.htmlvalidator.html.HTMLParser
 import com.veontomo.htmlvalidator.html.HTMLParserBaseVisitor
 import com.veontomo.htmlvalidator.html.HTMLParserVisitor
@@ -8,38 +9,19 @@ import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.RuleNode
 import org.antlr.v4.runtime.tree.TerminalNode
 
-class HTML : HTMLParserBaseVisitor<String>() {
+class HTML : HTMLParserBaseVisitor<HtmlDocument>() {
 
-    override fun visitHtmlAttribute(ctx: HTMLParser.HtmlAttributeContext?): String {
-        println("visiting an html attribute")
-        println("attr name = ${ctx?.htmlAttributeName()?.TAG_NAME()}, value = ${ctx?.htmlAttributeValue()?.ATTVALUE_VALUE()}, tag equals = ${ctx?.TAG_EQUALS().toString()} ")
-        return ctx?.let { super.visitHtmlAttribute(ctx) } ?: "???"
+    private fun constructTree(elements: List<HTMLParser.HtmlElementsContext>): List<HtmlNode> {
+        return elements.map { it -> HtmlNode(it.htmlElement().htmlTagName().joinToString { it.text }, listOf()) }
     }
 
-    override fun visitDtd(ctx: HTMLParser.DtdContext?): String {
-        println("visiting a dtd: ${ctx?.DTD()}")
-        return ctx?.let { it ->
-            super.visitDtd(it)
-        } ?: "no dtd"
-
-    }
-
-    override fun visitHtmlDocument(ctx: HTMLParser.HtmlDocumentContext?): String {
-        print("visiting html document: dtd = ${ctx?.dtd()?.DTD()}, # scriplets = ${ctx?.scriptlet()?.size}, " +
-                "# html elems: ${ctx?.htmlElements()?.size} ")
-        return ctx?.let { super.visitHtmlDocument(ctx) } ?: "no html document"
+    override fun visitHtmlDocument(ctx: HTMLParser.HtmlDocumentContext?): HtmlDocument {
+        val dtd = ctx?.dtd()?.DTD()?.text ?: ""
+        val xml = ctx?.xml()?.XML_DECLARATION()?.text ?: ""
+        val scriptlets = ctx?.scriptlet()?.map { it -> it.text } ?: listOf()
+        val htmlElements = ctx?.htmlElements() ?: listOf()
+        return HtmlDocument(dtd = dtd, xml = xml, scripts = scriptlets, nodes = constructTree(htmlElements))
     }
 
 
-    override fun visitHtmlElements(ctx: HTMLParser.HtmlElementsContext?): String {
-        println("visiting html elements: rule index ${ctx?.ruleIndex}")
-        println("html elements: ${ctx?.htmlElement()?.children?.joinToString(transform = { it.text }, separator = " | ")}")
-        return ctx?.let { super.visitHtmlElements(it) } ?: "---"
-    }
-
-    override fun visitHtmlElement(ctx: HTMLParser.HtmlElementContext?): String {
-        println("visiting html element: rule index ${ctx?.ruleIndex}")
-        println("html element: ${ctx?.htmlContent()?.children?.joinToString(transform = { it.text }, separator = ",")}")
-        return ctx?.let { super.visitHtmlElement(it) } ?: "+++"
-    }
 }

@@ -4,6 +4,7 @@ import com.veontomo.htmlvalidator.Calculator
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
 import com.veontomo.htmlvalidator.Models.Checkers.HTML
+import com.veontomo.htmlvalidator.Models.Checkers.HTML2
 import com.veontomo.htmlvalidator.html.CalculatorLexer
 import com.veontomo.htmlvalidator.html.CalculatorParser
 import com.veontomo.htmlvalidator.html.HTMLLexer
@@ -79,19 +80,23 @@ class MainController : Initializable {
 //        val tree = parser.expression()
 //        val result = Calculator().visit(tree)
 //        println(result)
-
-        val stream = CharStreams.fromString("<html><body class=\"first\">hi!</body></html>")
+        val input = "<!DOCTYPE html><html><body class=\"first\">hi!</body></html>"
+        val stream = CharStreams.fromString(input)
         val lexer = HTMLLexer(stream)
         val tokenStream = CommonTokenStream(lexer)
         val parser = HTMLParser(tokenStream)
         val tree = parser.htmlDocument()
-        val result = HTML().visit(tree)
-        println(result)
-        val s = tree.childCount
-        (0 until s).forEach { i ->
-            val ch = tree.children[i]
-            println("$i: ${ch?.text}")
-        }
+        val result1 = HTML().visit(tree)
+        print("dtd=${result1.dtd}, xml = ${result1.xml}, scripts = ${result1.scripts.joinToString { it }}, nodes = ${result1.nodes.joinToString { it.name }}")
+//        val result2 = HTML2().visit(tree)
+//
+//        lexer.ruleNames.forEach { it -> println(it) }
+//        println(result1)
+//        val s = tree.childCount
+//        (0 until s).forEach { i ->
+//            val ch = tree.children[i]
+//            println("$i: ${ch?.text}")
+//        }
     }
 
 
