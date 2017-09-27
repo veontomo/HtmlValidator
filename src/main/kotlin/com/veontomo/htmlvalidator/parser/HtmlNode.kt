@@ -3,8 +3,11 @@ package com.veontomo.htmlvalidator.parser
 /**
  * A mutable ADT representing an html document
  */
-class HtmlNode(private val name: String) {
+class HtmlNode(val name: String) {
     private val childNodes = mutableListOf<HtmlNode>()
+
+    val nodes: List<HtmlNode>
+        get() = childNodes
 
     fun appendChild(c: HtmlNode) {
         childNodes.add(c)
@@ -13,4 +16,6 @@ class HtmlNode(private val name: String) {
     override fun toString(): String {
         return "<$name> ${childNodes.map { it.toString() }.joinToString { it }}</$name>"
     }
+
+
 }

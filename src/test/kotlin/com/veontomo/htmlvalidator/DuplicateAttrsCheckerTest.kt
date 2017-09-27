@@ -16,7 +16,7 @@ class DuplicateAttrsCheckerTest {
     // 1. total # attrs: 0
     // 2. # of different duplicate attrs: 0
     @Test
-    fun `return empty list of the tag has no attributes`() {
+    fun `return empty list if the tag has no attributes`() {
         val checker = DuplicateAttrsChecker()
         val report = checker.check("<span>element</span>")
         assertEquals(0, report.size)
@@ -26,7 +26,7 @@ class DuplicateAttrsCheckerTest {
     // 1. total # attrs: 1
     // 2. # of different duplicate attrs: 0
     @Test
-    fun `return empty list of the tag has one attribute`() {
+    fun `return empty list if the tag has one attribute`() {
         val checker = DuplicateAttrsChecker()
         val report = checker.check("<div id=\"1\"></div>")
         assertEquals(0, report.size)

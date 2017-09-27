@@ -23,8 +23,8 @@ class HTMLVisitor : HTMLParserBaseVisitor<HtmlDocument>() {
         val numOfTags = tag.size
         check(numOfTags <= 2, { "tag size must be 0, 1 or 2, not $numOfTags" })
         if (numOfTags > 0) {
-            if (numOfTags == 2){
-                check(tag[0] == tag[1], {"opening and closing tags must have the same name, instead in ${element.text} found ${tag[0]} and ${tag[1]} "})
+            if (numOfTags == 2) {
+                check(tag[0] == tag[1], { "opening and closing tags must have the same name, instead in ${element.text} found ${tag[0]} and ${tag[1]} " })
 
             }
             val node = HtmlNode(tag[0])
@@ -41,8 +41,10 @@ class HTMLVisitor : HTMLParserBaseVisitor<HtmlDocument>() {
         val xml = ctx?.xml()?.XML_DECLARATION()?.text ?: ""
         val scriptlets = ctx?.scriptlet()?.map { it -> it.text } ?: listOf()
         val htmlElements = ctx?.htmlElements() ?: listOf()
-        check(htmlElements.size == 1, { "Root node must be unique, instead ${htmlElements.size} received" })
-        return HtmlDocument(dtd = dtd, xml = xml, scripts = scriptlets, nodes = constructRoot(htmlElements[0]))
+        val numOfHtmlElements = htmlElements.size
+        check(numOfHtmlElements <= 1, { "Root node must be unique, instead $numOfHtmlElements received" })
+        val child = if (numOfHtmlElements == 1) constructRoot(htmlElements[0]) else listOf()
+        return HtmlDocument(dtd = dtd, xml = xml, scripts = scriptlets, nodes = child)
     }
 
 
