@@ -1,14 +1,7 @@
 package com.veontomo.htmlvalidator.Controller
 
-import com.veontomo.htmlvalidator.Calculator
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.Models.*
-import com.veontomo.htmlvalidator.Models.Checkers.HTML
-import com.veontomo.htmlvalidator.Models.Checkers.HTML2
-import com.veontomo.htmlvalidator.html.CalculatorLexer
-import com.veontomo.htmlvalidator.html.CalculatorParser
-import com.veontomo.htmlvalidator.html.HTMLLexer
-import com.veontomo.htmlvalidator.html.HTMLParser
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -20,17 +13,12 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
-import org.antlr.v4.gui.TreeViewer
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.tree.ParseTree
 import rx.schedulers.Schedulers
 import java.io.File
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.prefs.Preferences
-import javax.swing.JFrame
 
 /**
  * A controller that orchestrates execution of available checks of given file.
@@ -75,56 +63,8 @@ class MainController : Initializable {
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
         model.analyzer.forEach { it.observeOn(Schedulers.newThread()).subscribe({ report -> onReportReceived(report) }) }
-//        val expression = "1+2 * (2+1)/2"
-//        val stream = CharStreams.fromString(expression)
-//        val lexer = CalculatorLexer(stream)
-//        val tokenStream = CommonTokenStream(lexer)
-//        val parser = CalculatorParser(tokenStream)
-//        val tree = parser.expression()
-//        val result = Calculator().visit(tree)
-//        println(result)
-        val input = "<!DOCTYPE html><html><body class=\"first\">hi!<p>paragraph<a href=\"link\">lll</a></p></body></html>"
-        val stream = CharStreams.fromString(input)
-        val lexer = HTMLLexer(stream)
-        val tokenStream = CommonTokenStream(lexer)
-        val parser = HTMLParser(tokenStream)
-        val tree = parser.htmlDocument()
-        val result1 = HTML().visit(tree)
-        println("dtd=${result1.dtd}, " +
-                "xml = ${result1.xml}, " +
-                "scripts = ${result1.scripts.joinToString { it }}, " +
-                "nodes = ${result1.nodes}")
-//        val result2 = HTML2().visit(tree)
-//
-//        lexer.ruleNames.forEach { it -> println(it) }
-        println(terminalNodeToString(tree))
-//        val s = tree.childCount
-//        (0 until s).forEach { i ->
-//            val ch = tree.children[i]
-//            println("$i: ${ch?.getChild(0)}")
-//        }
-        //show AST in GUI
-        val frame =  JFrame("AST for expression: $input")
-        val names = parser.ruleNames.map { it.toString() }
-        println("${names.joinToString { it }}")
-        val treeViewer =  TreeViewer(names, tree)
-        treeViewer.scale = 1.5
-        frame.add(treeViewer)
-        frame.setSize(640, 480)
-        frame.isVisible = true
     }
 
-    fun terminalNodeToString(ch: ParseTree): String {
-        val s = ch.childCount
-        if (s == 0) {
-            return ch.text
-        }
-        var output = ""
-        (0 until s).forEach { i ->
-            output += terminalNodeToString(ch.getChild(i)) + "|"
-        }
-        return output
-    }
 
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {

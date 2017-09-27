@@ -1,14 +1,7 @@
 package com.veontomo.htmlvalidator.Models.Checkers
 
-import com.veontomo.htmlvalidator.html.*
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
+import com.veontomo.htmlvalidator.parser.HtmlDocumentBuilder
 import org.jsoup.nodes.Element
-import com.veontomo.htmlvalidator.Calculator
-import com.veontomo.htmlvalidator.html.CalculatorParser
-import com.veontomo.htmlvalidator.html.CalculatorLexer
-
-
 
 /**
  * Control that every tag has no duplicate attributes.
@@ -16,18 +9,16 @@ import com.veontomo.htmlvalidator.html.CalculatorLexer
  */
 class DuplicateAttrsChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
-        val stream = CharStreams.fromString(html)
-        val lexer =  HTMLLexer(stream)
-        val tokenStream =  CommonTokenStream(lexer)
-        val parser =  HTMLParser(tokenStream);
-        val  tree = parser.htmlElement()
-        val result =  HTML().visit(tree)
+        val doc = try {
+            HtmlDocumentBuilder.build(html)
+        } catch (e: IllegalStateException) {
+            return listOf(CheckMessage("malformed document: ${e.message}", false))
+        }
 
-
-
-        return listOf(CheckMessage(result.toString(), false))
+        return listOf(CheckMessage("not implemented yet", true))
 
     }
+
 
     private fun inspectSingleNode(node: Element): Map<String, List<String>> {
         val attrs = node.attributes()

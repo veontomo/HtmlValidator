@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator.Models
+package com.veontomo.htmlvalidator.parser
 
 /**
  * A mutable ADT representing an html document
