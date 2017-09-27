@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCombination
 import javafx.scene.text.Text
 import javafx.scene.web.WebView
 import javafx.stage.FileChooser
+import org.antlr.v4.gui.TreeViewer
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
@@ -29,6 +30,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.prefs.Preferences
+import javax.swing.JFrame
 
 /**
  * A controller that orchestrates execution of available checks of given file.
@@ -101,6 +103,15 @@ class MainController : Initializable {
 //            val ch = tree.children[i]
 //            println("$i: ${ch?.getChild(0)}")
 //        }
+        //show AST in GUI
+        val frame =  JFrame("AST for expression: $input")
+        val names = parser.ruleNames.map { it.toString() }
+        println("${names.joinToString { it }}")
+        val treeViewer =  TreeViewer(names, tree)
+        treeViewer.scale = 1.5
+        frame.add(treeViewer)
+        frame.setSize(640, 480)
+        frame.isVisible = true
     }
 
     fun terminalNodeToString(ch: ParseTree): String {
