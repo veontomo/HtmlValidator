@@ -79,6 +79,7 @@ class HtmlDocumentParserTest {
         assertEquals("body", doc.nodes[0].nodes[0].name)
         assertEquals(2, doc.nodes[0].nodes[0].nodes.size)
         assertEquals("a", doc.nodes[0].nodes[0].nodes[0].name)
+        assertEquals(listOf("http://www.example.com"), doc.nodes[0].nodes[0].nodes[0].getAttribute("href"))
         assertEquals("p", doc.nodes[0].nodes[0].nodes[1].name)
     }
 }
