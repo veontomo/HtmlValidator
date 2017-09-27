@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator.Models.Checkers
+package com.veontomo.htmlvalidator.models.checkers
 
 /**
  *  Control whether html escape sequences tarting with the ampersand (&)

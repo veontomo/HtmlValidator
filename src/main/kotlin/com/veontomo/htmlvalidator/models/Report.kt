@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator.Models
+package com.veontomo.htmlvalidator.models
 
 import javafx.beans.property.SimpleStringProperty
 

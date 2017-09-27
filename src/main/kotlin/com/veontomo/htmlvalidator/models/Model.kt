@@ -1,6 +1,6 @@
-package com.veontomo.htmlvalidator.Models
+package com.veontomo.htmlvalidator.models
 
-import com.veontomo.htmlvalidator.Models.Checkers.*
+import com.veontomo.htmlvalidator.models.checkers.*
 import rx.Observable
 import rx.schedulers.Schedulers
 import rx.subjects.PublishSubject

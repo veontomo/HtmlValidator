@@ -1,6 +1,5 @@
-import com.veontomo.htmlvalidator.Views.MainView;
+import com.veontomo.htmlvalidator.views.MainView;
 import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Ignore;
 import org.junit.Test;

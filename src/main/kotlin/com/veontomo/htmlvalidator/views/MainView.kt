@@ -1,4 +1,4 @@
-package com.veontomo.htmlvalidator.Views
+package com.veontomo.htmlvalidator.views
 
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene

@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.Models.Checkers.DuplicateAttrsChecker
+import com.veontomo.htmlvalidator.models.checkers.DuplicateAttrsChecker
 import org.junit.Test
 
 import org.junit.Assert.*

@@ -1,7 +1,7 @@
-package com.veontomo.htmlvalidator.Controller
+package com.veontomo.htmlvalidator.controller
 
 import com.veontomo.htmlvalidator.Config
-import com.veontomo.htmlvalidator.Models.*
+import com.veontomo.htmlvalidator.models.*
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable

@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.Views.MainView
+import com.veontomo.htmlvalidator.views.MainView
 import javafx.application.Application
 import javafx.scene.image.Image
 import javafx.stage.Stage

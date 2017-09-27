@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator
 
-import com.veontomo.htmlvalidator.Models.Checkers.EscapeClosureChecker
+import com.veontomo.htmlvalidator.models.checkers.EscapeClosureChecker
 import org.junit.Test
 
 import org.junit.Assert.*
