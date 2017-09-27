@@ -8,12 +8,11 @@ import javafx.stage.Stage
 /**
  * Main view
  */
-class MainView(val stage: Stage) {
+class MainView(private val stage: Stage) {
 
     fun getScene(): Scene {
         val grid = FXMLLoader.load<GridPane>(javaClass.getResource("/MainView.fxml"))
-        val scene = Scene(grid, stage.width - grid.padding.left - grid.padding.right, 500.0)
-        return scene
+        return Scene(grid, stage.width - grid.padding.left - grid.padding.right, 500.0)
     }
 
 }

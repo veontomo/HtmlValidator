@@ -58,7 +58,7 @@ class SafeCharChecker : Checker() {
      * Find all non-ascii characters of given string.
      * @param text
      */
-    fun filterOutSafe(text: String): List<Char> {
+    private fun filterOutSafe(text: String): List<Char> {
         return text.toCharArray().filterNot { c -> isSafeChar(c) }
     }
 
@@ -68,7 +68,7 @@ class SafeCharChecker : Checker() {
      */
     fun isSafeChar(c: Char): Boolean {
         val code = c.toInt()
-        return code == LINEFEED || code == CARRIAGERETURN || (code >= LEFT_BOUNDARY && code <= RIGHT_BOUNDARY)
+        return code == LINEFEED || code == CARRIAGERETURN || (code in LEFT_BOUNDARY..RIGHT_BOUNDARY)
     }
 
 }

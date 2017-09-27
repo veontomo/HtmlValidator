@@ -14,9 +14,9 @@ class Model {
 
     private val STATUS_FAILURE = "Fail"
     private val STATUS_UNKNOWN = ""
-    val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target",
+    private val attrPlain = setOf("title", "href", "width", "height", "alt", "src", "style", "target",
             "http-equiv", "content", "cellpadding", "cellspacing", "lang", "border")
-    val attrInline = setOf(
+    private val attrInline = setOf(
             "width", "max-width", "min-width",
             "padding", "margin",
             "text-decoration", "text-align", "line-height",
@@ -26,7 +26,7 @@ class Model {
             "color", "height",
             "display", "vertical-align", "background-color"
     )
-    val charsets = setOf("ascii")
+    private val charsets = setOf("ascii")
     val checkers = setOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker(),
             DuplicateAttrsChecker())

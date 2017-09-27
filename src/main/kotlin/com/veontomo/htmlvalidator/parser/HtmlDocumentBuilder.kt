@@ -30,7 +30,7 @@ class HtmlDocumentBuilder {
 
     }
 
-    fun terminalNodeToString(ch: ParseTree): String {
+    private fun terminalNodeToString(ch: ParseTree): String {
         val s = ch.childCount
         if (s == 0) {
             return ch.text

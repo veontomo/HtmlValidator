@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element
  * @param attrs a set of allowed inline attributes. Any inline attribute that is not in this set
  *              is considered non-allowed.
  */
-class InlineAttrChecker(val attrs: Set<String>) : Checker() {
+class InlineAttrChecker(private val attrs: Set<String>) : Checker() {
     override val descriptor = "Inline attribute checker"
 
     override fun check(html: String): List<CheckMessage> {

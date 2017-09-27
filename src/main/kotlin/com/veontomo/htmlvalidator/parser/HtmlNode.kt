@@ -3,7 +3,7 @@ package com.veontomo.htmlvalidator.parser
 /**
  * A mutable ADT representing an html document
  */
-class HtmlNode(val name: String) {
+class HtmlNode(private val name: String) {
     private val childNodes = mutableListOf<HtmlNode>()
 
     fun appendChild(c: HtmlNode) {

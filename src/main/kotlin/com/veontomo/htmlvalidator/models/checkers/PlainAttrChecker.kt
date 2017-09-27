@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element
  * @param attrPlain list of allowed attributes. Any other attribute is considered non-allowed.
  *
  */
-class PlainAttrChecker(val attrPlain: Set<String>) : Checker() {
+class PlainAttrChecker(private val attrPlain: Set<String>) : Checker() {
     override val descriptor = "Plain attribute checker"
 
     override fun check(html: String): List<CheckMessage> {

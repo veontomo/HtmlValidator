@@ -39,7 +39,7 @@ class MainController : Initializable {
      * TODO: get rid of this accumulator. Make it work in such a way that a report is sent
      * directly to its row inside the table that shaow the reports.
      */
-    val items = mutableListOf<Report>()
+    private val items = mutableListOf<Report>()
 
 
     // keyboard shortcut for selecting a file "Ctrl+o"
@@ -58,7 +58,7 @@ class MainController : Initializable {
 
     private val model = Model()
 
-    val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale("Italy"))
+    private val formatter = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale("Italy"))
 
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
@@ -109,7 +109,7 @@ class MainController : Initializable {
      * Perform check of the selected file
      * @param file a file whose content is to be analyzed
      */
-    fun onAnalyze(file: File) {
+    private fun onAnalyze(file: File) {
         enableRefresh(false)
         enableClear(false)
         model.analyze(file)
@@ -118,7 +118,7 @@ class MainController : Initializable {
     /**
      * Clear the file
      */
-    fun onClear() {
+    private fun onClear() {
         enableClear(false)
         enableRefresh(false)
         fileInfoText!!.text = null
@@ -133,7 +133,7 @@ class MainController : Initializable {
      * Display the content of the selected file inside the web viewer.
      * @param url
      */
-    fun showFileContent(url: String?) {
+    private fun showFileContent(url: String?) {
         browser!!.engine.load(url)
     }
 
@@ -141,7 +141,7 @@ class MainController : Initializable {
      * Enable/disable a menu item that is used to analyze the file
      * @param isEnabled true to enable, false to disable
      */
-    fun enableRefresh(isEnabled: Boolean) {
+    private fun enableRefresh(isEnabled: Boolean) {
         menuRecheck!!.isDisable = !isEnabled
     }
 
@@ -149,7 +149,7 @@ class MainController : Initializable {
      * Enable/disable a menu item that is used to select a file
      * @param isEnabled true to enable, false to disable
      */
-    fun enableSelect(isEnabled: Boolean) {
+    private fun enableSelect(isEnabled: Boolean) {
         menuSelect!!.isDisable = !isEnabled
     }
 
@@ -157,7 +157,7 @@ class MainController : Initializable {
      * Enable/disable a menu item that is used to clear the result of analysis
      * @param isEnabled true to enable, false to disable
      */
-    fun enableClear(isEnabled: Boolean) {
+    private fun enableClear(isEnabled: Boolean) {
         menuClear!!.isDisable = !isEnabled
     }
 
@@ -165,7 +165,7 @@ class MainController : Initializable {
      * Load the reports in corresponding view and enable the menu items.
      * @param items
      */
-    fun onReportsReceived(items: List<Report>) {
+    private fun onReportsReceived(items: List<Report>) {
         checkersView!!.items = FXCollections.observableArrayList(items)
         enableRefresh(true)
         enableClear(true)
@@ -173,7 +173,7 @@ class MainController : Initializable {
     }
 
 
-    fun onReportReceived(item: Report) {
+    private fun onReportReceived(item: Report) {
         items.add(item)
         onReportsReceived(items)
     }
@@ -187,7 +187,7 @@ class MainController : Initializable {
     }
 
 
-    fun onSelect() {
+    private fun onSelect() {
         val last = readLastUsedFileName()
         val lastUsedFile = File(last)
         if (lastUsedFile.exists() && lastUsedFile.isDirectory)
@@ -198,9 +198,9 @@ class MainController : Initializable {
         val file = fileChooser.showOpenDialog(fileInfoText!!.scene.window)
         //        val file = fileChooser.showOpenDialog(Stage())
 
-        if (file?.exists() ?: false) {
+        if (file?.exists() == true) {
             if (allowedExtensions.contains(file.extension)) {
-                showFileName(file!!.path)
+                showFileName(file.path)
                 showFileContent(file.toURI().toURL().toExternalForm())
                 enableRefresh(true)
                 enableClear(true)
@@ -249,7 +249,7 @@ class MainController : Initializable {
      * Display the selected file name
      * @param name file name
      */
-    fun showFileName(name: String) {
+    private fun showFileName(name: String) {
         fileNameText!!.text = name
     }
 
