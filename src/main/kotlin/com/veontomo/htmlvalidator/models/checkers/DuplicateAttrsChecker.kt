@@ -1,6 +1,6 @@
 package com.veontomo.htmlvalidator.models.checkers
 
-import com.veontomo.htmlvalidator.parser.HtmlDocumentBuilder
+import com.veontomo.htmlvalidator.parser.HtmlDocumentParser
 import org.jsoup.nodes.Element
 
 /**
@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element
 class DuplicateAttrsChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
         val doc = try {
-            HtmlDocumentBuilder.build(html)
+            HtmlDocumentParser().parse(html)
         } catch (e: IllegalStateException) {
             return listOf(CheckMessage("malformed document: ${e.message}", false))
         }

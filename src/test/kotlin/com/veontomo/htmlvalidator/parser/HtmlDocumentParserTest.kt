@@ -6,7 +6,7 @@ import org.junit.Before
 import org.junit.Assert.*
 import org.junit.Test
 
-class HtmlDocumentBuilderTest {
+class HtmlDocumentParserTest {
     @Before
     fun setUp() {
     }
@@ -30,7 +30,7 @@ class HtmlDocumentBuilderTest {
     @Test
     fun `build a doc with dtd if input has dtd and no roots`() {
         val txt = "<!DOCTYPE html>"
-        val doc = HtmlDocumentBuilder.build(txt)
+        val doc = HtmlDocumentParser().parse(txt)
         assertEquals(0, doc.nodes.size)
         assertEquals("<!DOCTYPE html>", doc.dtd)
     }
@@ -43,7 +43,7 @@ class HtmlDocumentBuilderTest {
     @Test
     fun `build a doc with dtd if input has dtd and one root`() {
         val txt = "<!DOCTYPE html><html></html>"
-        val doc = HtmlDocumentBuilder.build(txt)
+        val doc = HtmlDocumentParser().parse(txt)
         assertEquals(1, doc.nodes.size)
         assertEquals("html", doc.nodes[0].name)
         assertEquals("<!DOCTYPE html>", doc.dtd)
@@ -57,7 +57,7 @@ class HtmlDocumentBuilderTest {
     @Test
     fun `build a doc without dtd if input has dtd and one root`() {
         val txt = "<html></html>"
-        val doc = HtmlDocumentBuilder.build(txt)
+        val doc = HtmlDocumentParser().parse(txt)
         assertEquals(1, doc.nodes.size)
         assertEquals("html", doc.nodes[0].name)
         assertEquals("", doc.dtd)
@@ -71,7 +71,7 @@ class HtmlDocumentBuilderTest {
     @Test
     fun `build a doc with dtd if input has htm4 dtd and one root with attributes`() {
         val txt = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"><html> <body> <a href=\"http://www.example.com\">a link</a> <p>a paragraph</p> </body> </html>"
-        val doc = HtmlDocumentBuilder.build(txt)
+        val doc = HtmlDocumentParser().parse(txt)
         assertEquals("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">", doc.dtd)
         assertEquals(1, doc.nodes.size)
         assertEquals("html", doc.nodes[0].name)
