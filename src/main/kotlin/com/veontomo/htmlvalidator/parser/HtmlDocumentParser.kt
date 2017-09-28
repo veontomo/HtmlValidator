@@ -3,9 +3,11 @@ package com.veontomo.htmlvalidator.parser
 import com.veontomo.htmlvalidator.html.HTMLLexer
 import com.veontomo.htmlvalidator.html.HTMLParser
 import com.veontomo.htmlvalidator.html.HTMLParserBaseVisitor
+import org.antlr.v4.gui.TreeViewer
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.tree.ParseTree
+import javax.swing.JFrame
 
 class HtmlDocumentParser : HTMLParserBaseVisitor<HtmlDocument>() {
 
@@ -15,15 +17,15 @@ class HtmlDocumentParser : HTMLParserBaseVisitor<HtmlDocument>() {
         val tokenStream = CommonTokenStream(lexer)
         val parser = HTMLParser(tokenStream)
         val tree = parser.htmlDocument()
-        //show AST in GUI
-//            val frame = JFrame("AST")
-//            val names = parser.ruleNames.map { it.toString() }
-//            println("$names")
-//            val treeViewer = TreeViewer(names, tree)
-//            treeViewer.scale = 1.5
-//            frame.add(treeViewer)
-//            frame.setSize(640, 480)
-//            frame.isVisible = true
+//        show AST in GUI
+            val frame = JFrame("AST")
+            val names = parser.ruleNames.map { it.toString() }
+            println("$names")
+            val treeViewer = TreeViewer(names, tree)
+            treeViewer.scale = 1.5
+            frame.add(treeViewer)
+            frame.setSize(640, 480)
+            frame.isVisible = true
 
         return visit(tree)
     }
@@ -64,6 +66,14 @@ class HtmlDocumentParser : HTMLParserBaseVisitor<HtmlDocument>() {
 
             }
             val node = HtmlNode(tag[0])
+            val attrs = element.htmlAttribute()
+            attrs.forEach { attr -> node.appendAttribute(attr.htmlAttributeName().text, attr.htmlAttributeValue().text) }
+            if (element.childCount == 0) {
+                val text = element.htmlContent().htmlChardata().map { it -> it.HTML_TEXT() }
+                if (text.size == 1) {
+                    node.text = text[0].text
+                }
+            }
             val children = element.htmlContent().htmlElement()
             n.appendChild(node)
             children.forEach { it -> appendNode(node, it) }

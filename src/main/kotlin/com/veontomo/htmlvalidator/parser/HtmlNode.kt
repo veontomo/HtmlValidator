@@ -7,6 +7,17 @@ class HtmlNode(val name: String) {
     private val childNodes = mutableListOf<HtmlNode>()
     private val attrs = mutableListOf<Pair<String, String>>()
     private val style = mutableListOf<Pair<String, String>>()
+    private var nodeText: String? = null
+
+    var text: String?
+        get() = nodeText
+        set(value) {
+            if (attrs.isEmpty() && style.isEmpty() && childNodes.isEmpty()) {
+                nodeText = value
+            } else {
+                throw IllegalStateException("Trying to set text content to a non-terminal node.")
+            }
+        }
 
     val nodes: List<HtmlNode>
         get() = childNodes
