@@ -86,4 +86,19 @@ class HtmlDocumentParserTest {
 //        assertEquals(1, para.nodes.size)
         assertEquals("paragraph", para.text)
     }
+    @Test
+    fun `build a doc with head and body`() {
+        val txt = "<!DOCTYPE HTML><html> <head> <meta http-equiv=\"content-type\" content=\"text/html; charset=ascii\"><title>doc title</title> </head><body>hi</body></html>"
+        val doc = HtmlDocumentParser().parse(txt)
+        assertEquals("<!DOCTYPE HTML>", doc.dtd)
+        assertEquals(1, doc.nodes.size)
+        val html = doc.nodes[0]
+        assertEquals("html", html.name)
+        assertEquals(2, html.nodes.size)
+        val head = html.nodes[0]
+        val body = html.nodes[1]
+
+        assertEquals("head", head.name)
+        assertEquals("body", body.name)
+    }
 }

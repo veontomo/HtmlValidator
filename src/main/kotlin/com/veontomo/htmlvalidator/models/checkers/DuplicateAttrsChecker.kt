@@ -1,6 +1,8 @@
 package com.veontomo.htmlvalidator.models.checkers
 
+import com.veontomo.htmlvalidator.parser.DOM
 import com.veontomo.htmlvalidator.parser.HtmlDocumentParser
+import com.veontomo.htmlvalidator.parser.HtmlNode
 import org.jsoup.nodes.Element
 
 /**
@@ -9,14 +11,26 @@ import org.jsoup.nodes.Element
  */
 class DuplicateAttrsChecker : Checker() {
     override fun check(html: String): List<CheckMessage> {
-        val doc = try {
-            HtmlDocumentParser().parse(html)
+        val dom = try {
+            DOM(html)
         } catch (e: IllegalStateException) {
             return listOf(CheckMessage("malformed document: ${e.message}", false))
         }
 
-        return listOf(CheckMessage("not implemented yet", true))
+        return listOf(CheckMessage(dom.dtd, true))
+    }
 
+    /**
+     * Find node's duplicate attributes.
+     *
+     * An attribute is considered as a duplicate if it is assigned more than once no matter to the same value or different.
+     * @param node node to analyze
+     * @return a map from a duplicate-valued attribute to a list of its values. Once present, the list must contain two elements or
+     * more.
+     */
+    private fun findAttributeDuplicates(node: HtmlNode): Map<String, List<String>> {
+        // stub
+        return mapOf()
     }
 
 
