@@ -2,6 +2,7 @@ package com.veontomo.htmlvalidator.controller
 
 import com.veontomo.htmlvalidator.Config
 import com.veontomo.htmlvalidator.models.*
+import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -64,7 +65,6 @@ class MainController : Initializable {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
         model.analyzer.forEach { it.observeOn(Schedulers.newThread()).subscribe({ report -> onReportReceived(report) }) }
     }
-
 
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
@@ -175,7 +175,10 @@ class MainController : Initializable {
 
     private fun onReportReceived(item: Report) {
         items.add(item)
-        onReportsReceived(items)
+        Platform.runLater {
+
+            onReportsReceived(items)
+        }
     }
 
 

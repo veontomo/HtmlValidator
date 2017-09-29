@@ -23,7 +23,7 @@ class DOM(private val text: String) {
 
 
     private fun extractDtd(text: String): String {
-        val tree = parser.htmlDocument()
+        val tree = parser.dtd()
         val parser1 = HtmlDtdParser()
         return parser1.visit(tree)
     }

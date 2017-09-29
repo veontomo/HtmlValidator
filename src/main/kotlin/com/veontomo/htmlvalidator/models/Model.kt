@@ -28,21 +28,20 @@ class Model {
     )
     private val charsets = setOf("ascii")
     val checkers = setOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
-            PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker(),
-            DuplicateAttrsChecker())
+            PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker()
+            , DuplicateAttrsChecker()
+    )
 
     private val subject: PublishSubject<File> = PublishSubject.create<File>()
 
     /**
      * Create a list of observable, one for each checker
      */
-    val analyzer: List<Observable<Report>> = checkers.map {
-        checker ->
+    val analyzer: List<Observable<Report>> = checkers.map { checker ->
         subject
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
-                .map {
-                    file ->
+                .map { file ->
                     generateReport(file, checker)
                 }
     }
