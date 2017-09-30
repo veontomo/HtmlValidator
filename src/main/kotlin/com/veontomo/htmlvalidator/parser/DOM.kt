@@ -31,13 +31,13 @@ class DOM(private val text: String) {
 
     init {
 //        show AST in GUI
-        val frame = JFrame("AST")
-        val names = parser.ruleNames.map { it.toString() }
-        val treeViewer = TreeViewer(names, tree)
-        treeViewer.scale = 1.0
-        frame.add(treeViewer)
-        frame.setSize(640, 480)
-        frame.isVisible = true
+//        val frame = JFrame("AST")
+//        val names = parser.ruleNames.map { it.toString() }
+//        val treeViewer = TreeViewer(names, tree)
+//        treeViewer.scale = 1.0
+//        frame.add(treeViewer)
+//        frame.setSize(640, 480)
+//        frame.isVisible = true
     }
 
 }

@@ -18,7 +18,7 @@ class DtdChecker : Checker() {
         return if (isValidDtd(dtd)) {
             listOf()
         } else {
-            listOf(CheckMessage(msg = "Expected dtd: , received: ", status = false))
+            listOf(CheckMessage(msg = "$dtd is not among allowed ones: ${allowedDtds.joinToString { it }}", status = false))
         }
     }
 
