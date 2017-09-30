@@ -15,6 +15,8 @@ class DuplicateAttrsChecker : Checker() {
         } catch (e: IllegalStateException) {
             return listOf(CheckMessage("malformed document: ${e.message}", false))
         }
+
+        val nodes = dom.nodes
         return listOf(CheckMessage(dom.dtd, true))
     }
 

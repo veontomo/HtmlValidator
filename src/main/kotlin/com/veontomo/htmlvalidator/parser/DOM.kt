@@ -22,11 +22,12 @@ class DOM(private val text: String) {
     val dtd: String
         get() = tree.dtd()?.text ?: ""
 
-    private var nodesPrivate = mutableListOf<HtmlNode>()
+    val nodes: List<HtmlNode> by lazy { getAllNodes() }
 
-
-    val nodes: List<HtmlNode>
-        get() = nodesPrivate
+    private fun getAllNodes(): List<HtmlNode> {
+        val nodes = HtmlNodeParser().visit(tree)
+        return listOf()
+    }
 
 
     init {
