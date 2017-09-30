@@ -1,7 +1,6 @@
 package com.veontomo.htmlvalidator.models.checkers
 
 import com.veontomo.htmlvalidator.parser.DOM
-import com.veontomo.htmlvalidator.parser.HtmlDocumentParser
 import com.veontomo.htmlvalidator.parser.HtmlNode
 import org.jsoup.nodes.Element
 
@@ -16,7 +15,6 @@ class DuplicateAttrsChecker : Checker() {
         } catch (e: IllegalStateException) {
             return listOf(CheckMessage("malformed document: ${e.message}", false))
         }
-
         return listOf(CheckMessage(dom.dtd, true))
     }
 

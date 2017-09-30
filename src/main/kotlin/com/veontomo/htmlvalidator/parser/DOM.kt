@@ -17,33 +17,27 @@ class DOM(private val text: String) {
     private val lexer = HTMLLexer(stream)
     private val tokenStream = CommonTokenStream(lexer)
     private val parser = HTMLParser(tokenStream)
+    private val tree = parser.htmlDocument()
 
-    val dtd: String by lazy { extractDtd(text) }
+    val dtd: String
+        get() = tree.dtd()?.text ?: ""
+
     private var nodesPrivate = mutableListOf<HtmlNode>()
 
-
-    private fun extractDtd(text: String): String {
-        val tree = parser.dtd()
-        val parser1 = HtmlDtdParser()
-        return parser1.visit(tree)
-    }
 
     val nodes: List<HtmlNode>
         get() = nodesPrivate
 
 
     init {
-
-        val tree = parser.htmlDocument()
 //        show AST in GUI
         val frame = JFrame("AST")
         val names = parser.ruleNames.map { it.toString() }
-        println("$names")
         val treeViewer = TreeViewer(names, tree)
-        treeViewer.scale = 1.5
+        treeViewer.scale = 1.0
         frame.add(treeViewer)
         frame.setSize(640, 480)
         frame.isVisible = true
-        HtmlDocumentParser().visit(tree)
     }
+
 }

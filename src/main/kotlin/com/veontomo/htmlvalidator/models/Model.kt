@@ -30,6 +30,7 @@ class Model {
     val checkers = setOf(SafeCharChecker(), AttributeSafeCharChecker(), LinkChecker(),
             PlainAttrChecker(attrPlain), InlineAttrChecker(attrInline), EncodingChecker(charsets), EscapeClosureChecker()
             , DuplicateAttrsChecker()
+            , DtdChecker()
     )
 
     private val subject: PublishSubject<File> = PublishSubject.create<File>()
