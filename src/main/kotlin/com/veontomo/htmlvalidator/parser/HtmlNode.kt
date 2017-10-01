@@ -9,6 +9,13 @@ class HtmlNode(val name: String) {
     private val style = mutableListOf<Pair<String, String>>()
     private var nodeText: String? = null
 
+    var attributes: List<Pair<String, String>>
+        get() = attrs
+        set(value) {
+            attrs.clear()
+            value.forEach { attrs.add(Pair(it.first, it.second)) }
+        }
+
     var text: String?
         get() = nodeText
         set(value) {
@@ -30,6 +37,7 @@ class HtmlNode(val name: String) {
         attrs.add(Pair(key, value))
     }
 
+
     fun getAttribute(key: String): List<String> {
         return attrs.filter { it.first == key }.map { it.second }
     }
@@ -39,7 +47,7 @@ class HtmlNode(val name: String) {
     }
 
     override fun toString(): String {
-        return "<$name> ${childNodes.map { it.toString() }.joinToString { it }}</$name>"
+        return text?.let { it } ?: "[$name] ${attrs.joinToString { "${it.first}=${it.second}" }} ${childNodes.map { it.toString() }.joinToString { it }}[/$name]"
     }
 
 

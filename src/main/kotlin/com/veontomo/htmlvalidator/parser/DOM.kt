@@ -25,8 +25,7 @@ class DOM(private val text: String) {
     val nodes: List<HtmlNode> by lazy { getAllNodes() }
 
     private fun getAllNodes(): List<HtmlNode> {
-        val nodes = HtmlNodeParser().visit(tree)
-        return listOf()
+        return listOf(HtmlNodeParser().visit(tree))
     }
 
 
