@@ -20,16 +20,16 @@ class HtmlNodeParser : HTMLParserBaseVisitor<HtmlNode>() {
         val node = HtmlNode(tagName)
         node.attributes = attrs
 
-        val texts = ctx.htmlContent().htmlChardata()
-        texts.forEach{
+        val texts = ctx.htmlContent()?.htmlChardata()
+        texts?.forEach{
             val textNode = HtmlNode("foo")
             textNode.text = it.text
             node.appendChild(textNode)
 
         }
-        println("element text: ${texts.joinToString { it.text }}")
+        println("element text: ${texts?.joinToString { it.text }}")
         val elems = ctx.htmlContent()?.htmlElement()
-        println("elements: ${elems?.joinToString { it.htmlContent().text }}")
+        println("elements: ${elems?.joinToString { it.htmlContent()?.text ?: ""}}")
         elems?.forEach {
             val n = visitHtmlElement(it)
             node.appendChild(n)

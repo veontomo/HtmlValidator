@@ -17,7 +17,6 @@ class DuplicateAttrsChecker : Checker() {
         }
 
         val nodes = dom.nodes
-        print(nodes[0].toString())
 
         return listOf(CheckMessage(dom.dtd, true))
     }
