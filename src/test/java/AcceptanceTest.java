@@ -51,7 +51,7 @@ public class AcceptanceTest extends ApplicationTest {
     @Ignore
     public void menu_select_is_enabled_after_selecting() throws InterruptedException {
         clickOn(MENU_FILE_ID).clickOn(MENU_SELECT_ID);
-//        type(KeyCode.M);// MECSPE_2016_03_01.html
+//        type(KeyCode.M);
 //        type(KeyCode.DOWN);
 //        type(KeyCode.ENTER);
 //        clickOn(MENU_FILE_ID);
