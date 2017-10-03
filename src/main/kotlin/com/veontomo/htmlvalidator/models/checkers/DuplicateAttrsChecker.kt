@@ -15,6 +15,7 @@ class DuplicateAttrsChecker : Checker() {
             return listOf(CheckMessage("malformed document: ${e.message}", false))
         }
 
+        println("dom: $dom")
         val duplicates = findNodeDeepDuplicateAttributes(dom.nodes, mutableListOf())
 
         return duplicates.map { it -> CheckMessage("node ${it.first.name} has duplicate attributes ${it.second.toList().joinToString { "${it.first}: ${it.second.joinToString { it }}" }}", true) }

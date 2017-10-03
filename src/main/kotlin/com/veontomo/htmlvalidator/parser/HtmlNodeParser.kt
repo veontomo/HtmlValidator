@@ -7,7 +7,9 @@ import java.util.*
 class HtmlNodeParser : HTMLParserBaseVisitor<HtmlNode>() {
 
     override fun visitHtmlElement(ctx: HTMLParser.HtmlElementContext?): HtmlNode {
+        println("visiting ${ctx?.text}")
         val tags = ctx?.htmlTagName()?.map { it.TAG_NAME().text }
+        println(tags)
         check(tags != null, { "No tags are found in html element ${ctx?.text}" })
         val size = tags!!.size
         check(size < 3, { "Tag list must contain 0, 1 or 2 elements, instead it contains $size elements." })

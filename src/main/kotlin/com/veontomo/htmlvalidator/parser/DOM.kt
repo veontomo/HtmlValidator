@@ -24,6 +24,10 @@ class DOM(private val text: String) {
 
     val nodes: List<HtmlNode> by lazy { getAllNodes() }
 
+    override fun toString(): String {
+        return dtd + nodes.map { it.toString() }
+    }
+
     private fun getAllNodes(): List<HtmlNode> {
         return listOf(HtmlNodeParser().visit(tree))
     }
