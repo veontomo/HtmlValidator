@@ -1,5 +1,5 @@
 ext.versions = [
-        kotlin           : '1.1.4-3',
+        kotlin           : '1.1.51',
         jsoup            : "1.10.2",
         rx               : "1.1.6",
         jUnit            : "4.12",

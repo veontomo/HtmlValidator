@@ -2,7 +2,6 @@ package com.veontomo.htmlvalidator.models.checkers
 
 import com.veontomo.htmlvalidator.parser.DOM
 import com.veontomo.htmlvalidator.parser.HtmlNode
-import org.jsoup.nodes.Element
 
 /**
  * Control that every tag has no duplicate attributes.
@@ -16,41 +15,46 @@ class DuplicateAttrsChecker : Checker() {
             return listOf(CheckMessage("malformed document: ${e.message}", false))
         }
 
-        val nodes = dom.nodes
+        val duplicates = findNodeDeepDuplicateAttributes(dom.nodes, mutableListOf())
 
-        return listOf(CheckMessage(dom.dtd, true))
+        return duplicates.map { it -> CheckMessage("node ${it.first.name} has duplicate attributes ${it.second.toList().joinToString { "${it.first}: ${it.second.joinToString { it }}" }}", true) }
     }
 
     /**
-     * Find node's duplicate attributes.
-     *
-     * An attribute is considered as a duplicate if it is assigned more than once no matter to the same value or different.
-     * @param node node to analyze
-     * @return a map from a duplicate-valued attribute to a list of its values. Once present, the list must contain two elements or
-     * more.
+     * Return a list of duplicates found in given nodes and its descendants.
+     * This is a recursive function, it uses an accumulator for storing previously found duplicate attributes.
+     * @param nodes
+     * @param accumulator
+     * @return a list composed of pairs whose keys are html nodes containing the duplicate attributes and values are maps from duplicate attribute names to their values.
      */
-    private fun findAttributeDuplicates(node: HtmlNode): Map<String, List<String>> {
-        // stub
-        return mapOf()
-    }
-
-
-    private fun inspectSingleNode(node: Element): Map<String, List<String>> {
-        val attrs = node.attributes()
-        val firstOccurrences = mutableMapOf<String, String>()
-        val duplicates = mutableMapOf<String, MutableList<String>>()
-        attrs.forEach { attr ->
-            if (firstOccurrences.containsKey(attr.key)) {
-                if (!duplicates.containsKey(attr.key)) {
-                    duplicates.put(attr.key, mutableListOf(firstOccurrences[attr.key]!!))
+    private fun findNodeDeepDuplicateAttributes(nodes: List<HtmlNode>, accumulator: List<Pair<HtmlNode, Map<String, List<String>>>>): List<Pair<HtmlNode, Map<String, List<String>>>> {
+        val result = mutableListOf<Pair<HtmlNode, Map<String, List<String>>>>()
+        accumulator.forEach { it -> result.add(it) }
+        nodes.forEach { node ->
+            run {
+                val dupl = findNodeShallowDuplicates(node)
+                if (dupl.isNotEmpty()) {
+                    result += Pair(node, dupl)
                 }
-                duplicates[attr.key]!!.add(attr.value)
-            } else {
-                firstOccurrences.put(attr.key, attr.value)
+                val children = node.nodes
+                val duplChildren = findNodeDeepDuplicateAttributes(children, accumulator)
+                result.addAll(duplChildren)
             }
         }
-        return duplicates
+        return result
     }
+
+    /**
+     * Return a map of duplicate attributes pertinent to the node, not to its descendants.
+     * @param node
+     * @return a map whose keys are attribute namess, values - attribute values
+     */
+    private fun findNodeShallowDuplicates(node: HtmlNode): Map<String, List<String>> {
+        return node.attributes.groupBy { it.first }
+                .filter { it.value.size > 1 }
+                .mapValues { it.value.map { it.second } }
+    }
+
 
     override val descriptor: String
         get() = "Duplicate attributes"
