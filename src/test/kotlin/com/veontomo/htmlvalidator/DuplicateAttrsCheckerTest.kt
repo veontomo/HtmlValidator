@@ -55,8 +55,20 @@ class DuplicateAttrsCheckerTest {
     @Test
     fun `return one element list of the tag has two attributes and they have equal names with equal values`() {
         val checker = DuplicateAttrsChecker()
-        val report = checker.check("<span class=\"first\" class=\"second\"></span>")
+        val input = "<!DOCTYPE HTML>" +
+                "<html> " +
+                "<head>" +
+                "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">" +
+                "<title>AAA</title>" +
+                "</head> <body>" +
+                "<a href=\"http://www.example.com\" href=\"link\">a link</a> " +
+                "<p>a paragraph</p> </body> </html>"
+        val report = checker.check(input)
         assertEquals(1, report.size)
+        assertTrue(report[0].msg.contains("href"))
+        assertTrue(report[0].msg.contains("http://wwww.example.com"))
+        assertTrue(report[0].msg.contains("link"))
+        assertTrue(report[0].msg.contains(Regex("\ba\b")))
     }
 
     // Cover
@@ -84,6 +96,6 @@ class DuplicateAttrsCheckerTest {
      * 2. # duplicate attr values: 2
      */
     @Test
-    fun  `return single element list if there is one node with double set attr`() {
+    fun `return single element list if there is one node with double set attr`() {
     }
 }

@@ -5,6 +5,7 @@ import com.veontomo.htmlvalidator.html.HTMLParser
 import org.antlr.v4.gui.TreeViewer
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import java.awt.ScrollPane
 import javax.swing.JFrame
 
 /**
@@ -40,8 +41,9 @@ class DOM(private val text: String) {
 //        val treeViewer = TreeViewer(names, tree)
 //        treeViewer.scale = 1.0
 //        frame.add(treeViewer)
-//        frame.setSize(640, 480)
+//        frame.setSize(2000, 1000)
 //        frame.isVisible = true
+
     }
 
 }
