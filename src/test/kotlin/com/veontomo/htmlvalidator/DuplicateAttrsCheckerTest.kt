@@ -58,17 +58,20 @@ class DuplicateAttrsCheckerTest {
         val input = "<!DOCTYPE HTML>" +
                 "<html> " +
                 "<head>" +
-                "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">" +
+//                "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">" +
                 "<title>AAA</title>" +
-                "</head> <body>" +
-                "<a href=\"http://www.example.com\" href=\"link\">a link</a> " +
-                "<p>a paragraph</p> </body> </html>"
+                "</head>" +
+                "<body>" +
+                "<a href=\"http://www.example.com\" href=\"link\">a link</a>" +
+                "<p>a paragraph</p>" +
+                "</body>" +
+                "</html>"
         val report = checker.check(input)
         assertEquals(1, report.size)
         assertTrue(report[0].msg.contains("href"))
-        assertTrue(report[0].msg.contains("http://wwww.example.com"))
+        assertTrue(report[0].msg.contains("http://www.example.com"))
         assertTrue(report[0].msg.contains("link"))
-        assertTrue(report[0].msg.contains(Regex("\ba\b")))
+        assertTrue(report[0].msg.contains(Regex("\\ba\\b")))
     }
 
     // Cover
