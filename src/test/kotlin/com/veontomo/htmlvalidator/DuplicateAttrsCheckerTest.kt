@@ -62,6 +62,7 @@ class DuplicateAttrsCheckerTest {
                 "<title>AAA</title>" +
                 "</head>" +
                 "<body>" +
+                "<img src=\"local\">"+
                 "<a href=\"http://www.example.com\" href=\"link\">a link</a>" +
                 "<p>a paragraph</p>" +
                 "</body>" +

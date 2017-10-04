@@ -64,6 +64,7 @@ class MainController : Initializable {
     init {
         fileChooser.title = Config.FILE_CHOOSER_DIALOG_TITLE
         model.analyzer.forEach { it.observeOn(Schedulers.newThread()).subscribe({ report -> onReportReceived(report) }, {e -> println(e.message)}) }
+
     }
 
 
