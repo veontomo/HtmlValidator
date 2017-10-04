@@ -1,3 +1,4 @@
+package com.veontomo.htmlvalidator;
 import com.veontomo.htmlvalidator.views.MainView;
 import javafx.scene.Node;
 import javafx.stage.Stage;
