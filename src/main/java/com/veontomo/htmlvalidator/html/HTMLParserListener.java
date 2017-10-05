@@ -28,15 +28,77 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitHtmlElements(HTMLParser.HtmlElementsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLParser#htmlElement}.
+	 * Enter a parse tree produced by the {@code full}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
 	 * @param ctx the parse tree
 	 */
-	void enterHtmlElement(HTMLParser.HtmlElementContext ctx);
+	void enterFull(HTMLParser.FullContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HTMLParser#htmlElement}.
+	 * Exit a parse tree produced by the {@code full}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
 	 * @param ctx the parse tree
 	 */
-	void exitHtmlElement(HTMLParser.HtmlElementContext ctx);
+	void exitFull(HTMLParser.FullContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code emptyWithSlash}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyWithSlash(HTMLParser.EmptyWithSlashContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code emptyWithSlash}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyWithSlash(HTMLParser.EmptyWithSlashContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code emtptyNoSlash}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmtptyNoSlash(HTMLParser.EmtptyNoSlashContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code emtptyNoSlash}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmtptyNoSlash(HTMLParser.EmtptyNoSlashContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code scriptTag1}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterScriptTag1(HTMLParser.ScriptTag1Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code scriptTag1}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitScriptTag1(HTMLParser.ScriptTag1Context ctx);
+	/**
+	 * Enter a parse tree produced by the {@code scriptTag2}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterScriptTag2(HTMLParser.ScriptTag2Context ctx);
+	/**
+	 * Exit a parse tree produced by the {@code scriptTag2}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitScriptTag2(HTMLParser.ScriptTag2Context ctx);
+	/**
+	 * Enter a parse tree produced by the {@code internalStyle}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void enterInternalStyle(HTMLParser.InternalStyleContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code internalStyle}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 */
+	void exitInternalStyle(HTMLParser.InternalStyleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLParser#htmlContent}.
 	 * @param ctx the parse tree

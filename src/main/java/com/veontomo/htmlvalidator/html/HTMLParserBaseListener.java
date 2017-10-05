@@ -40,13 +40,73 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterHtmlElement(HTMLParser.HtmlElementContext ctx) { }
+	@Override public void enterFull(HTMLParser.FullContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitHtmlElement(HTMLParser.HtmlElementContext ctx) { }
+	@Override public void exitFull(HTMLParser.FullContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEmptyWithSlash(HTMLParser.EmptyWithSlashContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEmptyWithSlash(HTMLParser.EmptyWithSlashContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEmtptyNoSlash(HTMLParser.EmtptyNoSlashContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEmtptyNoSlash(HTMLParser.EmtptyNoSlashContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterScriptTag1(HTMLParser.ScriptTag1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScriptTag1(HTMLParser.ScriptTag1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterScriptTag2(HTMLParser.ScriptTag2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScriptTag2(HTMLParser.ScriptTag2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInternalStyle(HTMLParser.InternalStyleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInternalStyle(HTMLParser.InternalStyleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

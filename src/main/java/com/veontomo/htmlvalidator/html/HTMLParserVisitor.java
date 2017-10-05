@@ -23,11 +23,47 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHtmlElements(HTMLParser.HtmlElementsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link HTMLParser#htmlElement}.
+	 * Visit a parse tree produced by the {@code full}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitHtmlElement(HTMLParser.HtmlElementContext ctx);
+	T visitFull(HTMLParser.FullContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code emptyWithSlash}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyWithSlash(HTMLParser.EmptyWithSlashContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code emtptyNoSlash}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmtptyNoSlash(HTMLParser.EmtptyNoSlashContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code scriptTag1}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScriptTag1(HTMLParser.ScriptTag1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code scriptTag2}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScriptTag2(HTMLParser.ScriptTag2Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code internalStyle}
+	 * labeled alternative in {@link HTMLParser#htmlElement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInternalStyle(HTMLParser.InternalStyleContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HTMLParser#htmlContent}.
 	 * @param ctx the parse tree

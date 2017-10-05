@@ -365,6 +365,101 @@ public class HTMLParser extends Parser {
 	}
 
 	public static class HtmlElementContext extends ParserRuleContext {
+		public HtmlElementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_htmlElement; }
+	 
+		public HtmlElementContext() { }
+		public void copyFrom(HtmlElementContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ScriptTag1Context extends HtmlElementContext {
+		public ScriptletContext scriptlet() {
+			return getRuleContext(ScriptletContext.class,0);
+		}
+		public ScriptTag1Context(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterScriptTag1(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitScriptTag1(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitScriptTag1(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ScriptTag2Context extends HtmlElementContext {
+		public ScriptContext script() {
+			return getRuleContext(ScriptContext.class,0);
+		}
+		public ScriptTag2Context(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterScriptTag2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitScriptTag2(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitScriptTag2(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EmptyWithSlashContext extends HtmlElementContext {
+		public TerminalNode TAG_OPEN() { return getToken(HTMLParser.TAG_OPEN, 0); }
+		public HtmlTagNameContext htmlTagName() {
+			return getRuleContext(HtmlTagNameContext.class,0);
+		}
+		public TerminalNode TAG_SLASH_CLOSE() { return getToken(HTMLParser.TAG_SLASH_CLOSE, 0); }
+		public List<HtmlAttributeContext> htmlAttribute() {
+			return getRuleContexts(HtmlAttributeContext.class);
+		}
+		public HtmlAttributeContext htmlAttribute(int i) {
+			return getRuleContext(HtmlAttributeContext.class,i);
+		}
+		public EmptyWithSlashContext(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterEmptyWithSlash(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitEmptyWithSlash(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitEmptyWithSlash(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class InternalStyleContext extends HtmlElementContext {
+		public StyleContext style() {
+			return getRuleContext(StyleContext.class,0);
+		}
+		public InternalStyleContext(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterInternalStyle(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitInternalStyle(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitInternalStyle(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class FullContext extends HtmlElementContext {
 		public List<TerminalNode> TAG_OPEN() { return getTokens(HTMLParser.TAG_OPEN); }
 		public TerminalNode TAG_OPEN(int i) {
 			return getToken(HTMLParser.TAG_OPEN, i);
@@ -389,31 +484,45 @@ public class HTMLParser extends Parser {
 		public HtmlAttributeContext htmlAttribute(int i) {
 			return getRuleContext(HtmlAttributeContext.class,i);
 		}
-		public TerminalNode TAG_SLASH_CLOSE() { return getToken(HTMLParser.TAG_SLASH_CLOSE, 0); }
-		public ScriptletContext scriptlet() {
-			return getRuleContext(ScriptletContext.class,0);
-		}
-		public ScriptContext script() {
-			return getRuleContext(ScriptContext.class,0);
-		}
-		public StyleContext style() {
-			return getRuleContext(StyleContext.class,0);
-		}
-		public HtmlElementContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_htmlElement; }
+		public FullContext(HtmlElementContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterHtmlElement(this);
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterFull(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitHtmlElement(this);
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitFull(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitHtmlElement(this);
+			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitFull(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EmtptyNoSlashContext extends HtmlElementContext {
+		public TerminalNode TAG_OPEN() { return getToken(HTMLParser.TAG_OPEN, 0); }
+		public HtmlTagNameContext htmlTagName() {
+			return getRuleContext(HtmlTagNameContext.class,0);
+		}
+		public TerminalNode TAG_CLOSE() { return getToken(HTMLParser.TAG_CLOSE, 0); }
+		public List<HtmlAttributeContext> htmlAttribute() {
+			return getRuleContexts(HtmlAttributeContext.class);
+		}
+		public HtmlAttributeContext htmlAttribute(int i) {
+			return getRuleContext(HtmlAttributeContext.class,i);
+		}
+		public EmtptyNoSlashContext(HtmlElementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).enterEmtptyNoSlash(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HTMLParserListener ) ((HTMLParserListener)listener).exitEmtptyNoSlash(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HTMLParserVisitor ) return ((HTMLParserVisitor<? extends T>)visitor).visitEmtptyNoSlash(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -427,6 +536,7 @@ public class HTMLParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
+				_localctx = new FullContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(80);
@@ -462,6 +572,7 @@ public class HTMLParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new EmptyWithSlashContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(95);
@@ -487,6 +598,7 @@ public class HTMLParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new EmtptyNoSlashContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(105);
@@ -512,6 +624,7 @@ public class HTMLParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new ScriptTag1Context(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(115);
@@ -519,6 +632,7 @@ public class HTMLParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new ScriptTag2Context(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(116);
@@ -526,6 +640,7 @@ public class HTMLParser extends Parser {
 				}
 				break;
 			case 6:
+				_localctx = new InternalStyleContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(117);
